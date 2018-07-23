@@ -1,0 +1,13 @@
+name: leafgem
+version: 0.0.1
+
+authors:
+  - tfcat
+
+targets:
+  leafgem:
+    main: src/main.cr
+
+crystal: 0.25.1
+
+license: MIT
