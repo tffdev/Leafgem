@@ -1,6 +1,7 @@
 require "./sdl/sdl"
 require "./sdl/image"
-require "./Thing"
+require "./things/thing"
+require "./things/player"
 
 SDL.init(SDL::Init::VIDEO); at_exit { SDL.quit }
 SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
@@ -24,19 +25,6 @@ def create_object(thing)
 end
 
 create_object(Player)
-
-class Player < Thing
-  def update
-    @current_sprite += 0.06
-    if (@current_sprite > 4)
-      @current_sprite = 0
-    end
-  end
-
-  def draw
-    RENDERER.copy(@spritesheet, @quads[@current_sprite.to_i], @sprquad)
-  end
-end
 
 class AssetManager
   @@spritetable = {} of Thing.class => Array(Int32 | String)
