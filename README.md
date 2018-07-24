@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/tfcat/Leafgem/master/logo.png)
+![logo](https://raw.githubusercontent.com/tfcat/Leafgem/master/logosoft.png)
 
 ## Description
 
