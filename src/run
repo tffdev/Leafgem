@@ -1,2 +1,0 @@
-#!/usr/bin/bash
-crystal run --threads 4 -p main.cr

@@ -1,5 +1,5 @@
-require "./sdl/sdl"
-require "./sdl/image"
+require "sdl/sdl"
+require "sdl/image"
 require "./things/thing"
 require "./things/player"
 

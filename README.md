@@ -2,7 +2,7 @@
 
 ## Description
 
-Leafgem is the beginning of a 2D open source game engine where 
+Leafgem is the beginning of a 2D open source game engine written in Crystal.
 
 ## Run the demo project!
 
