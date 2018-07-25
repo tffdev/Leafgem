@@ -1,4 +1,6 @@
-![logo](https://raw.githubusercontent.com/tfcat/Leafgem/master/logosoft.png)
+<p align="center">
+	<img src="https://raw.githubusercontent.com/tfcat/Leafgem/master/logosoft.png">
+</p>
 
 ## Description
 
@@ -14,13 +16,36 @@ crystal run -s -p src/main.cr
 
 ## Development
 
-Chances are, you know Crystal better than I do. I'm creating this project as practice using the Crystal language. 
+What are the main things we need for a Game Engine? Here's what I can think of off the top of my head.
+Each of the given features *could* be contained in a class which correlates to their purpose.
 
-Any and all contibutions to this engine are welcome and heavily appreciated, no matter how big or small. The aim is to give game devs a large and intuitive toolkit for making games! 
+**Control**
+[ ] Keypressing - *on_press*, *on_release* and *is_pressed*
 
-Currently, it's hard to say what the workflow of developing a game with this is going to be. 
+**Objects**
+[ ] Instance-based system. (Unique, contained object instances, derived from a template [class])
 
-Any ideas are welcome. Fork and work your magic!
+**Sprites**
+[ ] Sprite animations + Breaking sprites up into sub-images
+
+**Audio**
+[ ] Oneshots
+[ ] Looping background music
+[ ] Audio fade in/out over time
+
+**Maps/Rooms**
+[ ] Background renderer
+[ ] Tileset renderer
+[ ] "Rooms", loadable, spawn objects in predetermined places
+
+## Contributing 
+
+I'm not all that good with Crystal - I'm creating this project as practice using the Crystal language! 
+
+That means any and all contributions to this engine are welcome and heavily appreciated, no matter how big or small. The aim is to give creators an intuitive toolkit for making games! A bonus being a super speedy and easy engine.
+
+Any ideas are welcome!
+Fork, and work your magic!
 
 ## Contributors
 

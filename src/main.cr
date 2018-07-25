@@ -1,48 +1,25 @@
 require "sdl/sdl"
 require "sdl/image"
-require "./things/thing"
-require "./things/player"
+require "./leafgem"
 
-SDL.init(SDL::Init::VIDEO); at_exit { SDL.quit }
-SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
+# Create the window our game will sit in!
+# window_title, window_width, window_height, pixel_scale
+Leafgem.new("Cat Game", 640, 480, 2)
 
-WINDOW   = SDL::Window.new("Cat Game", 640, 480)
-RENDERER = SDL::Renderer.new(WINDOW, SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC)
+# Define a new "Thing!"
+class Player < Thing
+  @@Sprite = AssetManager.make_spritesheet("tg.png", 32, 34)
 
-RENDERER.scale = {2, 2}
-
-# create gameloop
-LOOP = [] of Thing
-
-AssetManager.setSpriteTable({
-  Player => ["tg.png", 32, 34],
-} of Thing.class => Array(Int32 | String))
-
-def create_object(thing)
-  assetdata = AssetManager.getObjectData(thing)
-  spritedata = AssetManager.getSprite(assetdata[0].as(String))
-  LOOP << thing.new(spritedata, assetdata[1].as(Int32), assetdata[2].as(Int32))
+  def update
+    @current_sprite += 0.06
+    if (@current_sprite > 4)
+      @current_sprite = 0
+    end
+  end
 end
 
+# Create the thing in our game world!
 create_object(Player)
-
-class AssetManager
-  @@spritetable = {} of Thing.class => Array(Int32 | String)
-  @@sprites = {} of String => SDL::IMG
-
-  def self.setSpriteTable(hashes)
-    @@spritetable = hashes
-  end
-
-  def self.getObjectData(thing : Thing.class)
-    @@spritetable[thing]
-  end
-
-  def self.getSprite(filename : String)
-    filename ||= ""
-    SDL::IMG.load(File.join(__DIR__, filename), RENDERER)
-  end
-end
 
 # ======================== #
 #        MAIN LOOP         #
@@ -55,19 +32,19 @@ loop do
   end
 
   # draw all objects
-  LOOP.each do |thing|
+  Leafgem.loop.each do |thing|
     thing.update
   end
 
   # Set background to black
-  RENDERER.draw_color = SDL::Color[0, 0, 0, 255]
-  RENDERER.clear
+  Leafgem.renderer.draw_color = SDL::Color[0, 0, 0, 255]
+  Leafgem.renderer.clear
 
   # draw all objects
-  LOOP.each do |thing|
+  Leafgem.loop.each do |thing|
     thing.draw
   end
 
   # finalise
-  RENDERER.present
+  Leafgem.renderer.present
 end
