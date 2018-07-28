@@ -11,7 +11,7 @@ Leafgem is the beginning of a 2D open source game engine written in Crystal.
 ```
 git clone https://github.com/tfcat/Leafgem.git
 cd Leafgem
-crystal run -s -p src/main.cr
+crystal run -s -p src/demo.cr
 ```
 
 ## Development

@@ -1,4 +1,4 @@
-require "./leafgem"
+require "leafgem"
 
 # Create the window our game will sit in!
 # window_title, window_width, window_height, pixel_scale
@@ -6,7 +6,7 @@ Leafgem::Game.new("Cat Game", 640, 480, 2)
 
 # Define a new "Thing!"
 class Player < Leafgem::Object
-  @spritesheet = Leafgem::Spritesheet.new("tg.png", 32, 32)
+  @spritesheet = Leafgem::Spritesheet.new("images/tg.png", 32, 32)
 
   def init
     set_animation(0..3, 0)

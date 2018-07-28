@@ -1,7 +1,7 @@
 require "sdl/sdl"
 require "sdl/image"
-require "./leafgem/math"
-require "./leafgem/library"
+require "./math"
+require "./library"
 
 # ======================== #
 #      LEAFGEM MODULE      #
@@ -154,7 +154,7 @@ module Leafgem
       # "no image" image file. Like, black + pink checkerboard lmao
       filename ||= ""
       puts filename
-      SDL::IMG.load(File.join(__DIR__, filename), Leafgem::Game.renderer)
+      SDL::IMG.load(filename, Leafgem::Game.renderer)
     end
   end
 end
