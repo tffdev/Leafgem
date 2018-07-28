@@ -24,6 +24,8 @@ Each of the given features *could* be contained in a class which correlates to t
 
 **Objects**
 - [ ] Instance-based system. (Unique, contained object instances, derived from a template [class])
+- [ ] Destroying objects
+- [ ] Object selection (e.g. setting attributes of foreign objects )
 
 **Sprites**
 - [ ] Sprite animations + Breaking sprites up into sub-images

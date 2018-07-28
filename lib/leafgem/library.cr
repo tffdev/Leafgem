@@ -8,11 +8,11 @@
 
 def create_object(thing, x = 0, y = 0)
   # Give objects a unique identifier on create?
-  a = thing.new
-  a.x = x
-  a.y = y
-  a.init
-  Leafgem::Game.loop << a
+  new_obj = thing.new
+  new_obj.x = x
+  new_obj.y = y
+  new_obj.init
+  Leafgem::Game.loop << new_obj
 end
 
 def key_pressed(keycode)
