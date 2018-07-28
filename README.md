@@ -20,23 +20,23 @@ What are the main things we need for a Game Engine? Here's what I can think of o
 Each of the given features *could* be contained in a class which correlates to their purpose.
 
 **Control**
-[ ] Keypressing - *on_press*, *on_release* and *is_pressed*
+- [ ] Keypressing - *on_press*, *on_release* and *is_pressed*
 
 **Objects**
-[ ] Instance-based system. (Unique, contained object instances, derived from a template [class])
+- [ ] Instance-based system. (Unique, contained object instances, derived from a template [class])
 
 **Sprites**
-[ ] Sprite animations + Breaking sprites up into sub-images
+- [ ] Sprite animations + Breaking sprites up into sub-images
 
 **Audio**
-[ ] Oneshots
-[ ] Looping background music
-[ ] Audio fade in/out over time
+- [ ] Oneshots
+- [ ] Looping background music
+- [ ] Audio fade in/out over time
 
 **Maps/Rooms**
-[ ] Background renderer
-[ ] Tileset renderer
-[ ] "Rooms", loadable, spawn objects in predetermined places
+- [ ] Background renderer
+- [ ] Tileset renderer
+- [ ] "Rooms", loadable, spawn objects in predetermined places
 
 ## Contributing 
 
