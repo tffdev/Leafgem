@@ -1,11 +1,16 @@
 class Leafgem::AssetManager
-  @@sprites = {} of Object.class => SDL::Texture
+  @@sprites = {} of String => SDL::Texture?
 
   def self.image(filename : String) : SDL::Texture
     # This empty string can be replaced with a special Leafgem
     # "no image" image file. Like, black + pink checkerboard lmao
     filename ||= ""
-    SDL::IMG.load(filename, Leafgem::Game.renderer)
+
+    if texture = @@sprites[filename]?
+      texture
+    else
+      @@sprites[filename] = SDL::IMG.load(filename, Leafgem::Game.renderer)
+    end
   end
 end
 

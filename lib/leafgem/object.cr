@@ -1,13 +1,14 @@
 class Leafgem::Object
-  @spritesheet : Spritesheet?
+  @image_index : Spritesheet?
   @sprite_index = 0.0
   @image_speed = 0.0
   @anim_start_frame = 0
   @anim_end_frame = 0
 
-  property x = 0
-  property y = 0
-  property spritesheet
+  property x = 0.0
+  property y = 0.0
+
+  property image_index
   property image_speed
 
   def init
@@ -21,7 +22,7 @@ class Leafgem::Object
   end
 
   def draw_self
-    if spr = @spritesheet
+    if spr = @image_index
       @sprite_index += @image_speed
       if (@sprite_index > @anim_end_frame - @anim_start_frame + 1)
         @sprite_index = 0
@@ -34,10 +35,13 @@ class Leafgem::Object
     end
   end
 
-  def set_animation(cols, param_row = 0)
+  def set_animation(cols, param_row = 0, image_speed = Nil)
+    if imgspd = image_speed
+      @image_speed = imgspd
+    end
     if param_row != 0
-      if spritesheet = @spritesheet
-        offset_y = (spritesheet.sprite.width / spritesheet.quads[0].w).to_i * param_row
+      if image_index = @image_index
+        offset_y = (image_index.sprite.width / image_index.quads[0].w).to_i * param_row
         @anim_start_frame = offset_y + cols[0]
         @anim_end_frame = offset_y + cols[cols.size - 1]
       end

@@ -1,22 +1,29 @@
+# TODO
+# - Able to set default background programatically ?
+#
+
 class Leafgem::Game
   @@loop = [] of Object
   @@loopfunc : Proc(Nil)?
 
-  @@renderer = SDL::Renderer.new(
-    SDL::Window.new("Game", 640, 480),
-    SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC
-  )
+  @window : SDL::Window
+  @@renderer : SDL::Renderer?
 
-  def initialize(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Int32)
+  def initialize(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
     SDL.init(SDL::Init::VIDEO); at_exit { SDL.quit }
     SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
 
-    @@renderer = SDL::Renderer.new(
-      SDL::Window.new(window_title || "Game", window_width || 640, window_height || 480),
-      SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC
-    )
+    # Create window
+    @window = SDL::Window.new(window_title, window_width, window_height)
 
-    @@renderer.scale = {pixel_scale, pixel_scale}
+    # Create renderer
+    flags = SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC
+    @@renderer = SDL::Renderer.new(@window, flags)
+
+    # Set renderer pixel scale
+    if a = @@renderer
+      a.scale = {pixel_scale, pixel_scale}
+    end
   end
 
   # ======================== #
@@ -25,21 +32,27 @@ class Leafgem::Game
 
   def self.run
     loop do
-      case event = SDL::Event.poll
-      when SDL::Event::Quit
-        break
+      while (event = SDL::Event.poll)
+        case event
+        when SDL::Event::Quit
+          puts "Exiting..."
+          SDL.quit
+          exit
+        when SDL::Event::Keyboard
+          Leafgem::KeyManager.update(event)
+        end
       end
 
       if func = @@loopfunc
         func.call
       end
 
-      # draw all objects
+      # update all objects
       Leafgem::Game.loop.each do |thing|
         thing.update
       end
 
-      # Set background to black
+      # set background to black
       Leafgem::Game.renderer.draw_color = SDL::Color[0, 0, 0, 255]
       Leafgem::Game.renderer.clear
 
@@ -50,9 +63,9 @@ class Leafgem::Game
 
       # finalise
       Leafgem::Game.renderer.present
+      # reset pressed keys
+      Leafgem::KeyManager.clear_pressed
     end
-
-    puts "Exiting..."
   end
 
   def self.set_loopfunc(function)
@@ -60,7 +73,11 @@ class Leafgem::Game
   end
 
   def self.renderer
-    @@renderer
+    if a = @@renderer
+      a
+    else
+      exit()
+    end
   end
 
   def self.loop
