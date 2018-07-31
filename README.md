@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://raw.githubusercontent.com/tfcat/Leafgem/master/logo.png">
+	<img src="https://tfcat.me/files/leafgemlogo.png">
 </p>
 
 ## Description
