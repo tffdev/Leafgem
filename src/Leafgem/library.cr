@@ -51,7 +51,7 @@ def draw_sprite(filename : String, x : Float32, y : Float32, alpha : Float32 = 1
 end
 
 def create_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32)
-  title = window_title || "Leafgem Game " + Leafgem_Version
+  title = window_title || "Leafgem Game"
   width = window_width || 640
   height = window_height || 480
   Leafgem::Game.new(title, width, height, scale)

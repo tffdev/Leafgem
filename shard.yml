@@ -11,3 +11,8 @@ targets:
 crystal: 0.25.1
 
 license: MIT
+
+dependencies:
+  sdl:
+    github: ysbaddaden/sdl.cr
+    branch: master

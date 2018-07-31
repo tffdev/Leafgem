@@ -6,12 +6,12 @@
 
 Leafgem is the beginning of a 2D open source game engine written in Crystal.
 
-## Run the demo project!
-
+## Try it out with the demo project!
 ```
 git clone https://github.com/tfcat/Leafgem.git
 cd Leafgem
-crystal run -s -p src/demo.cr
+shards install
+crystal run -s -p demo/main.cr
 ```
 
 ## Development
@@ -20,19 +20,19 @@ What are the main things we need for a Game Engine? Here's what I can think of o
 Each of the given features *could* be contained in a class which correlates to their purpose.
 
 **Control**
-- [ ] Keypressing - *on_press*, *on_release* and *is_pressed*
+- [x] Keypressing - *on_press*, *on_release* and *is_pressed*
 
 **Objects**
-- [ ] Instance-based system. (Unique, contained object instances, derived from a template [class])
+- [x] Instance-based system. (Unique, contained object instances, derived from a template [class])
 - [ ] Destroying objects
 - [ ] Object selection (e.g. setting attributes of foreign objects )
 
 **Sprites**
-- [ ] Sprite animations + Breaking sprites up into sub-images
+- [x] Sprite animations + Breaking sprites up into sub-images
 
 **Audio**
-- [ ] Oneshots
-- [ ] Looping background music
+- [x] Oneshots
+- [x] Looping background music
 - [ ] Audio fade in/out over time
 
 **Maps/Rooms**

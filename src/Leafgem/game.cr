@@ -1,9 +1,5 @@
 # TODO
 # - Able to set default background programatically ?
-#
-require "benchmark"
-
-FRAMES_PER_SECOND = 20
 
 class Leafgem::Game
   @@loop = [] of Object
