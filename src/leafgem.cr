@@ -8,4 +8,4 @@ require "sdl/mix"
 # ======================== #
 #      LEAFGEM MODULE      #
 # ======================== #
-require "./Leafgem/*"
+require "./leafgem/*"

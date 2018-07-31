@@ -1,4 +1,4 @@
-require "../Leafgem"
+require "../leafgem"
 require "ini"
 
 # Create the window our game will sit in!
