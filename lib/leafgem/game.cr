@@ -1,6 +1,9 @@
 # TODO
 # - Able to set default background programatically ?
 #
+require "benchmark"
+
+FRAMES_PER_SECOND = 20
 
 class Leafgem::Game
   @@loop = [] of Object
@@ -18,7 +21,7 @@ class Leafgem::Game
     @window = SDL::Window.new(window_title, window_width, window_height)
 
     # Create renderer
-    flags = SDL::Renderer::Flags::ACCELERATED | SDL::Renderer::Flags::PRESENTVSYNC
+    flags = SDL::Renderer::Flags::ACCELERATED
     @@renderer = SDL::Renderer.new(@window, flags)
 
     # Set renderer pixel scale
