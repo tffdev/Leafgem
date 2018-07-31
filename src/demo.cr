@@ -1,8 +1,16 @@
 require "leafgem"
-
+require "ini"
 # Create the window our game will sit in!
 # window_title, window_width, window_height, pixel_scale
 create_window("Leafgem Demo!", 640, 480, 3)
+
+ini = File.read("./maps/leafmap")
+ini = ini.gsub("=\n") { "=" }
+ini = ini.gsub(",\n") { "," }
+map = INI.parse ini
+tiles = map["layer"]["data"].split(",")
+
+audio_play("choon.mp3")
 
 # Define a new "Thing!"
 class Player < Leafgem::Object
@@ -22,7 +30,10 @@ class Player < Leafgem::Object
 
   def draw
     # draw_sprite(path, x, y, alpha)
-    draw_sprite("images/Tileset.png", 32, 15, 0.3)
+    # draw_sprite("images/Tileset.png", 32, 15, 1)
+
+    draw_sprite("images/Tileset.png", 2, 3)
+
     draw_self
   end
 end

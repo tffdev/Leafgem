@@ -17,3 +17,7 @@ draw_sprite(filename : String, x : Float32 = 0, y : Float32 = 0, alpha : Float32
 ### Control
 keyboard_check_pressed(keycode : String)
 keyboard_check(keycode : String)
+
+### Maps
+
+flare map files

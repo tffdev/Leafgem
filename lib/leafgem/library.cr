@@ -39,14 +39,14 @@ def set_loop_function(function : Proc(Void))
   Leafgem::Game.set_loopfunc(function)
 end
 
-def draw_sprite(filename : String, x : Float32 = 0, y : Float32 = 0, alpha : Float32 = 1)
+def draw_sprite(filename : String, x : Float32, y : Float32, alpha : Float32 = 1)
   # literally just drawing a sprite
   image = Leafgem::AssetManager.image(filename)
   image.alpha_mod = alpha*255
   Leafgem::Game.renderer.copy(
     image,
     SDL::Rect.new(0, 0, image.width, image.height),
-    SDL::Rect.new(x.to_i, y.to_i, image.width, image.height)
+    SDL::Rect.new(x.to_i || 0, y.to_i || 0, image.width, image.height)
   )
 end
 
@@ -55,4 +55,8 @@ def create_window(window_title : String, window_width : Int32, window_height : I
   width = window_width || 640
   height = window_height || 480
   Leafgem::Game.new(title, width, height, scale)
+end
+
+def audio_play(filename : String)
+  Leafgem::Audio.play(filename)
 end
