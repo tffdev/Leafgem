@@ -32,7 +32,7 @@ class Leafgem::Object
       Leafgem::Game.renderer.copy(
         spr.sprite,
         spr.quads[@anim_start_frame + @sprite_index.to_i],
-        SDL::Rect.new(@x.to_i, @y.to_i, spr.quads[0].w, spr.quads[0].h)
+        SDL::Rect.new(@x.to_i - Leafgem::Game.camera_x, @y.to_i - Leafgem::Game.camera_y, spr.quads[0].w, spr.quads[0].h)
       )
     end
   end

@@ -1,10 +1,17 @@
 class Leafgem::Audio
-  @@soundscache = {} of String => SDL::Mix::Sample
+  @@music : Pointer(LibMix::Mix_Music)?
 
-  def self.play(filename : String, audio_loop : Bool = false)
-    if !@@soundscache.has_key?(filename)
-      @@soundscache[filename] = SDL::Mix::Sample.new(filename)
-    end
-    SDL::Mix::Channel.play(@@soundscache[filename], (audio_loop) ? -1 : 0)
+  def self.play_music(filename : String, audio_loop : Bool = false)
+    @@music = LibMix.load_mus(filename)
+    LibMix.play_music(@@music, (audio_loop) ? -1 : 0)
+  end
+
+  def self.play_sound(filename : String, audio_loop : Bool = false)
+    @@music = LibMix.load_mus(filename)
+    LibMix.play_music(@@music, -1)
+  end
+
+  def self.fade_out_music(seconds : Float32)
+    LibMix.fade_out_music(1000 * seconds)
   end
 end

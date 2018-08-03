@@ -33,7 +33,7 @@ Each of the given features *could* be contained in a class which correlates to t
 **Audio**
 - [x] Oneshots
 - [x] Looping background music
-- [ ] Audio fade in/out over time
+- [x] Audio fade in/out over time
 
 **Maps/Rooms**
 - [ ] Background renderer
@@ -51,4 +51,5 @@ Fork, and work your magic!
 
 ## Contributors
 
-- [tfcat](https://github.com/tfcat) - creator, maintainer
+- [tfcat](https://github.com/tfcat) - creator, maintainer, designer
+- [rx14](https://github.com/rx14) - mentor, sensei, tech and emotional support
