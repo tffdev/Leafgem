@@ -40,21 +40,17 @@ class Leafgem::Map
   def self.draw
     i = 0
     @@tiles.each do |tile|
-      tile -= 1
-      if (tile != -1)
+      if (tile != 0)
+        tile -= 1
         if (sheet = @@tilesheet)
-          Leafgem::Game.renderer.copy(
+          Leafgem::Renderer.draw(
             sheet,
-            SDL::Rect.new(
-              (tile % @@tileset_width)*@@tilesize_x,
-              ((tile / @@tileset_height).to_i)*@@tilesize_y,
-              @@tilesize_x, @@tilesize_y),
-            SDL::Rect.new(
-              (i % @@mapsize_x)*@@tilesize_x - Leafgem::Game.camera_x,
-              ((i/@@mapsize_y).to_i)*@@tilesize_y - Leafgem::Game.camera_y,
-              @@tilesize_x,
-              @@tilesize_y
-            ),
+            (tile % @@tileset_width) * @@tilesize_x,
+            ((tile / @@tileset_height).to_i) * @@tilesize_y,
+            (i % @@mapsize_x) * @@tilesize_x,
+            ((i / @@mapsize_y).floor) * @@tilesize_y,
+            @@tilesize_x,
+            @@tilesize_y
           )
         end
       end

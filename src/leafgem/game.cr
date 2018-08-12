@@ -2,6 +2,16 @@
 # [ ] set default background colours
 # [ ] multiple object layers, objects have draw depth + priority
 
+DEBUG_ALPHA =
+  " ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ" \
+  "ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ" \
+  " !+#$%&'()*+,-./" \
+  "0123456789:;<=>?" \
+  "@ABCDEFGHIJKLMNO" \
+  "PQRSTUVWXYZ[\\]^_" \
+  "`abcdefghijklmno" \
+  "pqrstuvwxyz{|}~ "
+
 # there's no "get ticks" binding in the SDL library lmao
 lib LibSDL
   fun ticks = SDL_GetTicks : Int32
@@ -10,31 +20,12 @@ end
 class Leafgem::Game
   @@loop = [] of Object
   @@loopfunc : Proc(Nil)?
-  @@fps = 60
-  @@renderer : SDL::Renderer?
-  @@window : SDL::Window?
 
-  @@camera_x = 0
-  @@camera_y = 0
+  @@font : SDL::Texture?
 
-  def self.create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
-    SDL.init(SDL::Init::VIDEO | SDL::Init::AUDIO); at_exit { SDL.quit }
-    SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
-    SDL::Mix.open; at_exit { SDL::Mix.quit }
-
-    # Create window
-    @@window = SDL::Window.new(window_title, window_width, window_height)
-
-    # Create renderer
-    flags = SDL::Renderer::Flags::ACCELERATED
-    if (window = @@window)
-      @@renderer = SDL::Renderer.new(window, flags)
-    end
-    # Set renderer pixel scale
-    if a = @@renderer
-      a.scale = {pixel_scale, pixel_scale}
-    end
-  end
+  @@should_show_debugger = true
+  @@should_sort_debugger = false
+  @@debug_string_buffer = [] of String
 
   # ======================== #
   #        MAIN LOOP         #
@@ -42,8 +33,10 @@ class Leafgem::Game
 
   def self.run
     starttime = 0
+    @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
     loop do
-      if (starttime + 1000/@@fps <= LibSDL.ticks)
+      if (starttime + 1000/Leafgem::Renderer.fps <= LibSDL.ticks)
+        debug("FPS: #{1000/(LibSDL.ticks - starttime)}")
         starttime = LibSDL.ticks
         while (event = SDL::Event.poll)
           case event
@@ -66,8 +59,9 @@ class Leafgem::Game
         end
 
         # set background to black
-        Leafgem::Game.renderer.draw_color = SDL::Color[0, 0, 0, 255]
-        Leafgem::Game.renderer.clear
+        Leafgem::Renderer.update_camera
+        Leafgem::Renderer.renderer.draw_color = SDL::Color[0, 0, 0, 255]
+        Leafgem::Renderer.renderer.clear
 
         # Draw map
         Leafgem::Map.draw
@@ -77,12 +71,16 @@ class Leafgem::Game
           thing.draw
         end
 
+        if (@@should_show_debugger)
+          Leafgem::Game.draw_debug
+        end
+
         # finalise
-        Leafgem::Game.renderer.present
+        Leafgem::Renderer.renderer.present
+
         # reset pressed keys
         Leafgem::KeyManager.clear_pressed
 
-        # wait until we wanna show the next frame
         GC.collect
       end
     end
@@ -92,32 +90,37 @@ class Leafgem::Game
     @@loopfunc = function
   end
 
-  def self.renderer
-    if a = @@renderer
-      a
-    else
-      puts "Have not initialized renderer!"
-      exit
-    end
-  end
-
   def self.loop
     @@loop
   end
 
-  def self.set_camera_x(x : Int32)
-    @@camera_x = x
+  def self.debug(string_to_show)
+    @@debug_string_buffer << string_to_show
   end
 
-  def self.set_camera_y(y : Int32)
-    @@camera_y = y
-  end
+  def self.draw_debug
+    # sort debug buffer in alphabetical order
+    if @@should_sort_debugger
+      @@debug_string_buffer = @@debug_string_buffer.sort { |a, b| a <=> b }
+    end
 
-  def self.camera_x
-    @@camera_x
-  end
-
-  def self.camera_y
-    @@camera_y
+    old_scale = Leafgem::Renderer.renderer.scale
+    Leafgem::Renderer.renderer.scale = {1, 1}
+    # Draw debugging
+    line = 0
+    @@debug_string_buffer.each do |string|
+      if font = @@font
+        string.size.times do |i|
+          if (a = DEBUG_ALPHA.index(string[i]))
+            Leafgem::Renderer.draw(
+              font, (a % 16)*12, (a/16)*13,
+              3 + i*6, 3 + line*14, 6, 13, true)
+          end
+        end
+      end
+      line += 1
+    end
+    Leafgem::Renderer.renderer.scale = old_scale
+    @@debug_string_buffer = [] of String
   end
 end

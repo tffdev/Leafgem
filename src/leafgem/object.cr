@@ -29,10 +29,10 @@ class Leafgem::Object
       if (@sprite_index > @anim_end_frame - @anim_start_frame + 1)
         @sprite_index = 0
       end
-      Leafgem::Game.renderer.copy(
+      Leafgem::Renderer.renderer.copy(
         spr.sprite,
         spr.quads[@anim_start_frame + @sprite_index.to_i],
-        SDL::Rect.new(@x.to_i - Leafgem::Game.camera_x, @y.to_i - Leafgem::Game.camera_y, spr.quads[0].w, spr.quads[0].h)
+        SDL::Rect.new((@x - camera_x).to_i, (@y - camera_y).to_i, spr.quads[0].w, spr.quads[0].h)
       )
     end
   end

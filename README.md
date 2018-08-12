@@ -26,6 +26,8 @@ Each of the given features *could* be contained in a class which correlates to t
 - [x] Instance-based system. (Unique, contained object instances, derived from a template [class])
 - [ ] Destroying objects
 - [ ] Object selection (e.g. setting attributes of foreign objects )
+- [ ] Box collision detection
+- [ ] Per-pixel collision detection?
 
 **Sprites**
 - [x] Sprite animations + Breaking sprites up into sub-images

@@ -43,25 +43,21 @@ def set_loop_function(function : Proc(Void))
   Leafgem::Game.set_loopfunc(function)
 end
 
-def draw_sprite(filename : String, x : Float32, y : Float32, alpha : Float32 = 1)
+def draw_sprite(filename : String, x, y, alpha : Float32 = 1)
   # literally just drawing a sprite
   image = Leafgem::AssetManager.image(filename)
   image.alpha_mod = alpha*255
-  Leafgem::Game.renderer.copy(
+  Leafgem::Renderer.draw(
     image,
-    SDL::Rect.new(0, 0, image.width, image.height),
-    SDL::Rect.new(
-      x.to_i - Leafgem::Game.camera_x || 0,
-      y.to_i - Leafgem::Game.camera_y || 0,
-      image.width, image.height)
-  )
+    0, 0,
+    x, y, image.width, image.height)
 end
 
 def set_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32)
   title = window_title || "Leafgem Game"
   width = window_width || 640
   height = window_height || 480
-  Leafgem::Game.create(title, width, height, scale)
+  Leafgem::Renderer.create(title, width, height, scale)
 end
 
 def play_sound(filename : String)
@@ -76,7 +72,26 @@ def fade_out_music(seconds)
   Leafgem::Audio.fade_out_music(seconds.to_f32)
 end
 
-def set_camera_position(x = 0, y = 0)
-  Leafgem::Game.set_camera_x(x)
-  Leafgem::Game.set_camera_y(y)
+def camera_x
+  Leafgem::Renderer.camera_x
+end
+
+def set_camera_x(x)
+  Leafgem::Renderer.set_camera_x(x)
+end
+
+def camera_y
+  Leafgem::Renderer.camera_y
+end
+
+def set_camera_y(y)
+  Leafgem::Renderer.set_camera_y(y)
+end
+
+def lerp(a, b, t)
+  return a + (b - a) * t
+end
+
+def debug(text)
+  Leafgem::Game.debug(text)
 end

@@ -1,5 +1,5 @@
 class Leafgem::AssetManager
-  @@sprites = {} of String => SDL::Texture?
+  @@sprites = {} of String => SDL::Texture
 
   def self.image(filename : String) : SDL::Texture
     # This empty string can be replaced with a special Leafgem
@@ -9,7 +9,7 @@ class Leafgem::AssetManager
     if texture = @@sprites[filename]?
       texture
     else
-      @@sprites[filename] = SDL::IMG.load(filename, Leafgem::Game.renderer)
+      @@sprites[filename] = SDL::IMG.load(filename || "", Leafgem::Renderer.renderer)
     end
   end
 end
@@ -22,9 +22,9 @@ class Leafgem::Spritesheet
   getter quads
 
   # How do you make a "Class variable initializer?"
-  def initialize(texture : String, width : Int32, height : Int32)
-    @sprite = AssetManager.image(texture)
-    @quads = Spritesheet.make_quads(@sprite.width, @sprite.height, width, height)
+  def initialize(texture_filename : String, width : Int32, height : Int32)
+    @sprite = Leafgem::AssetManager.image(texture_filename)
+    @quads = Leafgem::Spritesheet.make_quads(@sprite.width, @sprite.height, width, height)
   end
 
   def self.make_quads(sprite_width : Int32, sprite_height : Int32, width : Int32, height : Int32) : Array(SDL::Rect)
