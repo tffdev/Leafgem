@@ -2,7 +2,6 @@ require "../leafgem"
 
 # Create the window our game will sit in!
 # window_title, window_width, window_height, pixel_scale, smooth_camera
-# having "smooth camera" makes the camera snap to pixel coordinates!
 set_window("Leafgem Demo!", 640, 480, 2, true)
 
 # I cant explain this yet
@@ -13,7 +12,7 @@ Leafgem::Map.loadmap("demo/maps/leafmap")
 # There can only be one music track playing at once.
 # play_music("demo/choon.mp3")
 
-# Define a new "Thing!"
+# Define a new game object! NB: all gameobjects inherit from Leafgem::Object
 class Player < Leafgem::Object
   # We assign our spritesheet to "image_index"
   # We make a new spritesheet by passing three parameters into new spritesheet:
@@ -33,7 +32,11 @@ class Player < Leafgem::Object
     @y -= keyboard_check("up") ? 1 : 0
     @y += keyboard_check("down") ? 1 : 0
 
-    # Camera movement that hella doesnt work
+    # This is how we play samples, or "oneshots"
+    play_sound("demo/yahoo.mp3") if keyboard_check_pressed("a")
+
+    # We want to see where our player is, so we make the camera follow
+    # her around, with a little smoothing using linear interpolation
     set_camera_x(lerp(camera_x, @x - 90, 0.05))
     set_camera_y(lerp(camera_y, @y - 90, 0.05))
 
@@ -41,8 +44,7 @@ class Player < Leafgem::Object
     # having to print to the console 60 times per second.
     # we can use "debug" for this, passing through any text
     # or variable you'd like to monitor in realtime!
-
-    # Even though "debug" boxes are drawn, we can call them anywhere.
+    debug("FPS: #{Leafgem::Game.getfps}")
     debug("__Leafgem Demo v0.0.1!__")
     debug("camera_x #{camera_x}")
   end

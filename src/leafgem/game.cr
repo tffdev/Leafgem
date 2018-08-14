@@ -27,6 +27,8 @@ class Leafgem::Game
   @@should_sort_debugger = false
   @@debug_string_buffer = [] of String
 
+  @@currentfps = 0
+
   # ======================== #
   #        MAIN LOOP         #
   # ======================== #
@@ -36,8 +38,7 @@ class Leafgem::Game
     @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
     loop do
       if (starttime + 1000/Leafgem::Renderer.fps <= LibSDL.ticks)
-        debug("FPS: ~#{1000/(LibSDL.ticks - starttime)}")
-
+        @@currentfps = 1000/(LibSDL.ticks - starttime)
         starttime = LibSDL.ticks
 
         while (event = SDL::Event.poll)
@@ -128,5 +129,9 @@ class Leafgem::Game
     end
     Leafgem::Renderer.renderer.scale = old_scale
     @@debug_string_buffer = [] of String
+  end
+
+  def self.getfps
+    @@currentfps
   end
 end

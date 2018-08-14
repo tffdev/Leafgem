@@ -9,9 +9,8 @@ class Leafgem::KeyManager
       @@keys_pressed.push(event.sym.to_s.downcase)
       @@keys_held.push(event.sym.to_s.downcase)
     end
-    if event.keyup?
-      @@keys_held.delete(event.sym.to_s.downcase)
-    end
+
+    @@keys_held.delete event.sym.to_s.downcase if event.keyup?
   end
 
   def self.clear_pressed

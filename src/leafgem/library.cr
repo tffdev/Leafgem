@@ -58,7 +58,7 @@ def set_window(window_title : String, window_width : Int32, window_height : Int3
 end
 
 def play_sound(filename : String)
-  Leafgem::Audio.play(filename)
+  Leafgem::Audio.play_sound(filename)
 end
 
 def play_music(filename : String)
