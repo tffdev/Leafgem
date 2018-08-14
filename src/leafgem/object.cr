@@ -29,11 +29,25 @@ class Leafgem::Object
       if (@sprite_index > @anim_end_frame - @anim_start_frame + 1)
         @sprite_index = 0
       end
-      Leafgem::Renderer.renderer.copy(
-        spr.sprite,
-        spr.quads[@anim_start_frame + @sprite_index.to_i],
-        SDL::Rect.new((@x - camera_x).to_i, (@y - camera_y).to_i, spr.quads[0].w, spr.quads[0].h)
-      )
+
+      if (window = Leafgem::Renderer.window)
+        # If the object is on screen
+        # if (
+        #      @x < window.width/Leafgem::Renderer.scale + camera_x &&
+        #      @y < window.height/Leafgem::Renderer.scale + camera_y
+        #    )
+
+        Leafgem::Renderer.draw(
+          spr.sprite,
+          spr.quads[@anim_start_frame + @sprite_index.to_i].x,
+          spr.quads[@anim_start_frame + @sprite_index.to_i].y,
+          @x,
+          @y,
+          spr.quads[0].w,
+          spr.quads[0].h
+        )
+        # end
+      end
     end
   end
 

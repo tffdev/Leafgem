@@ -1,24 +1,32 @@
 # key[0] = true for the frame it was pressed
 # key[1] = true until release
 class Leafgem::KeyManager
-  @@keys_pressed = {} of String => Array(Bool)
+  @@keys_pressed = [] of String
+  @@keys_held = [] of String
 
   def self.update(event)
     if event.keydown? && event.repeat.to_i == 0
-      @@keys_pressed[event.sym.to_s.downcase] = [true, true]
+      @@keys_pressed.push(event.sym.to_s.downcase)
+      @@keys_held.push(event.sym.to_s.downcase)
     end
     if event.keyup?
-      @@keys_pressed[event.sym.to_s.downcase][1] = false
+      @@keys_held.delete(event.sym.to_s.downcase)
     end
   end
 
   def self.clear_pressed
-    @@keys_pressed.each do |key, value|
-      value[0] = false
-    end
+    @@keys_pressed = [] of String
   end
 
   def self.keys_pressed
     @@keys_pressed
+  end
+
+  def self.key_is_pressed(keycode)
+    @@keys_pressed.find { |i| i == keycode }
+  end
+
+  def self.key_is_held(keycode)
+    @@keys_held.find { |i| i == keycode }
   end
 end

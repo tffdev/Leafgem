@@ -24,19 +24,11 @@ def sprite(filepath : String)
 end
 
 def keyboard_check_pressed(keycode : String)
-  if Leafgem::KeyManager.keys_pressed.has_key?(keycode.downcase)
-    Leafgem::KeyManager.keys_pressed[keycode.downcase][0]
-  else
-    false
-  end
+  Leafgem::KeyManager.key_is_pressed(keycode.downcase)
 end
 
 def keyboard_check(keycode : String)
-  if Leafgem::KeyManager.keys_pressed.has_key?(keycode.downcase)
-    Leafgem::KeyManager.keys_pressed[keycode.downcase][1]
-  else
-    false
-  end
+  Leafgem::KeyManager.key_is_held(keycode.downcase)
 end
 
 def set_loop_function(function : Proc(Void))
@@ -45,6 +37,10 @@ end
 
 def draw_sprite(filename : String, x, y, alpha : Float32 = 1)
   # literally just drawing a sprite
+  if (x > 320 || y > 240)
+    return 0
+  end
+
   image = Leafgem::AssetManager.image(filename)
   image.alpha_mod = alpha*255
   Leafgem::Renderer.draw(
@@ -53,11 +49,12 @@ def draw_sprite(filename : String, x, y, alpha : Float32 = 1)
     x, y, image.width, image.height)
 end
 
-def set_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32)
+def set_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32 = 1.0, smooth_camera : Bool = false)
   title = window_title || "Leafgem Game"
   width = window_width || 640
   height = window_height || 480
-  Leafgem::Renderer.create(title, width, height, scale)
+  Leafgem::Renderer.set_smooth_camera(true)
+  Leafgem::Renderer.create(title, width, height, scale, smooth_camera)
 end
 
 def play_sound(filename : String)

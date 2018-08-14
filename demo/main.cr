@@ -1,8 +1,9 @@
 require "../leafgem"
 
 # Create the window our game will sit in!
-# window_title, window_width, window_height, pixel_scale
-set_window("Leafgem Demo!", 640, 480, 2)
+# window_title, window_width, window_height, pixel_scale, smooth_camera
+# having "smooth camera" makes the camera snap to pixel coordinates!
+set_window("Leafgem Demo!", 640, 480, 2, true)
 
 # I cant explain this yet
 Leafgem::Map.loadmap("demo/maps/leafmap")

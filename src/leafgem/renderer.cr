@@ -1,14 +1,21 @@
+# TODO
+# [ ] Allow the enabling of "smooth camera" vs "pixel-perfect camera"
+
 class Leafgem::Renderer
   @@fps = 60
   @@renderer : SDL::Renderer?
   @@window : SDL::Window?
+  @@scale = 2
+
+  @@smoothcam = false
+  @@smoothscale = 1
 
   @@camera_x = 0.0
   @@camera_y = 0.0
   @@camera_x_buffer = 0.0
   @@camera_y_buffer = 0.0
 
-  def self.create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
+  def self.create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32, smooth_cam : Bool)
     SDL.init(SDL::Init::VIDEO | SDL::Init::AUDIO); at_exit { SDL.quit }
     SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
     SDL::Mix.open; at_exit { SDL::Mix.quit }
@@ -21,7 +28,9 @@ class Leafgem::Renderer
       @@renderer = SDL::Renderer.new(window, SDL::Renderer::Flags::ACCELERATED)
     end
     # Set renderer pixel scale
-    if renderer = @@renderer
+    if (smooth_cam == true)
+      @@smoothscale = pixel_scale
+    elsif renderer = @@renderer
       renderer.scale = {pixel_scale, pixel_scale}
     end
   end
@@ -31,13 +40,13 @@ class Leafgem::Renderer
       Leafgem::Renderer.renderer.copy(
         texture,
         SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-        SDL::Rect.new(x.to_i, y.to_i, w, h)
+        SDL::Rect.new((x*@@smoothscale).to_i, (y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
       )
     else
       Leafgem::Renderer.renderer.copy(
         texture,
         SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-        SDL::Rect.new(x.to_i - camera_x.to_i, y.to_i - camera_y.to_i, w, h)
+        SDL::Rect.new((x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
       )
     end
   end
@@ -55,7 +64,7 @@ class Leafgem::Renderer
     if a = @@renderer
       a
     else
-      puts "Have not initialized renderer!"
+      puts "Renderer was not initialised but was accessed! Exiting..."
       exit
     end
   end
@@ -76,11 +85,23 @@ class Leafgem::Renderer
     @@camera_y
   end
 
+  def self.window
+    @@window
+  end
+
+  def self.scale
+    @@scale
+  end
+
   def self.fps
     @@fps
   end
 
   def self.set_fps(fps_to_set)
     @@fps = fps_to_set
+  end
+
+  def self.set_smooth_camera(bool)
+    @@smoothcam = bool
   end
 end

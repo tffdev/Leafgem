@@ -36,8 +36,10 @@ class Leafgem::Game
     @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
     loop do
       if (starttime + 1000/Leafgem::Renderer.fps <= LibSDL.ticks)
-        debug("FPS: #{1000/(LibSDL.ticks - starttime)}")
+        debug("FPS: ~#{1000/(LibSDL.ticks - starttime)}")
+
         starttime = LibSDL.ticks
+
         while (event = SDL::Event.poll)
           case event
           when SDL::Event::Quit
@@ -112,9 +114,13 @@ class Leafgem::Game
       if font = @@font
         string.size.times do |i|
           if (a = DEBUG_ALPHA.index(string[i]))
-            Leafgem::Renderer.draw(
-              font, (a % 16)*12, (a/16)*13,
-              3 + i*6, 3 + line*14, 6, 13, true)
+            Leafgem::Renderer.renderer.copy(
+              font,
+              SDL::Rect.new(
+                (a % 16)*12, (a/16)*13, 6, 13),
+              SDL::Rect.new(
+                3 + i*6, 3 + line*14, 6, 13)
+            )
           end
         end
       end
