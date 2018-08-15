@@ -11,8 +11,18 @@ def create_object(thing, x = 0, y = 0)
   new_obj = thing.new
   new_obj.x = x.to_f
   new_obj.y = y.to_f
+  new_obj.update_spritesheet
   new_obj.init
-  Leafgem::Game.loop << new_obj
+
+  puts "#{thing.to_s}"
+  if !Leafgem::Game.loop.has_key?(thing.to_s)
+    Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Object
+  end
+  Leafgem::Game.loop[thing.to_s] << new_obj
+end
+
+def get_objects(object_class)
+  Leafgem::Game.loop[object_class.to_s]
 end
 
 def new_spritesheet(filepath : String, tilewidth : Int32, tileheight : Int32)

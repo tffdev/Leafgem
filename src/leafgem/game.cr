@@ -18,7 +18,7 @@ lib LibSDL
 end
 
 class Leafgem::Game
-  @@loop = [] of Object
+  @@loop = {} of String => Array(Leafgem::Object)
   @@loopfunc : Proc(Nil)?
 
   @@font : SDL::Texture?
@@ -57,8 +57,10 @@ class Leafgem::Game
         end
 
         # update all objects
-        Leafgem::Game.loop.each do |thing|
-          thing.update
+        Leafgem::Game.loop.each do |thingset|
+          thingset[1].each do |thing|
+            thing.update
+          end
         end
 
         # set background to black
@@ -70,8 +72,10 @@ class Leafgem::Game
         Leafgem::Map.draw
 
         # draw all objects
-        Leafgem::Game.loop.each do |thing|
-          thing.draw
+        Leafgem::Game.loop.each do |thingset|
+          thingset[1].each do |thing|
+            thing.draw
+          end
         end
 
         if (@@should_show_debugger)

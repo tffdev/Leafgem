@@ -23,6 +23,13 @@ class Leafgem::Object
     draw_self
   end
 
+  def update_spritesheet
+    if sprsheet = @image_index
+      @w = sprsheet.quads[0].w
+      @h = sprsheet.quads[0].h
+    end
+  end
+
   def draw_self
     if spr = @image_index
       @sprite_index += @image_speed
@@ -65,5 +72,20 @@ class Leafgem::Object
       @anim_start_frame = cols[0]
       @anim_end_frame = cols[cols.size - 1]
     end
+  end
+
+  def place_meeting(x, y, foreign_object)
+    # basic box collision
+    # check each corner of self with every corner of every instance of the foreign object
+    objects_to_check = Leafgem::Game.loop[foreign_object.to_s]
+    objects_to_check.each do |other|
+      if self.x >= other.x && self.x < other.x + other.w && self.y >= other.y && self.y < other.y + other.h ||
+         (self.x + self.w) >= other.x && (self.x + self.w) < other.x + other.w && self.y >= other.y && self.y < other.y + other.h ||
+         (self.x + self.w) >= other.x && (self.x + self.w) < other.x + other.w && (self.y + self.h) >= other.y && (self.y + self.h) < other.y + other.h ||
+         self.x >= other.x && self.x < other.x + other.w && (self.y + self.h) >= other.y && (self.y + self.h) < other.y + other.h
+        return true
+      end
+    end
+    return false
   end
 end
