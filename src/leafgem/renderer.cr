@@ -1,5 +1,7 @@
 # TODO
 # [ ] Allow the enabling of "smooth camera" vs "pixel-perfect camera"
+lib LibSDL
+end
 
 class Leafgem::Renderer
   @@fps = 60
@@ -12,6 +14,7 @@ class Leafgem::Renderer
 
   @@camera_x = 0.0
   @@camera_y = 0.0
+  
   @@camera_x_buffer = 0.0
   @@camera_y_buffer = 0.0
 
@@ -26,6 +29,9 @@ class Leafgem::Renderer
     # Create renderer
     if (window = @@window)
       @@renderer = SDL::Renderer.new(window, SDL::Renderer::Flags::ACCELERATED)
+      if renderer = @@renderer
+        renderer.draw_blend_mode = LibSDL::BlendMode::BLEND
+      end
     end
     # Set renderer pixel scale
     if (smooth_cam == true)
@@ -49,6 +55,11 @@ class Leafgem::Renderer
         SDL::Rect.new((x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
       )
     end
+  end
+
+  def self.fill_rect(x, y, w, h)
+    rect = SDL::Rect.new((x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
+    Leafgem::Renderer.renderer.fill_rect(rect.x, rect.y, rect.w, rect.h)
   end
 
   def self.update_camera

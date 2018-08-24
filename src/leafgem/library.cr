@@ -14,7 +14,6 @@ def create_object(thing, x = 0, y = 0)
   new_obj.update_spritesheet
   new_obj.init
 
-  puts "#{thing.to_s}"
   if !Leafgem::Game.loop.has_key?(thing.to_s)
     Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Object
   end
@@ -31,6 +30,20 @@ end
 
 def sprite(filepath : String)
   Leafgem::AssetManager.image(filepath)
+end
+
+def set_draw_color(r, g, b, a)
+  # assuming color is a hex string
+  out_color = SDL::Color.new(r, g, b, a)
+  Leafgem::Renderer.renderer.draw_color = out_color
+end
+
+def draw_rect(x, y, w, h)
+  Leafgem::Renderer.fill_rect(x, y, w, h)
+end
+
+def debug_show_hitboxes(bool)
+  Leafgem::Game.show_hitboxes(bool)
 end
 
 def keyboard_check_pressed(keycode : String)

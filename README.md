@@ -4,7 +4,7 @@
 
 ## Description
 
-Leafgem is the beginning of a 2D open source game engine written in Crystal.
+Leafgem is the humble beginning of a 2D open source game engine written in Crystal!
 
 ## Try it out with the demo project!
 ```
@@ -14,20 +14,30 @@ shards install
 crystal run -s -p demo/main.cr
 ```
 
+## notes to self
+flare map files
+
 ## Development
 
 What are the main things we need for a Game Engine? Here's what I can think of off the top of my head.
 Each of the given features *could* be contained in a class which correlates to their purpose.
+
+**Documentation**
+- [ ] Library / API reference for users
+- [ ] Simple text tutorial / demo walkthrough?
+- [ ] In-depth class reference for developers?
+- [ ] Video tutorials????
+- [ ] DEMO GAME (learning Leafgem by example)
 
 **Control**
 - [x] Keypressing - *on_press*, *on_release* and *is_pressed*
 
 **Objects**
 - [x] Instance-based system. (Unique, contained object instances, derived from a template [class])
-- [ ] Destroying objects
-- [ ] Object selection (e.g. setting attributes of foreign objects )
-- [ ] Box collision detection
-- [ ] Per-pixel collision detection?
+- [ ] Destroying objects (self, and foreign)
+- [x] Object selection (e.g. setting attributes of foreign objects )
+- [x] Box collision detection
+- [ ] Per-pixel collision detection
 
 **Sprites**
 - [x] Sprite animations + Breaking sprites up into sub-images
@@ -36,11 +46,14 @@ Each of the given features *could* be contained in a class which correlates to t
 - [x] Oneshots
 - [x] Looping background music
 - [x] Audio fade in/out over time
+- [ ] Multiple sound samples playing at once
 
 **Maps/Rooms**
 - [ ] Background renderer
-- [ ] Tileset renderer
-- [ ] "Rooms", loadable, spawn objects in predetermined places
+	- [ ] Parallax scrolling!
+- [x] Tileset renderer
+- [x] "Rooms"
+	- [ ] Spawn objects in predetermined places
 
 ## Contributing 
 
@@ -54,4 +67,4 @@ Fork, and work your magic!
 ## Contributors
 
 - [tfcat](https://github.com/tfcat) - creator, maintainer, designer
-- [rx14](https://github.com/rx14) - mentor, sensei, tech and emotional support
+- [rx14](https://github.com/rx14) - mentor, sensei, tech support, emotional support

@@ -1,13 +1,13 @@
 [header]
 width=10
 height=10
-tilewidth=32
-tileheight=32
+tilewidth=16
+tileheight=16
 orientation=orthogonal
 background_color=0,0,0,255
 
 [tilesets]
-tileset=./demo/images/Tileset.png,32,32,0,0
+tileset=./demo/images/tileset.png,16,16,0,0
 
 [layer]
 type=Tile Layer 1

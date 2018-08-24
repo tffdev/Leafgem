@@ -1,9 +1,11 @@
 class Leafgem::Object
-  @image_index : Spritesheet?
-  @sprite_index = 0.0
-  @image_speed = 0.0
   @anim_start_frame = 0
   @anim_end_frame = 0
+
+  property sprite_index = 0.0
+  property image_index : Spritesheet?
+  property image_speed = 0.0
+  property is_animated = false
 
   property x = 0.0
   property y = 0.0
@@ -59,6 +61,7 @@ class Leafgem::Object
   end
 
   def set_animation(cols, param_row = 0, image_speed = Nil)
+    @is_animated = true
     if imgspd = image_speed
       @image_speed = imgspd
     end
@@ -79,10 +82,10 @@ class Leafgem::Object
     # check each corner of self with every corner of every instance of the foreign object
     objects_to_check = Leafgem::Game.loop[foreign_object.to_s]
     objects_to_check.each do |other|
-      if self.x >= other.x && self.x < other.x + other.w && self.y >= other.y && self.y < other.y + other.h ||
-         (self.x + self.w) >= other.x && (self.x + self.w) < other.x + other.w && self.y >= other.y && self.y < other.y + other.h ||
-         (self.x + self.w) >= other.x && (self.x + self.w) < other.x + other.w && (self.y + self.h) >= other.y && (self.y + self.h) < other.y + other.h ||
-         self.x >= other.x && self.x < other.x + other.w && (self.y + self.h) >= other.y && (self.y + self.h) < other.y + other.h
+      if self.x + x >= other.x && self.x + x < other.x + other.w && self.y + y >= other.y && self.y + y < other.y + other.h ||
+         (self.x + x + self.w) >= other.x && (self.x + x + self.w) < other.x + other.w && self.y + y >= other.y && self.y + y < other.y + other.h ||
+         (self.x + x + self.w) >= other.x && (self.x + x + self.w) < other.x + other.w && (self.y + y + self.h) >= other.y && (self.y + y + self.h) < other.y + other.h ||
+         self.x + x >= other.x && self.x + x < other.x + other.w && (self.y + y + self.h) >= other.y && (self.y + y + self.h) < other.y + other.h
         return true
       end
     end

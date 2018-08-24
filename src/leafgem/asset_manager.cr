@@ -29,8 +29,8 @@ class Leafgem::Spritesheet
 
   def self.make_quads(sprite_width : Int32, sprite_height : Int32, width : Int32, height : Int32) : Array(SDL::Rect)
     outputquads = [] of SDL::Rect
-    (0..(sprite_height / height) - 1).each do |j|
-      (0..(sprite_width / width) - 1).each do |i|
+    (0..(sprite_height / height)).each do |j|
+      (0..(sprite_width / width)).each do |i|
         outputquads << SDL::Rect[i*width, j*height, width, height]
       end
     end

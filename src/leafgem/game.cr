@@ -15,6 +15,7 @@ DEBUG_ALPHA =
 # there's no "get ticks" binding in the SDL library lmao
 lib LibSDL
   fun ticks = SDL_GetTicks : Int32
+  SDL_BLENDMODE_BLEND = "SDL_BLENDMODE_BLEND"
 end
 
 class Leafgem::Game
@@ -22,6 +23,7 @@ class Leafgem::Game
   @@loopfunc : Proc(Nil)?
 
   @@font : SDL::Texture?
+  @@show_hitboxes = false
 
   @@should_show_debugger = true
   @@should_sort_debugger = false
@@ -65,7 +67,7 @@ class Leafgem::Game
 
         # set background to black
         Leafgem::Renderer.update_camera
-        Leafgem::Renderer.renderer.draw_color = SDL::Color[0, 0, 0, 255]
+        Leafgem::Renderer.renderer.draw_color = SDL::Color[255, 255, 255, 255]
         Leafgem::Renderer.renderer.clear
 
         # Draw map
@@ -75,6 +77,10 @@ class Leafgem::Game
         Leafgem::Game.loop.each do |thingset|
           thingset[1].each do |thing|
             thing.draw
+            if @@show_hitboxes && thing.x && thing.y && thing.w && thing.h
+              set_draw_color(255, 0, 0, 100)
+              draw_rect(thing.x.to_i, thing.y.to_i, thing.w.to_i, thing.h.to_i)
+            end
           end
         end
 
@@ -95,6 +101,10 @@ class Leafgem::Game
 
   def self.set_loopfunc(function)
     @@loopfunc = function
+  end
+
+  def self.show_hitboxes(bool)
+    @@show_hitboxes = bool
   end
 
   def self.loop
