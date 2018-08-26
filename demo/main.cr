@@ -1,6 +1,6 @@
 require "../leafgem"
 
-set_window("Leafgem Demo!", 560, 400, 2, false)
+set_window("Leafgem Demo!", 560, 400, 2, true)
 
 Leafgem::Map.loadmap("demo/maps/demomap")
 
@@ -12,9 +12,7 @@ class Player < Leafgem::Object
     @x += keyboard_check("right") ? 1 : 0
     @y -= keyboard_check("up") ? 1 : 0
     @y += keyboard_check("down") ? 1 : 0
-
     set_camera_x(lerp(camera_x, @x - 90, 0.05))
-    # set_camera_y(lerp(camera_y, @y - 90, 0.05))
   end
 
   def draw

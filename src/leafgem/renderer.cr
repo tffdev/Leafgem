@@ -9,12 +9,15 @@ class Leafgem::Renderer
   @@window : SDL::Window?
   @@scale = 2
 
+  @@width = 0.0
+  @@height = 0.0
+
   @@smoothcam = false
   @@smoothscale = 1
 
   @@camera_x = 0.0
   @@camera_y = 0.0
-  
+
   @@camera_x_buffer = 0.0
   @@camera_y_buffer = 0.0
 
@@ -28,6 +31,9 @@ class Leafgem::Renderer
 
     # Create renderer
     if (window = @@window)
+      @@width = (window.width / pixel_scale).to_f
+      @@height = (window.height / pixel_scale).to_f
+
       @@renderer = SDL::Renderer.new(window, SDL::Renderer::Flags::ACCELERATED)
       if renderer = @@renderer
         renderer.draw_blend_mode = LibSDL::BlendMode::BLEND
@@ -71,6 +77,10 @@ class Leafgem::Renderer
     @@renderer
   end
 
+  def self.window
+    @@window
+  end
+
   def self.renderer
     if a = @@renderer
       a
@@ -96,8 +106,12 @@ class Leafgem::Renderer
     @@camera_y
   end
 
-  def self.window
-    @@window
+  def self.width
+    @@width
+  end
+
+  def self.height
+    @@height
   end
 
   def self.scale

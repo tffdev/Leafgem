@@ -42,7 +42,6 @@ class Player < Leafgem::Object
     # We want to see where our player is, so we make the camera follow
     # her around, with a little smoothing using linear interpolation
     set_camera_x(lerp(camera_x, @x - 90, 0.05))
-    set_camera_y(lerp(camera_y, @y - 90, 0.05))
   end
 
   def draw

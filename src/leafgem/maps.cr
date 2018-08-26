@@ -14,6 +14,7 @@ class Leafgem::Map
   @@mapsize_x : Int32 = 1
   @@mapsize_y : Int32 = 1
   @@backgrounds = [] of SDL::Texture
+  @@backgrounds_parallax = [] of Float64
 
   def self.tilesheet=(tilesheet)
     @@tilesheet
@@ -30,9 +31,11 @@ class Leafgem::Map
     map = INI.parse ini
 
     @@backgrounds = [] of SDL::Texture
+    @@backgrounds_parallax = [] of Float64
 
     map["backgrounds"].each do |index, bgname|
-      @@backgrounds << Leafgem::AssetManager.image(bgname)
+      @@backgrounds << Leafgem::AssetManager.image(bgname.split(",")[0])
+      @@backgrounds_parallax << bgname.split(",")[1].to_f
     end
 
     map["layer"]["data"].split(",").each do |tile|
@@ -51,19 +54,24 @@ class Leafgem::Map
   end
 
   def self.draw
-    i = 0
+    bgcount = 0
     @@backgrounds.each do |background|
       # puts "#{background} #{i}"
-      Leafgem::Renderer.draw(
-        background,
-        0,
-        0,
-        0,
-        0,
-        background.width,
-        background.height,
-      )
-      i += 1
+      i = ((camera_x - background.width * @@backgrounds_parallax[bgcount] - Leafgem::Renderer.width) / Leafgem::Renderer.width).to_i
+      bg_x = i * background.width + @@backgrounds_parallax[bgcount] * camera_x
+      while (bg_x - Leafgem::Renderer.width < camera_x)
+        Leafgem::Renderer.draw(
+          background,
+          0, 0,
+          bg_x,
+          0,
+          background.width,
+          background.height,
+        )
+        i += 1
+        bg_x = i * background.width + @@backgrounds_parallax[bgcount] * camera_x
+      end
+      bgcount += 1
     end
 
     i = 0

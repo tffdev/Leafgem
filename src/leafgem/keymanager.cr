@@ -22,10 +22,10 @@ class Leafgem::KeyManager
   end
 
   def self.key_is_pressed(keycode)
-    @@keys_pressed.find { |i| i == keycode }
+    (@@keys_pressed.find { |i| i == keycode }) ? true : false
   end
 
   def self.key_is_held(keycode)
-    @@keys_held.find { |i| i == keycode }
+    (@@keys_held.find { |i| i == keycode }) ? true : false
   end
 end
