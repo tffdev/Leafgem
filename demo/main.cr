@@ -1,18 +1,22 @@
 require "../leafgem"
-
-set_window("Leafgem Demo!", 560, 400, 2, true)
-
-Leafgem::Map.loadmap("demo/maps/demomap")
+require "./scene_manager"
 
 class Player < Leafgem::Object
-  @image_index = new_spritesheet("demo/images/cat.png", 32, 32)
+  def init
+    set_spritesheet("demo/images/cat.png", 32, 32)
+  end
 
   def update
     @x -= keyboard_check("left") ? 1 : 0
     @x += keyboard_check("right") ? 1 : 0
     @y -= keyboard_check("up") ? 1 : 0
     @y += keyboard_check("down") ? 1 : 0
-    set_camera_x(lerp(camera_x, @x - 90, 0.05))
+    set_camera_x(lerp(camera_x, Math.max(@x - 90, 0), 0.05))
+
+    while (meeting_tile(0, 0, 3))
+      @y -= 0.2
+    end
+    @y += 1
   end
 
   def draw
@@ -20,16 +24,9 @@ class Player < Leafgem::Object
   end
 end
 
-def loop : Void
-  debug "FPS: #{Leafgem::Game.getfps}"
-  debug "__Leafgem Demo v0.0.1!__"
-  debug "camera_x #{camera_x}"
-  debug "player x #{get_objects(Player)[0].x}"
-  debug "player y #{get_objects(Player)[0].y}"
-end
-
-set_loop_function(->loop)
-
-create_object(Player, 100, 100)
+set_window("Leafgem Demo!", 560, 400, 2, true)
+Leafgem::Map.loadmap("demo/map")
+create_object(Scene_manager, 0, 0)
+create_object(Player, 50, 100)
 
 Leafgem::Game.run

@@ -11,9 +11,9 @@ tileset=demo/images/tileset.png,16,16,0,0
 
 [backgrounds]
 0=demo/images/bg4.png,1
-1=demo/images/bg3.PNG,0.3
-2=demo/images/bg2.PNG,0.2
-3=demo/images/bg1.PNG,0
+1=demo/images/bg3.png,0.3
+2=demo/images/bg2.png,0.2
+3=demo/images/bg1.png,0
 
 [layer]
 type=Tile Layer 1

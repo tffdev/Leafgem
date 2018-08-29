@@ -16,14 +16,6 @@ class Leafgem::Map
   @@backgrounds = [] of SDL::Texture
   @@backgrounds_parallax = [] of Float64
 
-  def self.tilesheet=(tilesheet)
-    @@tilesheet
-  end
-
-  def self.tiles=(tiles)
-    @@tiles
-  end
-
   def self.loadmap(filename)
     ini = File.read(filename)
     ini = ini.gsub("=\n") { "=" }
@@ -41,7 +33,6 @@ class Leafgem::Map
     map["layer"]["data"].split(",").each do |tile|
       @@tiles << tile.to_i
     end
-    puts "loading map"
     @@tilesheet = Leafgem::AssetManager.image(map["tilesets"]["tileset"].split(",")[0])
     @@tilesize_x = map["tilesets"]["tileset"].split(",")[1].to_i
     @@tilesize_y = map["tilesets"]["tileset"].split(",")[2].to_i
@@ -51,6 +42,15 @@ class Leafgem::Map
       @@tileset_width = tilesheet.width / @@tilesize_x
       @@tileset_height = tilesheet.height / @@tilesize_y
     end
+  end
+
+  def self.tiles
+    @@tiles
+  end
+
+  def self.get_tile_at(x, y)
+    tileplace = (x/@@tilesize_x).to_i + @@mapsize_x*(y/@@tilesize_y).to_i
+    return @@tiles[tileplace]
   end
 
   def self.draw

@@ -85,8 +85,7 @@ class Leafgem::Renderer
     if a = @@renderer
       a
     else
-      puts "Renderer was not initialised but was accessed! Exiting..."
-      exit
+      Leafgem::Game.error("no_renderer")
     end
   end
 

@@ -148,4 +148,10 @@ class Leafgem::Game
   def self.getfps
     @@currentfps
   end
+
+  def self.error(idstring)
+    puts "## GAME ERROR ##"
+    puts Leafgem_errors[idstring]
+    exit
+  end
 end
