@@ -109,7 +109,7 @@ class Leafgem::Object
     end
   end
 
-  def meeting_tile(xoffset, yoffset, tile, accuracy = 2)
+  def meeting_tile?(xoffset, yoffset, tile, accuracy = 2)
     # insert corners
     points_to_check = [
       [self.x + xoffset, self.y + yoffset],
