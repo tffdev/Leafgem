@@ -14,7 +14,7 @@ class Scene_manager < Leafgem::Object
     else
       @titlefade = Math.min(@titlefade + 0.01, 1).to_f
     end
-    if (get(Player)[0].x > 100)
+    if (get(Player).size > 0 && get(Player)[0].x > 100)
       @titleswitch = true
     end
   end

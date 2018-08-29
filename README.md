@@ -34,7 +34,7 @@ Each of the given features *could* be contained in a class which correlates to t
 
 **Objects**
 - [x] Instance-based system. (Unique, contained object instances, derived from a template [class])
-- [ ] Destroying objects (self, and foreign)
+- [x] Destroying objects (self, and foreign)
 - [x] Object selection (e.g. setting attributes of foreign objects )
 - [x] Box collision detection
 - [ ] Per-pixel collision detection
@@ -49,8 +49,8 @@ Each of the given features *could* be contained in a class which correlates to t
 - [ ] Multiple sound samples playing at once
 
 **Maps/Rooms**
-- [ ] Background renderer
-	- [ ] Parallax scrolling!
+- [x] Background renderer
+	- [x] Parallax scrolling!
 - [x] Tileset renderer
 - [x] "Rooms"
 	- [ ] Spawn objects in predetermined places

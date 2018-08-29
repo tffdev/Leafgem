@@ -30,6 +30,7 @@ class Leafgem::Game
   @@debug_string_buffer = [] of String
 
   @@currentfps = 0
+  @@to_destroy = [] of Leafgem::Object
 
   # ======================== #
   #        MAIN LOOP         #
@@ -94,6 +95,8 @@ class Leafgem::Game
         # reset pressed keys
         Leafgem::KeyManager.clear_pressed
 
+        Leafgem::Game.destroy_all_in_buffer
+
         GC.collect
       end
     end
@@ -143,6 +146,20 @@ class Leafgem::Game
     end
     Leafgem::Renderer.renderer.scale = old_scale
     @@debug_string_buffer = [] of String
+  end
+
+  def self.to_destroy
+    @@to_destroy
+  end
+
+  def self.destroy_all_in_buffer
+    @@to_destroy.each do |thing|
+      Leafgem::Game.loop[thing.class.to_s].delete(thing)
+      if (Leafgem::Game.loop[thing.class.to_s].size == 0)
+        puts "empty"
+      end
+    end
+    @@to_destroy = [] of Leafgem::Object
   end
 
   def self.getfps

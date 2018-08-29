@@ -17,7 +17,11 @@ def create_object(thing, x = 0, y = 0)
   if !Leafgem::Game.loop.has_key?(thing.to_s)
     Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Object
   end
-  Leafgem::Game.loop[thing.to_s] << new_obj
+  pp Leafgem::Game.loop[thing.to_s].push(new_obj)
+end
+
+def destroy(thing)
+  Leafgem::Game.to_destroy.push(thing)
 end
 
 def get(object_class)
