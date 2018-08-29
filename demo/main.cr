@@ -13,13 +13,10 @@ class Player < Leafgem::Object
     @y += keyboard_check("down") ? 1 : 0
     set_camera_x(lerp(camera_x, Math.max(@x - 90, 0), 0.05))
 
-    if (x > 100)
-      destroy(self)
-    end
-
-    while (meeting_tile(0, 0, 3))
+    while (meeting_tile?(0, 0, 3))
       @y -= 0.2
     end
+
     @y += 1
   end
 
