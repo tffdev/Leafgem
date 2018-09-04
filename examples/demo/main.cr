@@ -1,4 +1,4 @@
-require "../leafgem"
+require "../../leafgem"
 require "./scene_manager"
 
 class Player < Leafgem::Object
