@@ -9,3 +9,4 @@ require "sdl/mix"
 #      LEAFGEM MODULE      #
 # ======================== #
 require "./leafgem/**"
+include Leafgem::Library
