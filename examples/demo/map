@@ -7,13 +7,13 @@ orientation=orthogonal
 background_color=0,0,0,255
 
 [tilesets]
-tileset=demo/images/tileset.png,16,16,0,0
+tileset=examples/demo/images/tileset.png,16,16,0,0
 
 [backgrounds]
-0=demo/images/bg4.png,1
-1=demo/images/bg3.png,0.3
-2=demo/images/bg2.png,0.2
-3=demo/images/bg1.png,0
+0=examples/demo/images/bg4.png,1
+1=examples/demo/images/bg3.png,0.3
+2=examples/demo/images/bg2.png,0.2
+3=examples/demo/images/bg1.png,0
 
 [layer]
 type=Tile Layer 1

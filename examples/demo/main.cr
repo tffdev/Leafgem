@@ -1,9 +1,9 @@
-require "../../leafgem"
+require "../../src/leafgem"
 require "./scene_manager"
 
 class Player < Leafgem::Object
   def init
-    set_spritesheet("demo/images/cat.png", 32, 32)
+    set_spritesheet("examples/demo/images/cat.png", 32, 32)
   end
 
   def update
@@ -26,7 +26,7 @@ class Player < Leafgem::Object
 end
 
 set_window("Leafgem Demo!", 560, 400, 2, true)
-Leafgem::Map.loadmap("demo/map")
+Leafgem::Map.loadmap("examples/demo/map")
 create_object(Scene_manager, 0, 0)
 create_object(Player, 50, 100)
 
