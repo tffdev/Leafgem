@@ -93,9 +93,5 @@ class Leafgem::Map
       end
       i += 1
     end
-    Leafgem::Renderer.draw(
-      @@backgrounds[2],
-      200, 200, 0, 0, 200, 200, true
-    )
   end
 end
