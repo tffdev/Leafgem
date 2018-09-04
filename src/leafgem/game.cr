@@ -52,6 +52,8 @@ class Leafgem::Game
             exit
           when SDL::Event::Keyboard
             Leafgem::KeyManager.update(event)
+          when SDL::Event::MouseButton
+            Leafgem::MouseManager.update(event)
           end
         end
 
