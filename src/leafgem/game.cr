@@ -54,6 +54,8 @@ class Leafgem::Game
             Leafgem::KeyManager.update(event)
           when SDL::Event::MouseButton
             Leafgem::Mouse::ButtonManager.update(event)
+          when SDL::Event::MouseWheel
+            Leafgem::Mouse::WheelManager.update(event)
           end
         end
 
