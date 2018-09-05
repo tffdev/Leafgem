@@ -21,7 +21,7 @@ class Draggable < Leafgem::Object
     if primary = Mouse.primary
       x = Mouse.position.not_nil!.x.to_f
       y = Mouse.position.not_nil!.y.to_f
-      if point_in? x, y
+      if point_in?(x, y) && @dragging
         Mouse.cursor = "pointer"
       end
 
