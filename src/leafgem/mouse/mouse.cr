@@ -3,19 +3,22 @@ module Leafgem::Mouse::Mouse
   @@position = nil
   @@scrolling = false
 
+  # Buttons clicked
   def buttons
     @@buttons
   end
 
+  # The position of the mouse on screen
   def position
     @@position
   end
 
-  def scrolling?
-    @@scrolling
-  end
+  # TODO: Finish scroll events
+  # def scrolling?
+  #   @@scrolling
+  # end
 
-  # When the mouse clicks
+  # Update the mouse
   def update(event : SDL::Event::MouseButton)
     if event.type.to_s.downcase.ends_with? "down"
       first_pressed = !@@buttons[event.button]?
@@ -33,14 +36,7 @@ module Leafgem::Mouse::Mouse
     end
   end
 
-  # Note
-  # WAIT, WAITARROW
-  # Seems to be semi-broken
-
-  # Note
-  # When the cursor is a custom one
-  # The mouse input delay seems to be increased
-
+  # Enable or Disable the cursor
   def cursor=(bool : Bool)
     if bool
       LibSDL.show_cursor(1)
@@ -49,10 +45,13 @@ module Leafgem::Mouse::Mouse
     end
   end
 
+  # Resets the cursor
   def cursor=(name : Nil)
     self.cursor = LibSDL.create_system_cursor(LibSDL::SystemCursor::ARROW)
   end
 
+  # BUG: `LibSDL::SystemCursor::WAIT` and `LibSDL::SystemCursor::WAITARROW` seems to be semi-broken
+  # NOTE: When the cursor is a custom one the mouse input delay seems to be increased
   def cursor=(name : String)
     case name
     when "reset"
@@ -78,34 +77,36 @@ module Leafgem::Mouse::Mouse
     self.cursor = LibSDL.create_system_cursor(cursor_name)
   end
 
+  # Set the cursor with a pointer
   def cursor=(cursor : Pointer(LibSDL::Cursor))
     LibSDL.set_cursor(cursor)
   end
 
-  # When the mouse moves
+  # Update the mouse
   def update(event : SDL::Event::MouseMotion)
     @@position = Vec2.new event.x, event.y
   end
 
+  # TODO: Finish this
   def update(event : SDL::Event::MouseWheel); end
 
+  # Gets the primary button event if it exists
   def primary
     @@buttons[1_u8]?
   end
 
+  # Gets the secondary button click event if it exists
   def secondary
     @@buttons[3_u8]?
   end
 
+  # Gets the middle button click event if it exists
   def middle
     @@buttons[2_u8]?
   end
 
+  # Gets the button click event by the id if it exists
   def button(id : UInt8)
     @@buttons[id]?
-  end
-
-  def scrolling?
-    @@scrolling
   end
 end
