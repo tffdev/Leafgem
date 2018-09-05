@@ -123,65 +123,46 @@ module Leafgem::Renderer
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
-    if (lgr = Leafgem::Renderer.renderer)
-      lgr.scale = {@@scale, @@scale} if (@@smoothcam)
-      rad = 0
-      prevy = nil
-      prevx = nil
-      points = [] of Array(Int32)
-      while rad < Math::PI
-        x1 = (Math.sin(rad)*r - 0.5 - 1).to_i
-        y1 = ((Math.cos(rad)*r - 0.5)).to_i
-        x2 = (Math.sin(-rad)*r - 0.5).to_i
-
-        if (x1 != prevx || y1 != prevy)
-          if (y1 == prevy)
-            part = points.find { |x| x[1] == y1 }
-            if p = part
-              p[0] = x1 if x1 > p[0]
-              p[2] = x2 if x2 > p[2]
-            end
-          else
-            points.push([x1, y1, x2])
-          end
-          prevy = y1
-          prevx = x1
+    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    rad = 0
+    prevy = nil
+    prevx = nil
+    while rad < Math.PI
+      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
+      y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i + @@draw_offset_y
+      if (y1 != prevy || x1 != prevx)
+        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
+        prevy = y1
+        prevx = x1
+        if (lgr = Leafgem::Renderer.renderer)
+          lgr.fill_rect(x1, y1, x2 - x1 - 1, 1)
         end
-        rad += (1.0 / r)
       end
-
-      points.each do |point|
-        lgr.fill_rect(
-          (x + point[0] - camera_x + @@draw_offset_x).to_i,
-          (y + point[1] - camera_y + @@draw_offset_y).to_i,
-          (point[2] + @@draw_offset_x - point[0]).to_i,
-          1)
-      end
-      lgr.scale = {1, 1} if (@@smoothcam)
+      rad += (1.0 / r)
     end
+    renderer.scale = {1, 1} if (@@smoothcam)
   end
 
   def draw_circ(x, y, r)
-    if (lgr = Leafgem::Renderer.renderer)
-      lgr.scale = {@@scale, @@scale} if (@@smoothcam)
-      rad = 0
-      prevx = nil
-      prevy = nil
-      while rad < Math::PI
-        x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
-        y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i + @@draw_offset_y
-        if (prevx != x1 || prevy != y1)
-          x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
-          prevy = y1
-          prevx = x1
-
+    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    rad = 0
+    prevx = nil
+    prevy = nil
+    while rad < Math.PI
+      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
+      y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i + @@draw_offset_y
+      if (prevx != x1 || prevy != y1)
+        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
+        prevy = y1
+        prevx = x1
+        if (lgr = Leafgem::Renderer.renderer)
           lgr.draw_point(x1, y1)
           lgr.draw_point(x2, y1)
         end
-        rad += (1.0 / r)
       end
-      lgr.scale = {1, 1} if (@@smoothcam)
+      rad += (1.0 / r)
     end
+    renderer.scale = {1, 1} if (@@smoothcam)
   end
 
   def update_camera
