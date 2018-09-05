@@ -27,7 +27,7 @@ class Leafgem::Map
 
     map["backgrounds"].each do |index, bgname|
       @@backgrounds << Leafgem::AssetManager.image(bgname.split(",")[0])
-      @@backgrounds_parallax << bgname.split(",")[1].to_f
+      @@backgrounds_parallax.push (bgname.split(",").size > 1) ? bgname.split(",")[1].to_f : 1.0
     end
 
     map["layer"]["data"].split(",").each do |tile|
@@ -49,7 +49,7 @@ class Leafgem::Map
   end
 
   def self.get_tile_at(x, y)
-    tileplace = (x/@@tilesize_x).to_i + @@mapsize_x*(y/@@tilesize_y).to_i
+    tileplace = (x/@@tilesize_x).to_i + @@mapsize_x * (y/@@tilesize_y).to_i
     if (@@tiles[tileplace]?)
       return @@tiles[tileplace]
     else
@@ -58,32 +58,30 @@ class Leafgem::Map
   end
 
   def self.draw
-    bgcount = 0
-    @@backgrounds.each do |background|
-      # puts "#{background} #{i}"
-      i = ((camera_x - background.width * @@backgrounds_parallax[bgcount] - Leafgem::Renderer.width) / Leafgem::Renderer.width).to_i
-      bg_x = i * background.width + @@backgrounds_parallax[bgcount] * camera_x
+    # draw backgrounds
+    bg_count = 0
+    @@backgrounds.each_with_index do |background, bg_index|
+      i = (((camera_x*(1 - @@backgrounds_parallax[bg_index])) / background.width)).to_i
+      bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
+
       while (bg_x - Leafgem::Renderer.width < camera_x)
         Leafgem::Renderer.draw(
           background,
           0, 0,
-          bg_x,
-          0,
+          bg_x, 0,
           background.width,
           background.height,
         )
         i += 1
-        bg_x = i * background.width + @@backgrounds_parallax[bgcount] * camera_x
+        bg_count += 1
+        bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
       end
-      bgcount += 1
     end
 
-    i = 0
-    @@tiles.each do |tile|
+    @@tiles.each_with_index do |tile, i|
       if (tile != 0)
         tile -= 1
         if (sheet = @@tilesheet)
-          # zoinks!
           Leafgem::Renderer.draw(
             sheet,
             (tile % @@tileset_width) * @@tilesize_x,
@@ -95,11 +93,6 @@ class Leafgem::Map
           )
         end
       end
-      i += 1
     end
-    Leafgem::Renderer.draw(
-      @@backgrounds[2],
-      200, 200, 0, 0, 200, 200, true
-    )
   end
 end

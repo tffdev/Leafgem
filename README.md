@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://tfcat.me/files/leafgemlogo.png">
+	<img src="https://i.imgur.com/Y3glMNk.png">
 </p>
 
 ## Description
@@ -37,11 +37,12 @@ Each of the given features *could* be contained in a class which correlates to t
 - [x] Destroying objects (self, and foreign)
 - [x] Object selection (e.g. setting attributes of foreign objects )
 - [x] Box collision detection
+    - [ ] Hit box definition, independent of sprite
 - [ ] Per-pixel collision detection
 
 **Sprites**
 - [x] Sprite animations + Breaking sprites up into sub-images
-- [ ] Text rendering (TTF)
+- [ ] Text rendering (TTF?)
 
 **Audio**
 - [x] Oneshots
@@ -52,11 +53,15 @@ Each of the given features *could* be contained in a class which correlates to t
 **Maps/Rooms**
 - [x] Background renderer
 	- [x] Parallax scrolling!
+- [ ] Foreground renderer
 - [x] Tileset renderer
     - [ ] Tile layers
 - [x] "Rooms"
 	- [ ] Spawn objects in predetermined places
 - [ ] Easier workflow regarding room creation... should I make an IDE?
+
+## Known bugs
+- Going above the tilemap results in an invisible duplication of the map, according to the logic in `get_tile_at` within `maps.cr`. This results in unexpected `true` returns with some object functions; `meeting_tile` and `meeting_tile_layer`
 
 ## Contributing 
 

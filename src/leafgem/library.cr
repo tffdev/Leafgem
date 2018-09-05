@@ -42,8 +42,18 @@ def set_draw_color(r, g, b, a)
   Leafgem::Renderer.renderer.draw_color = out_color
 end
 
-def draw_rect(x, y, w, h)
+def fill_rect(x, y, w, h)
   Leafgem::Renderer.fill_rect(x, y, w, h)
+end
+
+def fill_circ(x, y, r)
+  raise Exception.new(Leafgem_errors["circ_invalid_radius"]) if (r < 0)
+  Leafgem::Renderer.fill_circ(x, y, r)
+end
+
+def draw_circ(x, y, r)
+  raise Exception.new(Leafgem_errors["circ_invalid_radius"]) if (r < 0)
+  Leafgem::Renderer.draw_circ(x, y, r)
 end
 
 def debug_show_hitboxes(bool)

@@ -1,8 +1,3 @@
-# TODO
-# [ ] Allow the enabling of "smooth camera" vs "pixel-perfect camera"
-lib LibSDL
-end
-
 class Leafgem::Renderer
   @@fps = 60
   @@renderer : SDL::Renderer?
@@ -64,6 +59,46 @@ class Leafgem::Renderer
     Leafgem::Renderer.renderer.fill_rect(rect.x, rect.y, rect.w, rect.h)
   end
 
+  # aaa, yummy slow circle drawing algorithms. pleasehelp
+  def self.fill_circ(x, y, r)
+    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    rad = 0
+    prevy = nil
+    prevx = nil
+    while rad < 3.14159265358979323846
+      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i
+      y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i
+      if (y1 != prevy || x1 != prevx)
+        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i
+        prevy = y1
+        prevx = x1
+        Leafgem::Renderer.renderer.fill_rect(x1, y1, x2 - x1 - 1, 1)
+      end
+      rad += (1.0 / r)
+    end
+    renderer.scale = {1, 1} if (@@smoothcam)
+  end
+
+  def self.draw_circ(x, y, r)
+    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    rad = 0
+    prevx = nil
+    prevy = nil
+    while rad < 3.14159265358979323846
+      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i
+      y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i
+      if (prevx != x1 || prevy != y1)
+        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i
+        prevy = y1
+        prevx = x1
+        Leafgem::Renderer.renderer.draw_point(x1, y1)
+        Leafgem::Renderer.renderer.draw_point(x2, y1)
+      end
+      rad += (1.0 / r)
+    end
+    renderer.scale = {1, 1} if (@@smoothcam)
+  end
+
   def self.update_camera
     @@camera_x = @@camera_x_buffer
     @@camera_y = @@camera_y_buffer
@@ -86,11 +121,11 @@ class Leafgem::Renderer
   end
 
   def self.set_camera_x(x)
-    @@camera_x_buffer = x
+    @@camera_x_buffer = x.to_f
   end
 
   def self.set_camera_y(y)
-    @@camera_y_buffer = y
+    @@camera_y_buffer = y.to_f
   end
 
   def self.camera_x

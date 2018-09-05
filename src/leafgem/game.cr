@@ -55,19 +55,20 @@ class Leafgem::Game
           end
         end
 
+        Leafgem::Renderer.update_camera
+
         if func = @@loopfunc
           func.call
         end
 
         # update all objects
-        Leafgem::Game.loop.each do |thingset|
-          thingset[1].each do |thing|
-            thing.update
+        Leafgem::Game.loop.each do |set_of_objects|
+          set_of_objects[1].each do |object|
+            object.update
           end
         end
 
         # set background to black
-        Leafgem::Renderer.update_camera
         Leafgem::Renderer.renderer.draw_color = SDL::Color[255, 255, 255, 255]
         Leafgem::Renderer.renderer.clear
 
@@ -75,12 +76,14 @@ class Leafgem::Game
         Leafgem::Map.draw
 
         # draw all objects
-        Leafgem::Game.loop.each do |thingset|
-          thingset[1].each do |thing|
-            thing.draw
-            if @@show_hitboxes && thing.x && thing.y && thing.w && thing.h
-              set_draw_color(255, 0, 0, 100)
-              draw_rect(thing.x.to_i, thing.y.to_i, thing.w.to_i, thing.h.to_i)
+        Leafgem::Game.loop.each do |set_of_objects|
+          set_of_objects[1].each do |object|
+            object.draw
+            if @@show_hitboxes
+              if hb = object.hitbox
+                set_draw_color(255, 0, 0, 100)
+                fill_rect(object.x + hb.x.to_i, object.y + hb.y.to_i, hb.w.to_i, hb.h.to_i)
+              end
             end
           end
         end
@@ -95,9 +98,8 @@ class Leafgem::Game
         # reset pressed keys
         Leafgem::KeyManager.clear_pressed
 
+        # remove any items that are to be deleted
         Leafgem::Game.destroy_all_in_buffer
-
-        GC.collect
       end
     end
   end
@@ -168,7 +170,6 @@ class Leafgem::Game
 
   def self.error(idstring)
     puts "## GAME ERROR ##"
-    puts Leafgem_errors[idstring]
     exit
   end
 end

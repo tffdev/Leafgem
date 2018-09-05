@@ -2,15 +2,20 @@ class Leafgem::Object
   @anim_start_frame = 0
   @anim_end_frame = 0
 
+  property hitbox = SDL::Rect.new(0, 0, 0, 0)
+
   property sprite_index = 0.0
   property spritesheet : Spritesheet?
-  property image_speed = 0.0
+  property sprite_speed = 0.0
   property is_animated = false
+
+  property sprite_xscale = 1
+  property sprite_yscale = 1
 
   property x = 0.0
   property y = 0.0
-  property w = 0
-  property h = 0
+  property w = 1
+  property h = 1
 
   def init
   end
@@ -22,10 +27,15 @@ class Leafgem::Object
     draw_self
   end
 
-  def set_spritesheet(filename, w, h)
-    @w = w
-    @h = h
+  def set_spritesheet(filename, @w : Int32 = w, @h : Int32 = h)
+    if (@hitbox == SDL::Rect.new(0, 0, 0, 0))
+      @hitbox = SDL::Rect.new(0, 0, w, h)
+    end
     @spritesheet = new_spritesheet(filename, w, h)
+  end
+
+  def set_hitbox(x, y, w, h)
+    @hitbox = SDL::Rect.new(x, y, w, h)
   end
 
   def update_spritesheet
@@ -37,36 +47,39 @@ class Leafgem::Object
 
   def draw_self
     if spr = @spritesheet
-      @sprite_index += @image_speed
+      @sprite_index += @sprite_speed
       if (@sprite_index > @anim_end_frame - @anim_start_frame + 1)
         @sprite_index = 0
       end
 
       if (window = Leafgem::Renderer.window)
         # If the object is on screen
-        # if (
-        #      @x < window.width/Leafgem::Renderer.scale + camera_x &&
-        #      @y < window.height/Leafgem::Renderer.scale + camera_y
-        #    )
-
-        Leafgem::Renderer.draw(
-          spr.sprite,
-          spr.quads[@anim_start_frame + @sprite_index.to_i].x,
-          spr.quads[@anim_start_frame + @sprite_index.to_i].y,
-          @x,
-          @y,
-          spr.quads[0].w,
-          spr.quads[0].h
-        )
-        # end
+        if !(@x > Leafgem::Renderer.width + camera_x ||
+           @y > Leafgem::Renderer.height + camera_y ||
+           @y + @h < camera_y ||
+           @x + @w < camera_x)
+          Leafgem::Renderer.draw(
+            spr.sprite,
+            spr.quads[@anim_start_frame + @sprite_index.to_i].x,
+            spr.quads[@anim_start_frame + @sprite_index.to_i].y,
+            @x,
+            @y,
+            spr.quads[0].w,
+            spr.quads[0].h
+          )
+        end
       end
     end
   end
 
-  def set_animation(cols, param_row = 0, image_speed = Nil)
+  def set_animation(anim)
+    self.set_animation(anim[0].as(Array(Int32)), anim[1].as(Int32), anim[2].as(Float64))
+  end
+
+  def set_animation(cols : Array(Int32), param_row : Int32, sprite_speed : Float64 = Nil)
     @is_animated = true
-    if imgspd = image_speed
-      @image_speed = imgspd
+    if imgspd = sprite_speed
+      @sprite_speed = imgspd
     end
     if param_row != 0
       if spritesheet = @spritesheet
@@ -90,7 +103,7 @@ class Leafgem::Object
     end
     if (objects_to_check = objs.as(Array(Leafgem::Object)))
       objects_to_check.each do |other|
-        if (box_collision_check(self, other, x, y))
+        if (box_collision_check(self.hitbox, other.hitbox, x, y))
           return true
         end
       end
@@ -112,17 +125,17 @@ class Leafgem::Object
   def meeting_tile(xoffset, yoffset, tile, accuracy = 2)
     # insert corners
     points_to_check = [
-      [self.x + xoffset, self.y + yoffset],
-      [self.x + xoffset + self.w, self.y + yoffset],
-      [self.x + xoffset + self.w, self.y + yoffset + self.h],
-      [self.x + xoffset, self.y + yoffset + self.h],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
     ]
     # insert intermediate points between corners, for better checking
     (accuracy).times do |i|
-      points_to_check.push([self.x + xoffset + self.w * 1/accuracy * i, self.y + yoffset])
-      points_to_check.push([self.x + xoffset + self.w * 1/accuracy * i, self.y + yoffset + self.h])
-      points_to_check.push([self.x + xoffset, self.y + yoffset + self.h * 1/accuracy * i])
-      points_to_check.push([self.x + xoffset + self.w, self.y + yoffset + self.h * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
+      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
 
     points_to_check.each do |point|
@@ -130,7 +143,28 @@ class Leafgem::Object
         return true
       end
     end
+    return false
+  end
 
+  def meeting_tile_layer(xoffset, yoffset, tilelayer, accuracy = 2)
+    points_to_check = [
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+    ]
+    # insert intermediate points between corners, for better checking
+    (accuracy).times do |i|
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
+      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+    end
+    points_to_check.each do |point|
+      if (Leafgem::Map.get_tile_at(point[0], point[1]) != 0)
+        return true
+      end
+    end
     return false
   end
 end
