@@ -36,6 +36,7 @@ class Player < Leafgem::Object
   end
 
   def draw
+    fill_circ(@x, @y, 10)
     draw_self
   end
 end
