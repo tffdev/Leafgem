@@ -41,25 +41,28 @@ Each of the given features *could* be contained in a class which correlates to t
 
 **Sprites**
 - [x] Sprite animations + Breaking sprites up into sub-images
+- [ ] Text rendering (TTF)
 
 **Audio**
 - [x] Oneshots
 - [x] Looping background music
 - [x] Audio fade in/out over time
-- [ ] Multiple sound samples playing at once
+- [x] Multiple sound samples playing at once (the same sample cannot be played on top of itself)
 
 **Maps/Rooms**
 - [x] Background renderer
 	- [x] Parallax scrolling!
 - [x] Tileset renderer
+    - [ ] Tile layers
 - [x] "Rooms"
 	- [ ] Spawn objects in predetermined places
+- [ ] Easier workflow regarding room creation... should I make an IDE?
 
 ## Contributing 
 
 I'm not all that good with Crystal - I'm creating this project as practice using the Crystal language! 
 
-That means any and all contributions to this engine are welcome and heavily appreciated, no matter how big or small. The aim is to give creators an intuitive toolkit for making games! A bonus being a super speedy and easy engine.
+That means any and all contributions to this engine are welcome and heavily appreciated, no matter how big or small. The aim is to give creators an intuitive toolkit for making games quickly and easily!
 
 Any ideas are welcome!
 Fork, and work your magic!

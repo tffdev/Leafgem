@@ -22,10 +22,6 @@ class Leafgem::Renderer
   @@camera_y_buffer = 0.0
 
   def self.create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32, smooth_cam : Bool)
-    SDL.init(SDL::Init::VIDEO | SDL::Init::AUDIO); at_exit { SDL.quit }
-    SDL::IMG.init(SDL::IMG::Init::PNG); at_exit { SDL::IMG.quit }
-    SDL::Mix.open; at_exit { SDL::Mix.quit }
-
     # Create window
     @@window = SDL::Window.new(window_title, window_width, window_height)
 

@@ -4,7 +4,9 @@ class Leafgem::Audio
 
   def self.play_music(filename : String, audio_loop : Bool = false)
     @@music = LibMix.load_mus(filename)
-    LibMix.play_music(@@music, (audio_loop) ? -1 : 0)
+    if music = @@music
+      LibMix.play_music(music, 1)
+    end
   end
 
   def self.play_sound(filename : String, audio_loop : Bool = false)
@@ -13,6 +15,6 @@ class Leafgem::Audio
   end
 
   def self.fade_out_music(seconds : Float32)
-    LibMix.fade_out_music(1000 * seconds)
+    LibMix.fade_out_music((1000 * seconds).to_i)
   end
 end

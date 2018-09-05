@@ -17,7 +17,7 @@ def create_object(thing, x = 0, y = 0)
   if !Leafgem::Game.loop.has_key?(thing.to_s)
     Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Object
   end
-  pp Leafgem::Game.loop[thing.to_s].push(new_obj)
+  Leafgem::Game.loop[thing.to_s].push(new_obj)
 end
 
 def destroy(thing)
@@ -50,11 +50,11 @@ def debug_show_hitboxes(bool)
   Leafgem::Game.show_hitboxes(bool)
 end
 
-def keyboard_check_pressed(keycode : String)
+def key_pressed(keycode : String)
   Leafgem::KeyManager.key_is_pressed(keycode.downcase)
 end
 
-def keyboard_check(keycode : String)
+def key(keycode : String)
   Leafgem::KeyManager.key_is_held(keycode.downcase)
 end
 
