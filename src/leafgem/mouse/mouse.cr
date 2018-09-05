@@ -50,7 +50,7 @@ module Leafgem::Mouse::Mouse
     self.cursor = LibSDL.create_system_cursor(LibSDL::SystemCursor::ARROW)
   end
 
-  # BUG: `LibSDL::SystemCursor::WAIT` and `LibSDL::SystemCursor::WAITARROW` seems to be semi-broken
+  # BUG: `LibSDL::SystemCursor::WAIT` and `LibSDL::SystemCursor::WAITARROW` seem to be semi-broken
   # NOTE: When the cursor is a custom one the mouse input delay seems to be increased
   def cursor=(name : String)
     case name
