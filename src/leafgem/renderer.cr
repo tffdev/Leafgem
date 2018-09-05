@@ -184,11 +184,11 @@ module Leafgem::Renderer
     end
   end
 
-  def set_camera_x(x)
+  def camera_x=(x)
     @@camera_x_buffer = x.to_f
   end
 
-  def set_camera_y(y)
+  def camera_y=(y)
     @@camera_y_buffer = y.to_f
   end
 
