@@ -19,21 +19,22 @@ class Draggable < Leafgem::Object
   def update
     # If Mouse.primary exists (and thus is active)
     if primary = Mouse.primary
+      x = Mouse.position.not_nil!.x.to_f
+      y = Mouse.position.not_nil!.y.to_f
+      if point_in? x, y
+        Mouse.cursor = "pointer"
+      end
+
       # If it's been held
       if primary.held? && @dragging
         @fill_colour = {127, 33, 33, 255}
 
         # Get the positions
-        x = Mouse.position.not_nil!.x.to_f
-        y = Mouse.position.not_nil!.y.to_f
         # Set self to mouse poition
         @x = x + @offset_x
         @y = y + @offset_y
         # If it's the first tap
       elsif primary.pressed?
-        x = Mouse.position.not_nil!.x.to_f
-        y = Mouse.position.not_nil!.y.to_f
-
         # If click starts out in self
         # So the rect of logic won't trigger if you move the mouse over it
         @dragging = true if point_in? x, y
@@ -47,6 +48,7 @@ class Draggable < Leafgem::Object
     else
       @fill_colour = {33, 33, 33, 255}
       @dragging = false
+      Mouse.cursor = nil
     end
   end
 
