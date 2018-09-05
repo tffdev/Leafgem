@@ -150,7 +150,7 @@ module Leafgem::Library
     Leafgem::Renderer.camera_x
   end
 
-  def camera_x=(x)
+  def set_camera_x(x)
     Leafgem::Renderer.camera_x = x
   end
 
@@ -158,7 +158,7 @@ module Leafgem::Library
     Leafgem::Renderer.camera_y
   end
 
-  def camera_y=(y)
+  def set_camera_y(y)
     Leafgem::Renderer.camera_y = y
   end
 
