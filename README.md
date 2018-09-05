@@ -11,7 +11,7 @@ Leafgem is the humble beginning of a 2D open source game engine written in Cryst
 git clone https://github.com/tfcat/Leafgem.git
 cd Leafgem
 shards install
-crystal run -s -p demo/main.cr
+crystal run -s -p examples/demo/main.cr
 ```
 
 ## notes to self
@@ -31,6 +31,7 @@ Each of the given features *could* be contained in a class which correlates to t
 
 **Control**
 - [x] Keypressing - *on_press*, *on_release* and *is_pressed*
+- [ ] Mouse Input - *on_click*, *on_release*, and *is_pressed* for all of the buttons
 
 **Objects**
 - [x] Instance-based system. (Unique, contained object instances, derived from a template [class])
