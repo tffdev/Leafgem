@@ -127,7 +127,7 @@ class Leafgem::Renderer
     rad = 0
     prevy = nil
     prevx = nil
-    while rad < MATH.PI
+    while rad < Math.PI
       x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
       y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i + @@draw_offset_y
       if (y1 != prevy || x1 != prevx)
@@ -148,7 +148,7 @@ class Leafgem::Renderer
     rad = 0
     prevx = nil
     prevy = nil
-    while rad < MATH.PI
+    while rad < Math.PI
       x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + @@draw_offset_x
       y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i + @@draw_offset_y
       if (prevx != x1 || prevy != y1)
