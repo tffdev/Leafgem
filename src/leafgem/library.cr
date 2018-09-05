@@ -39,7 +39,9 @@ end
 def set_draw_color(r, g, b, a)
   # assuming color is a hex string
   out_color = SDL::Color.new(r, g, b, a)
-  Leafgem::Renderer.renderer.draw_color = out_color
+  if (lgr = Leafgem::Renderer.renderer)
+    lgr.draw_color = out_color
+  end
 end
 
 def fill_rect(x, y, w, h)
@@ -60,11 +62,11 @@ def debug_show_hitboxes(bool)
   Leafgem::Game.show_hitboxes(bool)
 end
 
-def key_pressed(keycode : String)
+def key_pressed?(keycode : String)
   Leafgem::KeyManager.key_is_pressed(keycode.downcase)
 end
 
-def key(keycode : String)
+def key?(keycode : String)
   Leafgem::KeyManager.key_is_held(keycode.downcase)
 end
 
@@ -111,6 +113,12 @@ end
 
 def screen_height
   Leafgem::Renderer.height
+end
+
+def set_fullscreen(bool)
+  if (win = Leafgem::Renderer.window)
+    win.fullscreen = (bool) ? SDL::Window::Fullscreen::FULLSCREEN_DESKTOP : SDL::Window::Fullscreen::WINDOW
+  end
 end
 
 def play_sound(filename : String)

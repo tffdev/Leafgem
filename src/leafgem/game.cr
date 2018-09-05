@@ -38,7 +38,11 @@ class Leafgem::Game
 
   def self.run
     starttime = 0
-    @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
+
+    if (Leafgem::Renderer.renderer)
+      @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
+    end
+
     loop do
       if (starttime + 1000/Leafgem::Renderer.fps <= LibSDL.ticks)
         @@currentfps = 1000/(LibSDL.ticks - starttime)
@@ -68,33 +72,37 @@ class Leafgem::Game
           end
         end
 
-        # set background to black
-        Leafgem::Renderer.renderer.draw_color = SDL::Color[255, 255, 255, 255]
-        Leafgem::Renderer.renderer.clear
+        if (lg_r = Leafgem::Renderer.renderer)
+          Leafgem::Renderer.calculate_offset
+          # set background to black
+          lg_r.draw_color = SDL::Color[255, 255, 255, 255]
+          lg_r.clear
 
-        # Draw map
-        Leafgem::Map.draw
+          # Draw map
+          Leafgem::Map.draw
 
-        # draw all objects
-        Leafgem::Game.loop.each do |set_of_objects|
-          set_of_objects[1].each do |object|
-            object.draw
-            if @@show_hitboxes
-              if hb = object.hitbox
-                set_draw_color(255, 0, 0, 100)
-                fill_rect(object.x + hb.x.to_i, object.y + hb.y.to_i, hb.w.to_i, hb.h.to_i)
+          # draw all objects
+          Leafgem::Game.loop.each do |set_of_objects|
+            set_of_objects[1].each do |object|
+              object.draw
+              if @@show_hitboxes
+                if hb = object.hitbox
+                  set_draw_color(255, 0, 0, 100)
+                  fill_rect(object.x + hb.x.to_i, object.y + hb.y.to_i, hb.w.to_i, hb.h.to_i)
+                end
               end
             end
           end
+
+          if (@@should_show_debugger)
+            Leafgem::Game.draw_debug
+          end
+
+          # Hide parts of window that shouldn't be shown due to resizing
+          Leafgem::Renderer.draw_resize_boxes
+          # finalise
+          lg_r.present
         end
-
-        if (@@should_show_debugger)
-          Leafgem::Game.draw_debug
-        end
-
-        # finalise
-        Leafgem::Renderer.renderer.present
-
         # reset pressed keys
         Leafgem::KeyManager.clear_pressed
 
@@ -121,33 +129,35 @@ class Leafgem::Game
   end
 
   def self.draw_debug
-    # sort debug buffer in alphabetical order
-    if @@should_sort_debugger
-      @@debug_string_buffer = @@debug_string_buffer.sort { |a, b| a <=> b }
-    end
+    if (lgr = Leafgem::Renderer.renderer)
+      # sort debug buffer in alphabetical order
+      if @@should_sort_debugger
+        @@debug_string_buffer = @@debug_string_buffer.sort { |a, b| a <=> b }
+      end
 
-    old_scale = Leafgem::Renderer.renderer.scale
-    Leafgem::Renderer.renderer.scale = {1, 1}
-    # Draw debugging
-    line = 0
-    @@debug_string_buffer.each do |string|
-      if font = @@font
-        string.size.times do |i|
-          if (a = DEBUG_ALPHA.index(string[i]))
-            Leafgem::Renderer.renderer.copy(
-              font,
-              SDL::Rect.new(
-                (a % 16)*12, (a/16)*13, 6, 13),
-              SDL::Rect.new(
-                3 + i*6, 3 + line*14, 6, 13)
-            )
+      old_scale = lgr.scale
+      lgr.scale = {1, 1}
+      # Draw debugging
+      line = 0
+      @@debug_string_buffer.each do |string|
+        if font = @@font
+          string.size.times do |i|
+            if (a = DEBUG_ALPHA.index(string[i]))
+              lgr.copy(
+                font,
+                SDL::Rect.new(
+                  (a % 16)*12, (a/16)*13, 6, 13),
+                SDL::Rect.new(
+                  3 + i*6, 3 + line*14, 6, 13)
+              )
+            end
           end
         end
+        line += 1
       end
-      line += 1
+      lgr.scale = old_scale
+      @@debug_string_buffer = [] of String
     end
-    Leafgem::Renderer.renderer.scale = old_scale
-    @@debug_string_buffer = [] of String
   end
 
   def self.to_destroy
@@ -166,10 +176,5 @@ class Leafgem::Game
 
   def self.getfps
     @@currentfps
-  end
-
-  def self.error(idstring)
-    puts "## GAME ERROR ##"
-    exit
   end
 end

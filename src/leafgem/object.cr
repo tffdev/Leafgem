@@ -93,7 +93,7 @@ class Leafgem::Object
     end
   end
 
-  def place_meeting(x, y, foreign_object)
+  def meeting?(x, y, foreign_object)
     # basic box collision
     # check each corner of self with every corner of every instance of the foreign object
     if (typeof(foreign_object) == Class || String)
@@ -122,7 +122,7 @@ class Leafgem::Object
     end
   end
 
-  def meeting_tile(xoffset, yoffset, tile, accuracy = 2)
+  def meeting_tile?(xoffset, yoffset, tile, accuracy = 2)
     # insert corners
     points_to_check = [
       [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
@@ -146,7 +146,7 @@ class Leafgem::Object
     return false
   end
 
-  def meeting_tile_layer(xoffset, yoffset, tilelayer, accuracy = 2)
+  def meeting_tile_layer?(xoffset, yoffset, tilelayer, accuracy = 2)
     points_to_check = [
       [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
       [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],

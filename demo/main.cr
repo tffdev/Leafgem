@@ -16,19 +16,18 @@ class Player < Leafgem::Object
 
   def update
     @onground = false
-    @x -= key("left") ? 1 : 0
-    @x += key("right") ? 1 : 0
-    @y -= key("up") ? 1 : 0
-    @y += key("down") ? 1 : 0
+    @x -= key?("left") ? 1 : 0
+    @x += key?("right") ? 1 : 0
+    @y -= key?("up") ? 1 : 0
+    @y += key?("down") ? 1 : 0
 
     set_camera_x(lerp(camera_x, Math.max(@x - 90, 0), 0.05))
 
     # haha "collision"
-    while (meeting_tile_layer(0, 0, 1))
+    while (meeting_tile_layer?(0, 0, 1))
       @y -= 0.2
       @onground = true
     end
-
     @y += 1
   end
 
