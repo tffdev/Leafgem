@@ -98,6 +98,10 @@ class Leafgem::Object
     return false
   end
 
+  def point_in?(x, y)
+    x >= @x && x <= @x + @w && y >= @y && y <= @y + @h
+  end
+
   def box_collision_check(this, other, x, y)
     if this.x + x >= other.x && this.x + x < other.x + other.w && this.y + y >= other.y && this.y + y < other.y + other.h ||
        (this.x + x + this.w) >= other.x && (this.x + x + this.w) < other.x + other.w && this.y + y >= other.y && this.y + y < other.y + other.h ||

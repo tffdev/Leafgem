@@ -1,4 +1,6 @@
 module Leafgem::Library
+  # include Leafgem::Mouse::WheelManager
+
   # ======================== #
   #         LIBRARY          #
   # ======================== #
