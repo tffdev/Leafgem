@@ -150,16 +150,16 @@ module Leafgem::Library
     Leafgem::Renderer.camera_x
   end
 
-  def set_camera_x(x)
-    Leafgem::Renderer.set_camera_x(x)
+  def camera_x=(x)
+    Leafgem::Renderer.camera_x = x
   end
 
   def camera_y
     Leafgem::Renderer.camera_y
   end
 
-  def set_camera_y(y)
-    Leafgem::Renderer.set_camera_y(y)
+  def camera_y=(y)
+    Leafgem::Renderer.camera_y = y
   end
 
   def lerp(a, b, t)
