@@ -5,6 +5,9 @@
 *.dwarf
 main 
 
+# Stop the binary from being uploaded
+main
+
 # Libraries don't need dependency lock
 # Dependencies will be locked in application that uses them
 /shard.lock

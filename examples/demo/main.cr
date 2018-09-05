@@ -1,12 +1,16 @@
-require "../leafgem"
+require "../../src/leafgem"
+include Leafgem::Library
+
 require "./scene_manager"
 
 class Player < Leafgem::Object
   @onground = false
+
+  # animations
   Anim::Idle = [[0, 1], 0, 0.05]
 
   def init
-    set_spritesheet("demo/images/cat.png", 27, 27)
+    set_spritesheet("examples/demo/images/cat.png", 27, 27)
 
     # idle animation
     set_animation(Anim::Idle)
@@ -41,8 +45,7 @@ set_window("Leafgem Demo!", 560, 400, 2, true)
 debug_show_hitboxes(true)
 
 # this function is still a work in progress
-Leafgem::Map.loadmap("demo/map")
-
+load_map("examples/demo/map")
 set_camera_x(32)
 create_object(Scene_manager, 0, 0)
 create_object(Player, 122, 100)

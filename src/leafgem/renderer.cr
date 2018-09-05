@@ -181,8 +181,6 @@ class Leafgem::Renderer
   def self.renderer
     if a = @@renderer
       a
-    else
-      nil
     end
   end
 

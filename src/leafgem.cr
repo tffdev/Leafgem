@@ -12,4 +12,4 @@ SDL::Mix.open
 # ======================== #
 #      LEAFGEM MODULE      #
 # ======================== #
-require "./leafgem/*"
+require "./leafgem/**"

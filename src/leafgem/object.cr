@@ -31,7 +31,7 @@ class Leafgem::Object
     if (@hitbox == SDL::Rect.new(0, 0, 0, 0))
       @hitbox = SDL::Rect.new(0, 0, w, h)
     end
-    @spritesheet = new_spritesheet(filename, w, h)
+    @spritesheet = Leafgem::Library.new_spritesheet(filename, w, h)
   end
 
   def set_hitbox(x, y, w, h)
@@ -109,6 +109,10 @@ class Leafgem::Object
       end
     end
     return false
+  end
+
+  def point_in?(x, y)
+    x >= @x && x <= @x + @w && y >= @y && y <= @y + @h
   end
 
   def box_collision_check(this, other, x, y)

@@ -5,7 +5,7 @@ class Scene_manager < Leafgem::Object
   @title_sprite : SDL::Texture?
 
   def init
-    @title_sprite = sprite("demo/images/title.png")
+    @title_sprite = sprite("examples/demo/images/title.png")
   end
 
   def update
