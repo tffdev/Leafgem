@@ -1,4 +1,4 @@
-class Leafgem::Renderer
+module Leafgem::Renderer
   @@fps = 60
   @@renderer : SDL::Renderer?
   @@window : SDL::Window?
@@ -23,7 +23,7 @@ class Leafgem::Renderer
   @@draw_offset_x = 0.0
   @@draw_offset_y = 0.0
 
-  def self.create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32, smooth_cam : Bool)
+  def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32, smooth_cam : Bool)
     # Create window
     @@window = SDL::Window.new(window_title, window_width, window_height, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowFlags::RESIZABLE)
     # used as reference for window resizing
@@ -48,7 +48,7 @@ class Leafgem::Renderer
     end
   end
 
-  def self.calculate_offset
+  def calculate_offset
     scl = 1
     if (win = @@window)
       cr_w = 0
@@ -74,7 +74,7 @@ class Leafgem::Renderer
     end
   end
 
-  def self.draw_resize_boxes
+  def draw_resize_boxes
     if (lgr = Leafgem::Renderer.renderer)
       old_draw_color = lgr.draw_color
       lgr.draw_color = SDL::Color.new(0, 0, 0, 255)
@@ -96,7 +96,7 @@ class Leafgem::Renderer
     end
   end
 
-  def self.draw(texture, sx, sy, x, y, w, h, ignore_camera = false)
+  def draw(texture, sx, sy, x, y, w, h, ignore_camera = false)
     if (lgr = Leafgem::Renderer.renderer)
       if (ignore_camera)
         lgr.copy(
@@ -114,7 +114,7 @@ class Leafgem::Renderer
     end
   end
 
-  def self.fill_rect(x, y, w, h)
+  def fill_rect(x, y, w, h)
     rect = SDL::Rect.new((@@draw_offset_x + x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (@@draw_offset_y + y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
     if (lgr = Leafgem::Renderer.renderer)
       lgr.fill_rect(rect.x, rect.y, rect.w, rect.h)
@@ -122,7 +122,7 @@ class Leafgem::Renderer
   end
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
-  def self.fill_circ(x, y, r)
+  def fill_circ(x, y, r)
     renderer.scale = {@@scale, @@scale} if (@@smoothcam)
     rad = 0
     prevy = nil
@@ -143,7 +143,7 @@ class Leafgem::Renderer
     renderer.scale = {1, 1} if (@@smoothcam)
   end
 
-  def self.draw_circ(x, y, r)
+  def draw_circ(x, y, r)
     renderer.scale = {@@scale, @@scale} if (@@smoothcam)
     rad = 0
     prevx = nil
@@ -165,50 +165,50 @@ class Leafgem::Renderer
     renderer.scale = {1, 1} if (@@smoothcam)
   end
 
-  def self.update_camera
+  def update_camera
     @@camera_x = @@camera_x_buffer
     @@camera_y = @@camera_y_buffer
   end
 
-  def self.renderer
+  def renderer
     @@renderer
   end
 
-  def self.window
+  def window
     @@window
   end
 
-  def self.renderer
+  def renderer
     if a = @@renderer
       a
     end
   end
 
-  def self.set_camera_x(x)
+  def set_camera_x(x)
     @@camera_x_buffer = x.to_f
   end
 
-  def self.set_camera_y(y)
+  def set_camera_y(y)
     @@camera_y_buffer = y.to_f
   end
 
-  def self.camera_x
+  def camera_x
     @@camera_x
   end
 
-  def self.camera_y
+  def camera_y
     @@camera_y
   end
 
-  def self.width
+  def width
     @@width
   end
 
-  def self.height
+  def height
     @@height
   end
 
-  def self.scale
+  def scale
     if r = @@renderer
       r.scale[0]
     else
@@ -216,15 +216,17 @@ class Leafgem::Renderer
     end
   end
 
-  def self.fps
+  def fps
     @@fps
   end
 
-  def self.set_fps(fps_to_set)
+  def set_fps(fps_to_set)
     @@fps = fps_to_set
   end
 
-  def self.set_smooth_camera(bool)
+  def set_smooth_camera(bool)
     @@smoothcam = bool
   end
+
+  extend self
 end
