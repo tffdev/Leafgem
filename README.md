@@ -75,5 +75,6 @@ Fork, and work your magic!
 
 ## Contributors
 
-- [tfcat](https://github.com/tfcat) - creator, maintainer, designer
+- [tfcat](https://github.com/tfcat) - creator, developer, maintainer
+- [brecert](https://github.com/Brecert) - developer, maintainer
 - [rx14](https://github.com/rx14) - mentor, sensei, tech support, emotional support
