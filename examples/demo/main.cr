@@ -28,7 +28,7 @@ class Player < Leafgem::Object
     set_camera_x(lerp(camera_x, Math.max(@x - 90, 0), 0.05))
 
     # haha "collision"
-    while (meeting_tile_layer?(0, 0, 1))
+    while (meeting_tile_layer?(0, 0, 0))
       @y -= 0.2
       @onground = true
     end

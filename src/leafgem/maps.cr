@@ -5,14 +5,14 @@ require "ini"
 # build a single surface in memory, throw to texture then render
 
 class Leafgem::Map
+  # tiles
   @@tilesheet : SDL::Texture?
-  @@tileset_width : Int32 = 0
-  @@tileset_height : Int32 = 0
-  @@tiles = [] of Int32
-  @@tilesize_x : Int32 = 0
-  @@tilesize_y : Int32 = 0
-  @@mapsize_x : Int32 = 1
-  @@mapsize_y : Int32 = 1
+  @@tiles = [] of Array(Int32)
+  @@tileset_size : Vec2 = Vec2.new(0, 0)
+  @@tilesize : Vec2 = Vec2.new(0, 0)
+  @@mapsize : Vec2 = Vec2.new(1, 1)
+
+  # backgrounds
   @@backgrounds = [] of SDL::Texture
   @@backgrounds_parallax = [] of Float64
 
@@ -30,17 +30,22 @@ class Leafgem::Map
       @@backgrounds_parallax.push (bgname.split(",").size > 1) ? bgname.split(",")[1].to_f : 1.0
     end
 
-    map["layer"]["data"].split(",").each do |tile|
-      @@tiles << tile.to_i
+    10.times do |i|
+      if (map.has_key?("layer" + i.to_s))
+        @@tiles.insert(i, [] of Int32)
+        map["layer" + i.to_s]["data"].split(",").each do |tile|
+          @@tiles[i].push(tile.to_i)
+        end
+      end
     end
     @@tilesheet = Leafgem::AssetManager.image(map["tilesets"]["tileset"].split(",")[0])
-    @@tilesize_x = map["tilesets"]["tileset"].split(",")[1].to_i
-    @@tilesize_y = map["tilesets"]["tileset"].split(",")[2].to_i
-    @@mapsize_x = map["header"]["width"].to_i
-    @@mapsize_y = map["header"]["height"].to_i
+    @@tilesize.x = map["tilesets"]["tileset"].split(",")[1].to_i
+    @@tilesize.y = map["tilesets"]["tileset"].split(",")[2].to_i
+    @@mapsize.x = map["header"]["width"].to_i
+    @@mapsize.y = map["header"]["height"].to_i
     if (tilesheet = @@tilesheet)
-      @@tileset_width = tilesheet.width / @@tilesize_x
-      @@tileset_height = tilesheet.height / @@tilesize_y
+      @@tileset_size.x = tilesheet.width / @@tilesize.x
+      @@tileset_size.y = tilesheet.height / @@tilesize.y
     end
   end
 
@@ -48,10 +53,10 @@ class Leafgem::Map
     @@tiles
   end
 
-  def self.get_tile_at(x, y)
-    tileplace = (x/@@tilesize_x).to_i + @@mapsize_x * (y/@@tilesize_y).to_i
-    if (@@tiles[tileplace]?)
-      return @@tiles[tileplace]
+  def self.get_tile_at(x, y, tile_layer)
+    tileplace = (x/@@tilesize.x).to_i + @@mapsize.x * (y/@@tilesize.y).to_i
+    if (@@tiles[tile_layer][tileplace]?)
+      return @@tiles[tile_layer][tileplace]
     else
       return 0
     end
@@ -78,19 +83,22 @@ class Leafgem::Map
       end
     end
 
-    @@tiles.each_with_index do |tile, i|
-      if (tile != 0)
-        tile -= 1
-        if (sheet = @@tilesheet)
-          Leafgem::Renderer.draw(
-            sheet,
-            (tile % @@tileset_width) * @@tilesize_x,
-            ((tile / @@tileset_width).to_i) * @@tilesize_y,
-            (i % @@mapsize_x) * @@tilesize_x,
-            ((i / @@mapsize_x).to_i) * @@tilesize_y,
-            @@tilesize_x,
-            @@tilesize_y
-          )
+    # draw tiles
+    @@tiles.each do |tile_layer|
+      tile_layer.each_with_index do |tile, i|
+        if (tile != 0)
+          tile -= 1
+          if (sheet = @@tilesheet)
+            Leafgem::Renderer.draw(
+              sheet,
+              (tile % @@tileset_size.x) * @@tilesize.x,
+              ((tile / @@tileset_size.x).to_i) * @@tilesize.y,
+              (i % @@mapsize.x) * @@tilesize.x,
+              ((i / @@mapsize.x).to_i) * @@tilesize.y,
+              @@tilesize.x,
+              @@tilesize.y
+            )
+          end
         end
       end
     end

@@ -165,7 +165,7 @@ class Leafgem::Object
       points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
     points_to_check.each do |point|
-      if (Leafgem::Map.get_tile_at(point[0], point[1]) != 0)
+      if (Leafgem::Map.get_tile_at(point[0], point[1], tilelayer) != 0)
         return true
       end
     end
