@@ -1,7 +1,7 @@
 require "../../src/leafgem"
 include Leafgem::Library
 
-class Draggable < Leafgem::GameObject
+class Draggable < Leafgem::Objects::Shapes::Rectangle
   def initialize
     super
     @offset_x = 0_f64
@@ -55,7 +55,7 @@ class Draggable < Leafgem::GameObject
   def draw
     # note that the "draw" color is always white until set otherwise
     set_draw_color(@fill_colour)
-    fill_rect(@position.x.to_i, @position.y.to_i, @size.x.to_i, @size.y.to_i)
+    draw_self
   end
 end
 
