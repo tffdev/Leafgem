@@ -21,6 +21,10 @@ class Vec2
   def +(other : Vec2)
     Vec2.new((self.x + other.x).to_i, (self.y + other.y).to_i)
   end
+
+  def to_f
+    Vec2f.new @x.to_f, @y.to_f
+  end
 end
 
 class Vec2f
@@ -32,5 +36,9 @@ class Vec2f
   def initialize(x : Int, y : Int)
     @x = x.to_f64
     @y = y.to_f64
+  end
+
+  def to_i
+    Vec2.new @x.to_i, @y.to_i
   end
 end
