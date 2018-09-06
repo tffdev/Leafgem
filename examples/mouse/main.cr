@@ -12,8 +12,8 @@ class Draggable < Leafgem::GameObject
   def init
     @position.x = 32
     @position.y = 32
-    @w = 32
-    @h = 32
+    @size.x = 32
+    @size.y = 32
   end
 
   def update
@@ -55,11 +55,11 @@ class Draggable < Leafgem::GameObject
   def draw
     # note that the "draw" color is always white until set otherwise
     set_draw_color(@fill_colour)
-    fill_rect(@position.x.to_i, @position.y.to_i, @w.to_i, @h.to_i)
+    fill_rect(@position.x.to_i, @position.y.to_i, @size.x.to_i, @size.y.to_i)
   end
 end
 
-set_window("Leafgem Mouse Example!", 560, 400, 1, true)
+set_window("Leafgem Mouse Example!", 560, 400, 1)
 create_object(Draggable, 0, 0)
 
 Leafgem::Game.run
