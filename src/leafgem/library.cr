@@ -147,19 +147,19 @@ module Leafgem::Library
   end
 
   def camera_x
-    Leafgem::Renderer.camera_x
+    Leafgem::Renderer.camera.pos.x
   end
 
   def set_camera_x(x)
-    Leafgem::Renderer.camera_x = x
+    Leafgem::Renderer.camera.posbuffer.x = x.to_f
   end
 
   def camera_y
-    Leafgem::Renderer.camera_y
+    Leafgem::Renderer.camera.pos.y
   end
 
   def set_camera_y(y)
-    Leafgem::Renderer.camera_y = y
+    Leafgem::Renderer.camera.posbuffer.y = y.to_f
   end
 
   def lerp(a, b, t)

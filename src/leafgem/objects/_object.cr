@@ -1,6 +1,6 @@
-class Leafgem::GameObject < Leafgem::DrawnObject
-  property x = 0
-  property y = 0
+class Leafgem::Object
+  property x = 0.0
+  property y = 0.0
   property w = 0
   property h = 0
   property hitbox = Hitbox.new(0, 0, 0, 0)
@@ -9,5 +9,8 @@ class Leafgem::GameObject < Leafgem::DrawnObject
   end
 
   def update
+  end
+
+  def draw
   end
 end

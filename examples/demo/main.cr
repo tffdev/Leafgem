@@ -3,7 +3,7 @@ include Leafgem::Library
 
 require "./scene_manager"
 
-class Player < Leafgem::Object
+class Player < Leafgem::GameObject
   @onground = false
 
   # animations
@@ -33,6 +33,11 @@ class Player < Leafgem::Object
       @onground = true
     end
     @y += 1
+
+    if (mpos = Mouse.position)
+      debug mpos.x
+      debug mpos.y
+    end
   end
 
   def draw

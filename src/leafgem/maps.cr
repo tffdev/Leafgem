@@ -55,8 +55,8 @@ class Leafgem::Map
 
   def self.get_tile_at(x, y, tile_layer)
     tileplace = (x/@@tilesize.x).to_i + @@mapsize.x * (y/@@tilesize.y).to_i
-    if (@@tiles[tile_layer][tileplace]?)
-      return @@tiles[tile_layer][tileplace]
+    if (@@tiles[tile_layer.to_i][tileplace.to_i]?)
+      return @@tiles[tile_layer][tileplace.to_i]
     else
       return 0
     end

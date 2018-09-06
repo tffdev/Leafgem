@@ -14,11 +14,7 @@ module Leafgem::Renderer
   @@smoothcam = false
   @@smoothscale = 1.0
 
-  @@camera_x = 0.0
-  @@camera_y = 0.0
-
-  @@camera_x_buffer = 0.0
-  @@camera_y_buffer = 0.0
+  @@camera = Leafgem::Camera.new
 
   @@draw_offset_x = 0.0
   @@draw_offset_y = 0.0
@@ -165,11 +161,6 @@ module Leafgem::Renderer
     renderer.scale = {1, 1} if (@@smoothcam)
   end
 
-  def update_camera
-    @@camera_x = @@camera_x_buffer
-    @@camera_y = @@camera_y_buffer
-  end
-
   def renderer
     @@renderer
   end
@@ -184,20 +175,8 @@ module Leafgem::Renderer
     end
   end
 
-  def camera_x=(x)
-    @@camera_x_buffer = x.to_f
-  end
-
-  def camera_y=(y)
-    @@camera_y_buffer = y.to_f
-  end
-
-  def camera_x
-    @@camera_x
-  end
-
-  def camera_y
-    @@camera_y
+  def camera
+    @@camera
   end
 
   def width
@@ -226,6 +205,14 @@ module Leafgem::Renderer
 
   def set_smooth_camera(bool)
     @@smoothcam = bool
+  end
+
+  def draw_offset_x
+    @@draw_offset_x
+  end
+
+  def draw_offset_y
+    @@draw_offset_y
   end
 
   extend self
