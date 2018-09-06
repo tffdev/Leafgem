@@ -54,17 +54,17 @@ module Leafgem::Library
   end
 
   def fill_rect(x, y, w, h)
-    Leafgem::Renderer.fill_rect(x, y, w, h)
+    Leafgem::Draw.fill_rect(x, y, w, h)
   end
 
   def fill_circ(x, y, r)
     raise Exception.new(Leafgem_errors["circ_invalid_radius"]) if (r < 0)
-    Leafgem::Renderer.fill_circ(x, y, r)
+    Leafgem::Draw.fill_circ(x, y, r)
   end
 
   def draw_circ(x, y, r)
     raise Exception.new(Leafgem_errors["circ_invalid_radius"]) if (r < 0)
-    Leafgem::Renderer.draw_circ(x, y, r)
+    Leafgem::Draw.sprite_circ(x, y, r)
   end
 
   def debug_show_hitboxes(bool)
@@ -103,7 +103,7 @@ module Leafgem::Library
       if (image.as?(SDL::Texture))
         if (texture = image.as(SDL::Texture))
           texture.alpha_mod = alpha*255
-          Leafgem::Renderer.draw(
+          Leafgem::Draw.sprite(
             texture,
             0, 0,
             x, y, texture.width, texture.height)

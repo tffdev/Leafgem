@@ -70,7 +70,7 @@ class Leafgem::Map
       bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
 
       while (bg_x - Leafgem::Renderer.width < camera_x)
-        Leafgem::Renderer.draw(
+        Leafgem::Draw.sprite(
           background,
           0, 0,
           bg_x, 0,
@@ -89,7 +89,7 @@ class Leafgem::Map
         if (tile != 0)
           tile -= 1
           if (sheet = @@tilesheet)
-            Leafgem::Renderer.draw(
+            Leafgem::Draw.sprite(
               sheet,
               (tile % @@tileset_size.x) * @@tilesize.x,
               ((tile / @@tileset_size.x).to_i) * @@tilesize.y,
