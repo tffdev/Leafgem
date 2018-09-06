@@ -32,6 +32,8 @@ Each of the given features *could* be contained in a class which correlates to t
 **Control**
 - [x] Keypressing - *on_press*, *on_release* and *is_pressed*
 - [ ] Mouse Input - *on_click*, *on_release*, and *is_pressed* for all of the buttons
+- [ ] Controller input
+- [ ] Touch input
 
 **Objects**
 - [x] Instance-based system. (Unique, contained object instances, derived from a template [class])

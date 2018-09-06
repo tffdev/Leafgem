@@ -1,4 +1,6 @@
-class Leafgem::DrawnObject
+require "./object"
+
+class Leafgem::DrawnObject < Leafgem::Object
   @anim_start_frame = 0
   @anim_end_frame = 0
 
@@ -36,16 +38,16 @@ class Leafgem::DrawnObject
 
       if (window = Leafgem::Renderer.window)
         # If the object is on screen
-        if !(@x > Leafgem::Renderer.width + camera_x ||
-           @y > Leafgem::Renderer.height + camera_y ||
-           @y + @h < camera_y ||
-           @x + @w < camera_x)
+        if !(@position.x > Leafgem::Renderer.width + camera_x ||
+           @position.y > Leafgem::Renderer.height + camera_y ||
+           @position.y + @h < camera_y ||
+           @position.x + @w < camera_x)
           Leafgem::Renderer.draw(
             spr.sprite,
             spr.quads[@anim_start_frame + @sprite_index.to_i].x,
             spr.quads[@anim_start_frame + @sprite_index.to_i].y,
-            @x,
-            @y,
+            @position.x,
+            @position.y,
             spr.quads[0].w,
             spr.quads[0].h
           )

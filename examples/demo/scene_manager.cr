@@ -1,5 +1,5 @@
 # This is just the code to show the fading title!
-class Scene_manager < Leafgem::Object
+class Scene_manager < Leafgem::GameObject
   @titlefade = 0.0
   @titleswitch = false
   @title_sprite : SDL::Texture?
@@ -14,7 +14,7 @@ class Scene_manager < Leafgem::Object
     else
       @titlefade = Math.min(@titlefade + 0.01, 1).to_f
     end
-    if (get(Player).size > 0 && get(Player)[0].x > 150)
+    if (get(Player).size > 0 && get(Player)[0].position.x > 150)
       @titleswitch = true
     end
   end

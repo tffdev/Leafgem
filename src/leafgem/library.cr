@@ -11,8 +11,8 @@ module Leafgem::Library
   def create_object(thing, x = 0, y = 0)
     # Give objects a unique identifier on create?
     new_obj = thing.new
-    new_obj.x = x.to_f
-    new_obj.y = y.to_f
+    new_obj.position.x = x.to_f
+    new_obj.position.y = y.to_f
     new_obj.update_spritesheet
     new_obj.init
 
@@ -147,19 +147,19 @@ module Leafgem::Library
   end
 
   def camera_x
-    Leafgem::Renderer.camera_x
+    Leafgem::Renderer.camera.pos.x
   end
 
   def set_camera_x(x)
-    Leafgem::Renderer.camera_x = x
+    Leafgem::Renderer.camera.posbuffer.x = x.to_f
   end
 
   def camera_y
-    Leafgem::Renderer.camera_y
+    Leafgem::Renderer.camera.pos.y
   end
 
   def set_camera_y(y)
-    Leafgem::Renderer.camera_y = y
+    Leafgem::Renderer.camera.posbuffer.y = y.to_f
   end
 
   def lerp(a, b, t)
