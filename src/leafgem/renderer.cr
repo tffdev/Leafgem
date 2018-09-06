@@ -114,8 +114,8 @@ module Leafgem::Renderer
   def fill_rect(x, y, w, h)
     pos = Vec2.new(x.to_i, y.to_i)
     rect = SDL::Rect.new(
-      (pos.x*@@scale + @@draw_offset_x).to_i,
-      (pos.y*@@scale + @@draw_offset_y).to_i,
+      ((pos.x - @@camera.pos.x)*@@scale + @@draw_offset_x).to_i,
+      ((pos.y - @@camera.pos.y)*@@scale + @@draw_offset_y).to_i,
       (w*@@scale).to_i,
       (h*@@scale).to_i)
     if (lgr = Leafgem::Renderer.renderer)

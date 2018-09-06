@@ -120,6 +120,10 @@ module Leafgem::Library
     Leafgem::Renderer.create(title, width, height, scale, smooth_camera)
   end
 
+  def camera
+    Leafgem::Renderer.camera.pos
+  end
+
   def screen_width
     Leafgem::Renderer.width
   end
