@@ -1,4 +1,4 @@
-class Leafgem::Objects::Shapes::Rectangle < Leafgem::GameObject
+class Leafgem::Shapes::Rectangle < Leafgem::GameObject
   property fill = true
   property outline = false
 

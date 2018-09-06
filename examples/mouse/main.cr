@@ -1,7 +1,7 @@
 require "../../src/leafgem"
 include Leafgem::Library
 
-class Draggable < Leafgem::Objects::Shapes::Rectangle
+class Draggable < Leafgem::Shapes::Rectangle
   def initialize
     super
     @offset_x = 0_f64
