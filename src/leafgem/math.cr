@@ -1,21 +1,19 @@
 # Base Vec Class
 # Should be used for other 2D vectors
 abstract class Vec
-  def initialize(@x, @y); end
-
   {% for name in %w(* + / - %) %}
 
     # Apply {{name.id}} to the Vector
-    def {{name.id}}(other)
-      self.new(@x * amount, @y * amount)
+    def {{name.id}}(amount)
+      self.class.new(@x * amount, @y * amount)
     end
 
     # Apply {{name.id}} with the other Vector
     def {{name.id}}(other : Vec)
-      x1 = @x {{name.id}} vec.x
-      y1 = @y {{name.id}} vec.y
+      x1 = @x {{name.id}} other.x
+      y1 = @y {{name.id}} other.y
 
-      self.new(x1, y1)
+      self.class.new(x1, y1)
     end
 
   {% end %}
@@ -26,6 +24,11 @@ class Vec2 < Vec
   property y : Int32
 
   def initialize(@x, @y); end
+
+  def initialize(x : Float64, y : Float64)
+    @x = x.to_i
+    @y = y.to_i
+  end
 
   def to_relative
     rel_x = 0

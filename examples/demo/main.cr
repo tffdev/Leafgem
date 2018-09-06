@@ -47,7 +47,7 @@ class Player < Leafgem::GameObject
     end
 
     set_draw_color(255, 0, 0, 255)
-    fill_rect(Mouse.position.x + camera.x, Mouse.position.y + camera.y, 10, 10)
+    fill_rect(Mouse.world_position.x, Mouse.world_position.y, 10, 10)
 
     debug @position.x
     debug @position.y

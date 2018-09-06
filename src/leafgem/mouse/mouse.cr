@@ -13,6 +13,11 @@ module Leafgem::Mouse::Mouse
     @@position.to_relative
   end
 
+  # The position of the mouse in the world
+  def world_position
+    @@position.to_relative + (Leafgem::Renderer.camera.pos)
+  end
+
   # TODO: Finish scroll events
   # def scrolling?
   #   @@scrolling
