@@ -3,7 +3,6 @@ module Leafgem::Renderer
   @@renderer : SDL::Renderer?
   @@window : SDL::Window?
 
-  @@original_scale = 1
   @@scale = 1
 
   @@width = 0.0
@@ -11,18 +10,14 @@ module Leafgem::Renderer
   @@window_current_width = 0.0
   @@window_current_height = 0.0
 
-  @@smoothcam = false
-  @@smoothscale = 1.0
-
   @@camera = Leafgem::Camera.new
 
   @@draw_offset_x = 0.0
   @@draw_offset_y = 0.0
 
-  def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32, smooth_cam : Bool)
+  def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
     # Create window
     @@window = SDL::Window.new(window_title, window_width, window_height, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowFlags::RESIZABLE)
-    # used as reference for window resizing
     @@scale = pixel_scale
 
     # Create renderer
@@ -35,13 +30,6 @@ module Leafgem::Renderer
       if renderer = @@renderer
         renderer.draw_blend_mode = LibSDL::BlendMode::BLEND
       end
-    end
-    # Set renderer pixel scale
-    if (smooth_cam == true)
-      @@smoothscale = pixel_scale
-    elsif renderer = @@renderer
-      @@original_scale = pixel_scale
-      renderer.scale = {pixel_scale, pixel_scale}
     end
   end
 
@@ -58,16 +46,16 @@ module Leafgem::Renderer
         # if wide
         @@draw_offset_y = 0
         scl = cr_h/@@height/ori_s
-        @@draw_offset_x = (cr_w - cr_h*ratio)/2 / scl / @@original_scale
+        @@draw_offset_x = (cr_w - cr_h*ratio)/2 / scl
       else
         # if tall
         @@draw_offset_x = 0
         scl = cr_w/@@width/ori_s
-        @@draw_offset_y = ((cr_h - cr_w/ratio)/2) / scl / @@original_scale
+        @@draw_offset_y = ((cr_h - cr_w/ratio)/2) / scl
       end
     end
     if (r = @@renderer)
-      r.scale = {scl*@@original_scale, scl*@@original_scale}
+      r.scale = {scl, scl}
     end
   end
 
@@ -99,13 +87,13 @@ module Leafgem::Renderer
         lgr.copy(
           texture,
           SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-          SDL::Rect.new((@@draw_offset_x + x*@@smoothscale).to_i, (@@draw_offset_y + y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
+          SDL::Rect.new((@@draw_offset_x + x*@@scale).to_i, (@@draw_offset_y + y*@@scale).to_i, (w*@@scale).to_i, (h*@@scale).to_i)
         )
       else
         lgr.copy(
           texture,
           SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-          SDL::Rect.new((@@draw_offset_x + x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (@@draw_offset_y + y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
+          SDL::Rect.new((@@draw_offset_x + x*@@scale).to_i - (camera_x*@@scale).to_i, (@@draw_offset_y + y*@@scale).to_i - (camera_y*@@scale).to_i, (w*@@scale).to_i, (h*@@scale).to_i)
         )
       end
     end
@@ -125,7 +113,7 @@ module Leafgem::Renderer
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
-    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    renderer.scale = {@@scale, @@scale}
     rad = 0
     prevy = nil
     prevx = nil
@@ -142,11 +130,11 @@ module Leafgem::Renderer
       end
       rad += (1.0 / r)
     end
-    renderer.scale = {1, 1} if (@@smoothcam)
+    renderer.scale = {1, 1}
   end
 
   def draw_circ(x, y, r)
-    renderer.scale = {@@scale, @@scale} if (@@smoothcam)
+    renderer.scale = {@@scale, @@scale}
     rad = 0
     prevx = nil
     prevy = nil
@@ -164,7 +152,7 @@ module Leafgem::Renderer
       end
       rad += (1.0 / r)
     end
-    renderer.scale = {1, 1} if (@@smoothcam)
+    renderer.scale = {1, 1}
   end
 
   def renderer
@@ -197,20 +185,12 @@ module Leafgem::Renderer
     @@scale
   end
 
-  def original_scale
-    @@original_scale
-  end
-
   def fps
     @@fps
   end
 
   def set_fps(fps_to_set)
     @@fps = fps_to_set
-  end
-
-  def set_smooth_camera(bool)
-    @@smoothcam = bool
   end
 
   def draw_offset_x

@@ -112,12 +112,11 @@ module Leafgem::Library
     end
   end
 
-  def set_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32 = 1.0, smooth_camera : Bool = false)
+  def set_window(window_title : String, window_width : Int32, window_height : Int32, scale : Float32 = 1.0)
     title = window_title || "Leafgem Game"
     width = window_width || 640
     height = window_height || 480
-    Leafgem::Renderer.set_smooth_camera(true)
-    Leafgem::Renderer.create(title, width, height, scale, smooth_camera)
+    Leafgem::Renderer.create(title, width, height, scale)
   end
 
   def camera
