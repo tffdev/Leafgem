@@ -6,14 +6,14 @@ require "ini"
 
 class Leafgem::Map
   # tiles
-  @@tilesheet : SDL::Texture?
+  @@tilesheet : SDL::Surface?
   @@tiles = [] of Array(Int32)
   @@tileset_size : Vec2 = Vec2.new(0, 0)
   @@tilesize : Vec2 = Vec2.new(0, 0)
   @@mapsize : Vec2 = Vec2.new(1, 1)
 
   # backgrounds
-  @@backgrounds = [] of SDL::Texture
+  @@backgrounds = [] of SDL::Surface
   @@backgrounds_parallax = [] of Float64
 
   def self.loadmap(filename)
@@ -22,7 +22,7 @@ class Leafgem::Map
     ini = ini.gsub(",\n") { "," }
     map = INI.parse ini
 
-    @@backgrounds = [] of SDL::Texture
+    @@backgrounds = [] of SDL::Surface
     @@backgrounds_parallax = [] of Float64
 
     map["backgrounds"].each do |index, bgname|
@@ -69,7 +69,7 @@ class Leafgem::Map
       i = (((camera_x*(1 - @@backgrounds_parallax[bg_index])) / background.width)).to_i
       bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
 
-      while (bg_x - Leafgem::Renderer.width < camera_x)
+      while (bg_x - Leafgem::Renderer.size.x < camera_x)
         Leafgem::Draw.sprite(
           background,
           0, 0,

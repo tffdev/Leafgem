@@ -2,7 +2,7 @@
 class Scene_manager < Leafgem::GameObject
   @titlefade = 0.0
   @titleswitch = false
-  @title_sprite : SDL::Texture?
+  @title_sprite : SDL::Surface?
 
   def init
     @title_sprite = sprite("examples/demo/images/title.png")

@@ -1,92 +1,85 @@
 module Leafgem::Renderer
   @@fps = 60
   @@renderer : SDL::Renderer?
-  @@window : SDL::Window?
 
   @@scale = 1
 
-  @@width = 0.0
-  @@height = 0.0
-  @@window_current_width = 0.0
-  @@window_current_height = 0.0
+  @@size = Vec2.new(0, 0)
+  @@window : Leafgem::Window?
 
   @@camera = Leafgem::Camera.new
 
-  @@draw_offset_x = 0.0
-  @@draw_offset_y = 0.0
+  @@offset = Vec2.new(0, 0)
+
+  @@screen_surface : SDL::Surface?
+  @@screen_surface_pointer : Pointer(LibSDL::Surface)?
 
   def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
     # Create window
-    @@window = SDL::Window.new(window_title, window_width, window_height, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowFlags::RESIZABLE)
+    @@window = Leafgem::Window.new(window_title, window_width, window_height, true)
     @@scale = pixel_scale
-
+    @@size = Vec2.new(window_width/pixel_scale, window_height/pixel_scale)
     # Create renderer
+    @@screen_surface_pointer = LibSDL.create_rgb_surface(0, @@size.x, @@size.y, 32, 0, 0, 0, 0)
+    if (ssp = @@screen_surface_pointer)
+      @@screen_surface = SDL::Surface.new(ssp)
+    end
+    puts "CREATED SCREEN SURFACE:"
+    pp @@screen_surface
     if (window = @@window)
-      @@width = (window.width / pixel_scale).to_f
-      @@height = (window.height / pixel_scale).to_f
-      @@window_current_width = @@width
-      @@window_current_height = @@height
-      @@renderer = SDL::Renderer.new(window, SDL::Renderer::Flags::ACCELERATED)
+      @@renderer = SDL::Renderer.new(window.window, SDL::Renderer::Flags::ACCELERATED)
       if renderer = @@renderer
         renderer.draw_blend_mode = LibSDL::BlendMode::BLEND
       end
     end
   end
 
-  def calculate_offset
-    scl = 1
-    if (win = @@window)
-      cr_w = 0
-      cr_h = 0
-      ori_s = @@scale
-      LibSDL.get_window_size(win, pointerof(cr_w), pointerof(cr_h))
-      ratio = @@width/@@height
-      current_ratio = cr_w.to_f/cr_h.to_f
-      if (cr_w >= cr_h*ratio)
-        # if wide
-        @@draw_offset_y = 0
-        scl = cr_h/@@height/ori_s
-        @@draw_offset_x = (cr_w - cr_h*ratio)/2 / scl
-      else
-        # if tall
-        @@draw_offset_x = 0
-        scl = cr_w/@@width/ori_s
-        @@draw_offset_y = ((cr_h - cr_w/ratio)/2) / scl
+  def surface
+    @@screen_surface
+  end
+
+  def present
+    if (lg_r = @@renderer)
+      if (s_surface = @@screen_surface)
+        # copy prerendered screen surface to renderer surface
+        texture = SDL::Texture.from(s_surface, lg_r)
+        lg_r.copy(
+          texture,
+          SDL::Rect.new(0, 0, texture.width, texture.height),
+          SDL::Rect.new(0, 0, (texture.width*@@scale).to_i, (texture.height*@@scale).to_i)
+        )
+        lg_r.present
       end
-    end
-    if (r = @@renderer)
-      r.scale = {scl, scl}
     end
   end
 
+  def calculate_offset
+    # if (window = @@window)
+    #   w_csize = window.current_size
+    #   ratio = @@size.x.to_f / @@size.y.to_f
+    #   current_ratio = w_csize.x.to_f / w_csize.y.to_f
+    #   debug "ratio #{ratio}"
+    #   debug "current_ratio #{current_ratio}"
+    #   if (w_csize.x >= w_csize.y*ratio)
+    #     # if wide
+    #     @@offset.y = 0
+    #     scl = w_csize.y/@@size.x/@@scale
+    #     debug "scl #{scl}"
+    #     @@offset.x = (((w_csize.x - w_csize.y/ratio)/2) / scl).to_i
+    #   else
+    #     # if tall
+    #     @@offset.x = 0
+    #     scl = w_csize.x/@@size.y/@@scale
+    #     @@offset.y = (((w_csize.y - w_csize.x/ratio)/2) / scl).to_i
+    #   end
+    # end
+  end
+
   def draw_resize_boxes
-    if (lgr = Leafgem::Renderer.renderer)
-      old_draw_color = lgr.draw_color
-      lgr.draw_color = SDL::Color.new(0, 0, 0, 255)
-      cr_w = 0
-      cr_h = 0
-      scale = lgr.scale[0]
-      if (win = @@window)
-        LibSDL.get_window_size(win, pointerof(cr_w), pointerof(cr_h))
-        ratio = @@width/@@height
-
-        w_width = (@@draw_offset_x).to_i
-        lgr.fill_rect(-10, 0, w_width + 10, (cr_h/scale).to_i)
-        lgr.fill_rect(((cr_w/scale) - w_width).to_i, 0, w_width + 10, (cr_h/scale).to_i)
-
-        w_height = (@@draw_offset_y).to_i
-        lgr.fill_rect(0, -10, (cr_w/scale).to_i, w_height + 10)
-        lgr.fill_rect(0, (cr_h/scale).to_i - w_height, (cr_w/scale).to_i, w_height + 10)
-      end
-    end
   end
 
   def renderer
     @@renderer
-  end
-
-  def window
-    @@window
   end
 
   def renderer
@@ -95,20 +88,26 @@ module Leafgem::Renderer
     end
   end
 
+  def window
+    @@window
+  end
+
   def camera
     @@camera
   end
 
-  def width
-    @@width
-  end
-
-  def height
-    @@height
+  def size
+    @@size
   end
 
   def scale
     @@scale
+  end
+
+  def current_scale
+    if a = @@renderer
+      a.scale[0]
+    end
   end
 
   def fps
@@ -120,11 +119,11 @@ module Leafgem::Renderer
   end
 
   def draw_offset_x
-    @@draw_offset_x
+    @@offset.x
   end
 
   def draw_offset_y
-    @@draw_offset_y
+    @@offset.y
   end
 
   extend self

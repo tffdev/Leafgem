@@ -1,18 +1,28 @@
 module Leafgem::Draw
-  def sprite(texture, sx, sy, x, y, w, h, ignore_camera = false)
-    if (lgr = Leafgem::Renderer.renderer)
-      if (ignore_camera)
-        lgr.copy(
-          texture,
-          SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-          SDL::Rect.new((Leafgem::Renderer.draw_offset_x + x*Leafgem::Renderer.scale).to_i, (Leafgem::Renderer.draw_offset_y + y*Leafgem::Renderer.scale).to_i, (w*Leafgem::Renderer.scale).to_i, (h*Leafgem::Renderer.scale).to_i)
-        )
-      else
-        lgr.copy(
-          texture,
-          SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-          SDL::Rect.new((Leafgem::Renderer.draw_offset_x + x*Leafgem::Renderer.scale).to_i - (camera_x*Leafgem::Renderer.scale).to_i, (Leafgem::Renderer.draw_offset_y + y*Leafgem::Renderer.scale).to_i - (camera_y*Leafgem::Renderer.scale).to_i, (w*Leafgem::Renderer.scale).to_i, (h*Leafgem::Renderer.scale).to_i)
-        )
+  def sprite(image, sx, sy, x, y, w, h, ignore_camera = false)
+    if (screen_surface = Leafgem::Renderer.surface)
+      if (image)
+        if (ignore_camera)
+          image.blit(
+            screen_surface,
+            SDL::Rect.new(sx.to_i, sy.to_i, w, h),
+            SDL::Rect.new(
+              (Leafgem::Renderer.draw_offset_x + x).to_i,
+              (Leafgem::Renderer.draw_offset_y + y).to_i,
+              (w*Leafgem::Renderer.scale).to_i,
+              (h*Leafgem::Renderer.scale).to_i)
+          )
+        else
+          image.blit(
+            screen_surface,
+            SDL::Rect.new(sx.to_i, sy.to_i, w, h),
+            SDL::Rect.new(
+              (Leafgem::Renderer.draw_offset_x + x).to_i - (camera_x).to_i,
+              (Leafgem::Renderer.draw_offset_y + y).to_i - (camera_y).to_i,
+              (w).to_i,
+              (h).to_i)
+          )
+        end
       end
     end
   end
@@ -30,24 +40,24 @@ module Leafgem::Draw
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
-    renderer.scale = {Leafgem::Renderer.scale, Leafgem::Renderer.scale}
-    rad = 0
-    prevy = nil
-    prevx = nil
-    while rad < Math.PI
-      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
-      y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i + Leafgem::Renderer.draw_offset_y
-      if (y1 != prevy || x1 != prevx)
-        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
-        prevy = y1
-        prevx = x1
-        if (lgr = Leafgem::Renderer.renderer)
-          lgr.fill_rect(x1, y1, x2 - x1 - 1, 1)
+    if (lgr = Leafgem::Renderer.renderer)
+      lgr.scale = {Leafgem::Renderer.scale, Leafgem::Renderer.scale}
+      rad = 0
+      prevy = nil
+      prevx = nil
+      while rad < Math::PI
+        x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
+        y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i + Leafgem::Renderer.draw_offset_y
+        if (y1 != prevy || x1 != prevx)
+          x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
+          prevy = y1
+          prevx = x1
+          lgr.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
         end
+        rad += (1.0 / r)
       end
-      rad += (1.0 / r)
+      lgr.scale = {1, 1}
     end
-    renderer.scale = {1, 1}
   end
 
   def draw_circ(x, y, r)
@@ -55,7 +65,7 @@ module Leafgem::Draw
     rad = 0
     prevx = nil
     prevy = nil
-    while rad < Math.PI
+    while rad < Math::PI
       x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
       y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i + Leafgem::Renderer.draw_offset_y
       if (prevx != x1 || prevy != y1)

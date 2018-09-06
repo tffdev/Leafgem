@@ -88,7 +88,7 @@ module Leafgem::Library
   end
 
   # wowee this is super messy
-  def draw_sprite(texture : SDL::Texture, x = 0, y = 0, alpha = 255, gui = false)
+  def draw_sprite(texture : SDL::Surface, x = 0, y = 0, alpha = 255, gui = false)
     alpha = Math.min(alpha.to_f, 255)
     texture.alpha_mod = alpha
     Leafgem::Draw.sprite(
@@ -120,11 +120,11 @@ module Leafgem::Library
   end
 
   def screen_width
-    Leafgem::Renderer.width
+    Leafgem::Renderer.size.x
   end
 
   def screen_height
-    Leafgem::Renderer.height
+    Leafgem::Renderer.size.y
   end
 
   def set_fullscreen(bool)

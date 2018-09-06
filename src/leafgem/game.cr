@@ -20,7 +20,7 @@ class Leafgem::Game
   @@loop = {} of String => Array(Leafgem::Object)
   @@loopfunc : Proc(Nil)?
 
-  @@font : SDL::Texture?
+  @@font : SDL::Surface?
   @@show_hitboxes = false
 
   @@should_show_debugger = true
@@ -109,7 +109,7 @@ class Leafgem::Game
           end
 
           # finalise
-          lg_r.present
+          Leafgem::Renderer.present
         end
         # reset pressed keys
         Leafgem::KeyManager.clear_pressed

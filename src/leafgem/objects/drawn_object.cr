@@ -38,8 +38,8 @@ class Leafgem::DrawnObject < Leafgem::Object
 
       if (window = Leafgem::Renderer.window)
         # If the object is on screen
-        if !(@position.x > Leafgem::Renderer.width + camera_x ||
-           @position.y > Leafgem::Renderer.height + camera_y ||
+        if !(@position.x > Leafgem::Renderer.size.x + camera_x ||
+           @position.y > Leafgem::Renderer.size.y + camera_y ||
            @position.y + @size.y < camera_y ||
            @position.x + @size.x < camera_x)
           Leafgem::Draw.sprite(
