@@ -24,7 +24,7 @@ class Leafgem::GameObject < Leafgem::DrawnObject
   end
 
   def point_in?(x, y)
-    x >= @position.x && x <= @position.x + @w && y >= @position.y && y <= @position.y + @h
+    x >= @position.x && x <= @position.x + @size.x && y >= @position.y && y <= @position.y + @size.y
   end
 
   def box_collision_check(this, other, x, y)
