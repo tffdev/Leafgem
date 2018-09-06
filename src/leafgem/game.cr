@@ -40,7 +40,7 @@ class Leafgem::Game
     starttime = 0
 
     if (Leafgem::Renderer.renderer)
-      @@font = Leafgem::AssetManager.image("./src/leafgem/fixed.gif")
+      @@font = Leafgem::AssetManager.image("./src/leafgem/debug_font.gif")
     end
 
     loop do
@@ -94,7 +94,7 @@ class Leafgem::Game
               if @@show_hitboxes
                 if hb = object.hitbox
                   set_draw_color(255, 0, 0, 100)
-                  fill_rect(object.position.x + hb.position.x.to_i, object.position.y + hb.position.y.to_i, hb.w.to_i, hb.h.to_i)
+                  fill_rect(object.x, object.y, hb.w.to_i, hb.h.to_i)
                 end
               end
             end

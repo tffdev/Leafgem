@@ -3,6 +3,24 @@ class Vec2
   property y : Int32
 
   def initialize(@x, @y); end
+
+  def to_relative
+    rel_x = 0
+    rel_y = 0
+    if (lgr = Leafgem::Renderer.renderer)
+      rel_x = (@x/lgr.scale[0] - Leafgem::Renderer.draw_offset_x)/Leafgem::Renderer.scale || 0
+      rel_y = (@y/lgr.scale[0] - Leafgem::Renderer.draw_offset_y)/Leafgem::Renderer.scale || 0
+    end
+    Vec2.new(rel_x.to_i, rel_y.to_i)
+  end
+
+  def *(scale)
+    Vec2.new((self.x*scale).to_i, (self.y*scale).to_i)
+  end
+
+  def +(other : Vec2)
+    Vec2.new((self.x + other.x).to_i, (self.y + other.y).to_i)
+  end
 end
 
 class Vec2f
@@ -16,20 +34,3 @@ class Vec2f
     @y = y.to_f64
   end
 end
-
-# class Vec2Relative
-#   property x : Int32
-#   property y : Int32
-
-#   @pre_pos = Vec2(0, 0)
-
-#   def initialize(x, y)
-#   	@pre_pos = Vec2(x,y)
-#   	x = x
-#   	y = y
-#   end
-
-#   def update
-#   	x = @pre_pos.x - Leafgem::Renderer.draw_offset_x
-#   end
-# end

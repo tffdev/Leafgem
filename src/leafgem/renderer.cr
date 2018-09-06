@@ -24,6 +24,7 @@ module Leafgem::Renderer
     @@window = SDL::Window.new(window_title, window_width, window_height, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowPosition::UNDEFINED, LibSDL::WindowFlags::RESIZABLE)
     # used as reference for window resizing
     @@scale = pixel_scale
+
     # Create renderer
     if (window = @@window)
       @@width = (window.width / pixel_scale).to_f
@@ -111,7 +112,12 @@ module Leafgem::Renderer
   end
 
   def fill_rect(x, y, w, h)
-    rect = SDL::Rect.new((@@draw_offset_x + x*@@smoothscale).to_i - (camera_x*@@smoothscale).to_i, (@@draw_offset_y + y*@@smoothscale).to_i - (camera_y*@@smoothscale).to_i, (w*@@smoothscale).to_i, (h*@@smoothscale).to_i)
+    pos = Vec2.new(x.to_i, y.to_i)
+    rect = SDL::Rect.new(
+      (pos.x*@@scale + @@draw_offset_x).to_i,
+      (pos.y*@@scale + @@draw_offset_y).to_i,
+      (w*@@scale).to_i,
+      (h*@@scale).to_i)
     if (lgr = Leafgem::Renderer.renderer)
       lgr.fill_rect(rect.x, rect.y, rect.w, rect.h)
     end
@@ -188,11 +194,11 @@ module Leafgem::Renderer
   end
 
   def scale
-    if r = @@renderer
-      r.scale[0]
-    else
-      0
-    end
+    @@scale
+  end
+
+  def original_scale
+    @@original_scale
   end
 
   def fps

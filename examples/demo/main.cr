@@ -42,6 +42,14 @@ class Player < Leafgem::GameObject
 
   def draw
     draw_self
+    if (lgr = Leafgem::Renderer.renderer)
+      debug "scale #{lgr.scale[0] * Leafgem::Renderer.scale}"
+    end
+
+    set_draw_color(255, 0, 0, 255)
+    fill_rect(Mouse.position.x, Mouse.position.y, 10, 10)
+    debug @x
+    debug @y
   end
 end
 

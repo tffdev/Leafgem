@@ -1,6 +1,6 @@
 module Leafgem::Mouse::Mouse
   @@buttons = {} of UInt8 => Click
-  @@position = nil
+  @@position = Vec2.new(0, 0)
   @@scrolling = false
 
   # Buttons clicked
@@ -10,7 +10,7 @@ module Leafgem::Mouse::Mouse
 
   # The position of the mouse on screen
   def position
-    @@position
+    @@position.to_relative
   end
 
   # TODO: Finish scroll events
