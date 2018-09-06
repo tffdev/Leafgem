@@ -48,8 +48,8 @@ class Player < Leafgem::GameObject
 
     set_draw_color(255, 0, 0, 255)
     fill_rect(Mouse.position.x, Mouse.position.y, 10, 10)
-    debug @x
-    debug @y
+    debug @position.x
+    debug @position.y
   end
 end
 
