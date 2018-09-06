@@ -1,9 +1,12 @@
 class Leafgem::GameObject < Leafgem::DrawnObject
-  property x = 0
-  property y = 0
+  property position : Vec2
   property w = 0
   property h = 0
-  property hitbox = Hitbox.new(0, 0, 0, 0)
+  property hitbox = Hitbox.new(Vec2[0, 0], 0, 0)
+
+  def initialize
+    @position = Vec2[0, 0]
+  end
 
   def init
   end
