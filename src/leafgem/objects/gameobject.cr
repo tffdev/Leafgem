@@ -1,3 +1,5 @@
+require "./drawn_object"
+
 class Leafgem::GameObject < Leafgem::DrawnObject
   def set_hitbox(x, y, w, h)
     self.hitbox.set(x, y, w, h)
@@ -37,21 +39,7 @@ class Leafgem::GameObject < Leafgem::DrawnObject
   end
 
   def meeting_tile?(xoffset, yoffset, tile, accuracy = 2)
-    # insert corners
-    points_to_check = [
-      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
-      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
-      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
-      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
-    ]
-    # insert intermediate points between corners, for better checking
-    (accuracy).times do |i|
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
-      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
-    end
-
+    points_to_check = self.get_collision_points(xoffset, yoffset, accuracy)
     points_to_check.each do |point|
       if (Leafgem::Map.get_tile_at(point[0], point[1]) == tile)
         return true
@@ -61,6 +49,16 @@ class Leafgem::GameObject < Leafgem::DrawnObject
   end
 
   def meeting_tile_layer?(xoffset, yoffset, tilelayer, accuracy = 2)
+    points_to_check = self.get_collision_points(xoffset, yoffset, accuracy)
+    points_to_check.each do |point|
+      if (Leafgem::Map.get_tile_at(point[0], point[1], tilelayer) != 0)
+        return true
+      end
+    end
+    return false
+  end
+
+  def get_collision_points(xoffset, yoffset, accuracy)
     points_to_check = [
       [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
       [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
@@ -74,11 +72,7 @@ class Leafgem::GameObject < Leafgem::DrawnObject
       points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
       points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
-    points_to_check.each do |point|
-      if (Leafgem::Map.get_tile_at(point[0], point[1], tilelayer) != 0)
-        return true
-      end
-    end
-    return false
+
+    return points_to_check
   end
 end

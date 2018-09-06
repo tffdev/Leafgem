@@ -1,3 +1,5 @@
+require "./object"
+
 class Leafgem::DrawnObject < Leafgem::Object
   @anim_start_frame = 0
   @anim_end_frame = 0

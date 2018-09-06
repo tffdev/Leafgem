@@ -1,3 +1,5 @@
+require "./hitbox"
+
 class Leafgem::Object
   property x = 0.0
   property y = 0.0
