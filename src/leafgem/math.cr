@@ -40,6 +40,10 @@ class Vec2 < Vec
     @x = x.to_i
     @y = y.to_i
   end
+
+  def to_f
+    Vec2f.new @x.to_f, @y.to_f
+  end
 end
 
 class Vec2f < Vec
