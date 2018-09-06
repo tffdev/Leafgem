@@ -13,7 +13,7 @@ module Leafgem::Library
     new_obj = thing.new
     new_obj.position.x = x.to_f
     new_obj.position.y = y.to_f
-    new_obj.update_spritesheet
+    # new_obj.update_spritesheet
     new_obj.init
 
     if !Leafgem::Game.loop.has_key?(thing.to_s)
