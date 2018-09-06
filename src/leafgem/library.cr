@@ -88,27 +88,23 @@ module Leafgem::Library
   end
 
   # wowee this is super messy
-  def draw_sprite(file, x = 0, y = 0, alpha = 1.0)
-    alpha = Math.min(alpha.to_f, 1.0)
-    if (x > 320 || y > 240 || typeof(file) == Nil)
-      return 0
-    end
+  def draw_sprite(texture : SDL::Texture, x = 0, y = 0, alpha = 255, gui = false)
+    alpha = Math.min(alpha.to_f, 255)
+    texture.alpha_mod = alpha
+    Leafgem::Draw.sprite(
+      texture,
+      0, 0,
+      x, y, texture.width, texture.height, gui)
+  end
 
-    if (file = file.as?(String | SDL::Texture))
-      if (file = file.as?(SDL::Texture))
-        image = file
-      elsif (file = file.as?(String))
-        image = Leafgem::AssetManager.image(file)
-      end
-      if (image.as?(SDL::Texture))
-        if (texture = image.as(SDL::Texture))
-          texture.alpha_mod = alpha*255
-          Leafgem::Draw.sprite(
-            texture,
-            0, 0,
-            x, y, texture.width, texture.height)
-        end
-      end
+  def draw_sprite(file : String, x = 0, y = 0, alpha = 255, gui = false)
+    alpha = Math.min(alpha.to_f, 255)
+    if (tex = Leafgem::AssetManager.image(file))
+      tex.alpha_mod = alpha
+      Leafgem::Draw.sprite(
+        tex,
+        0, 0,
+        x, y, tex.width, tex.height, gui)
     end
   end
 

@@ -3,8 +3,6 @@
 # [ ] multiple object layers, objects have draw depth + priority
 
 DEBUG_ALPHA =
-  " ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ" \
-  "ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ" \
   " !+#$%&'()*+,-./" \
   "0123456789:;<=>?" \
   "@ABCDEFGHIJKLMNO" \

@@ -10,9 +10,9 @@ class Scene_manager < Leafgem::GameObject
 
   def update
     if (@titleswitch)
-      @titlefade = Math.max(@titlefade - 0.01, 0).to_f
+      @titlefade = Math.max(@titlefade - 3, 0).to_f
     else
-      @titlefade = Math.min(@titlefade + 0.01, 1).to_f
+      @titlefade = Math.min(@titlefade + 3, 255).to_f
     end
     if (get(Player).size > 0 && get(Player)[0].position.x > 150)
       @titleswitch = true
@@ -21,7 +21,7 @@ class Scene_manager < Leafgem::GameObject
 
   def draw
     if (sprite = @title_sprite)
-      draw_sprite(sprite, 32 + (screen_width - sprite.width)/2, 50, @titlefade)
+      draw_sprite(sprite, (screen_width - sprite.width)/2, 50, @titlefade, true)
     end
   end
 end
