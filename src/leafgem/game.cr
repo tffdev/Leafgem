@@ -78,6 +78,8 @@ class Leafgem::Game
           end
         end
 
+        Leafgem::Renderer.camera.update
+
         if (lg_r = Leafgem::Renderer.renderer)
           Leafgem::Renderer.calculate_offset
           # set background to black
@@ -91,10 +93,11 @@ class Leafgem::Game
           Leafgem::Game.loop.each do |set_of_objects|
             set_of_objects[1].each do |object|
               object.draw
+
               if @@show_hitboxes
                 if hb = object.hitbox
                   set_draw_color(255, 0, 0, 100)
-                  fill_rect(object.position.x, object.position.y, hb.w.to_i, hb.h.to_i)
+                  fill_rect(object.position.x + hb.position.x, object.position.y + hb.position.y, hb.size.x.to_i, hb.size.y.to_i)
                 end
               end
             end

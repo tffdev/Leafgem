@@ -6,15 +6,11 @@ require "./scene_manager"
 class Player < Leafgem::GameObject
   @onground = false
 
-  # animations
   Anim::Idle = [[0, 1], 0, 0.05]
 
   def init
     set_spritesheet("examples/demo/images/cat.png", 27, 27)
-
-    # idle animation
     set_animation(Anim::Idle)
-
     set_hitbox(8, 12, 10, 15)
   end
 
@@ -33,35 +29,22 @@ class Player < Leafgem::GameObject
       @onground = true
     end
     @position.y += 1
-
-    if (mpos = Mouse.position)
-      debug mpos.x
-      debug mpos.y
-    end
   end
 
   def draw
     draw_self
-    if (lgr = Leafgem::Renderer.renderer)
-      debug "scale #{lgr.scale[0] * Leafgem::Renderer.scale}"
-    end
-
     set_draw_color(255, 0, 0, 255)
     fill_rect(Mouse.world_position.x, Mouse.world_position.y, 10, 10)
-
-    debug @position.x
-    debug @position.y
+    fill_rect(camera.x + 30, camera.y + 30, 10, 10)
   end
 end
 
-set_window("Leafgem Demo!", 560, 400, 2, true)
-
+set_window("Leafgem Demo!", 560, 400, 2)
 debug_show_hitboxes(true)
 
-# this function is still a work in progress
 load_map("examples/demo/map")
-set_camera_x(32)
 create_object(Scene_manager, 0, 0)
 create_object(Player, 122, 100)
+set_camera_x(32)
 
 Leafgem::Game.run
