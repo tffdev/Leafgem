@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://i.imgur.com/Y3glMNk.png">
+	<img src="https://tfcat.me/files/leafgem.png">
 </p>
 
 ## Description
