@@ -1,7 +1,7 @@
 require "../../src/leafgem"
 include Leafgem::Library
 
-class Draggable < Leafgem::Object
+class Draggable < Leafgem::GameObject
   def initialize
     super
     @offset_x = 0_f64
@@ -10,8 +10,8 @@ class Draggable < Leafgem::Object
   end
 
   def init
-    @x = 32
-    @y = 32
+    @position.x = 32
+    @position.y = 32
     @w = 32
     @h = 32
   end
@@ -31,8 +31,8 @@ class Draggable < Leafgem::Object
 
         # Get the positions
         # Set self to mouse poition
-        @x = x + @offset_x
-        @y = y + @offset_y
+        @position.x = x + @offset_x
+        @position.y = y + @offset_y
         # If it's the first tap
       elsif primary.pressed?
         # If click starts out in self
@@ -40,8 +40,8 @@ class Draggable < Leafgem::Object
         @dragging = true if point_in? x, y
 
         # Offsets so it stays relatively positioned to where you clicked
-        @offset_x = @x - x
-        @offset_y = @y - y
+        @offset_x = @position.x - x
+        @offset_y = @position.y - y
       end
       # Update primary click
       primary.update
@@ -55,7 +55,7 @@ class Draggable < Leafgem::Object
   def draw
     # note that the "draw" color is always white until set otherwise
     set_draw_color(@fill_colour)
-    fill_rect(@x.to_i, @y.to_i, @w.to_i, @h.to_i)
+    fill_rect(@position.x.to_i, @position.y.to_i, @w.to_i, @h.to_i)
   end
 end
 

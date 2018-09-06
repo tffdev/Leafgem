@@ -20,19 +20,19 @@ class Player < Leafgem::GameObject
 
   def update
     @onground = false
-    @x -= key?("left") ? 1 : 0
-    @x += key?("right") ? 1 : 0
-    @y -= key?("up") ? 1 : 0
-    @y += key?("down") ? 1 : 0
+    @position.x -= key?("left") ? 1 : 0
+    @position.x += key?("right") ? 1 : 0
+    @position.y -= key?("up") ? 1 : 0
+    @position.y += key?("down") ? 1 : 0
 
-    set_camera_x(lerp(camera_x, Math.max(@x - 90, 0), 0.05))
+    set_camera_x(lerp(camera_x, Math.max(@position.x - 90, 0), 0.05))
 
     # haha "collision"
     while (meeting_tile_layer?(0, 0, 0))
-      @y -= 0.2
+      @position.y -= 0.2
       @onground = true
     end
-    @y += 1
+    @position.y += 1
 
     if (mpos = Mouse.position)
       debug mpos.x

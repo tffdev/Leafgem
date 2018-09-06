@@ -24,7 +24,7 @@ class Leafgem::GameObject < Leafgem::DrawnObject
   end
 
   def point_in?(x, y)
-    x >= @x && x <= @x + @w && y >= @y && y <= @y + @h
+    x >= @position.x && x <= @position.x + @w && y >= @position.y && y <= @position.y + @h
   end
 
   def box_collision_check(this, other, x, y)
@@ -60,17 +60,17 @@ class Leafgem::GameObject < Leafgem::DrawnObject
 
   def get_collision_points(xoffset, yoffset, accuracy)
     points_to_check = [
-      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
-      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
-      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
-      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+      [@position.x + @hitbox.position.x + xoffset, @position.y + @hitbox.position.y + yoffset],
+      [@position.x + @hitbox.position.x + xoffset + self.hitbox.w, @position.y + @hitbox.position.y + yoffset],
+      [@position.x + @hitbox.position.x + xoffset + self.hitbox.w, @position.y + @hitbox.position.y + yoffset + self.hitbox.h],
+      [@position.x + @hitbox.position.x + xoffset, @position.y + @hitbox.position.y + yoffset + self.hitbox.h],
     ]
     # insert intermediate points between corners, for better checking
     (accuracy).times do |i|
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
-      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
-      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([@position.x + @hitbox.position.x + xoffset + self.hitbox.w * 1/accuracy * i, @position.y + @hitbox.position.y + yoffset])
+      points_to_check.push([@position.x + @hitbox.position.x + xoffset + self.hitbox.w * 1/accuracy * i, @position.y + @hitbox.position.y + yoffset + self.hitbox.h])
+      points_to_check.push([@position.x + @hitbox.position.x + xoffset, @position.y + @hitbox.position.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([@position.x + @hitbox.position.x + xoffset + self.hitbox.w, @position.y + @hitbox.position.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
 
     return points_to_check

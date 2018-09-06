@@ -10,6 +10,11 @@ class Vec2f
   property y : Float64
 
   def initialize(@x, @y); end
+
+  def initialize(x : Int, y : Int)
+    @x = x.to_f64
+    @y = y.to_f64
+  end
 end
 
 # class Vec2Relative
