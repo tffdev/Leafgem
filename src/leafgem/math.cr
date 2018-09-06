@@ -36,11 +36,6 @@ class Vec2 < Vec
 
   def initialize(@x, @y); end
 
-  def initialize(x : Float, y : Float)
-    @x = x.to_i
-    @y = y.to_i
-  end
-
   def initialize(x, y)
     @x = x.to_i
     @y = y.to_i
@@ -52,11 +47,6 @@ class Vec2f < Vec
   property y : Float64
 
   def initialize(@x, @y); end
-
-  def initialize(x : Int, y : Int)
-    @x = x.to_f64
-    @y = y.to_f64
-  end
 
   def initialize(x, y)
     @x = x.to_f64
