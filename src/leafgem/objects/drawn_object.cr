@@ -42,7 +42,7 @@ class Leafgem::DrawnObject < Leafgem::Object
            @position.y > Leafgem::Renderer.height + camera_y ||
            @position.y + @size.y < camera_y ||
            @position.x + @size.x < camera_x)
-          Leafgem::Renderer.draw(
+          Leafgem::Draw.sprite(
             spr.sprite,
             spr.quads[@anim_start_frame + @sprite_index.to_i].x,
             spr.quads[@anim_start_frame + @sprite_index.to_i].y,
