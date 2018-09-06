@@ -10,6 +10,14 @@ class Leafgem::Object
     @position = Vec2f.new(0, 0)
   end
 
+  def x
+    @position.x
+  end
+
+  def y
+    @position.y
+  end
+
   def init
   end
 

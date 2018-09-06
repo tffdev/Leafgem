@@ -49,6 +49,16 @@ class Vec2f < Vec
     @y = y.to_f64
   end
 
+  def to_relative
+    rel_x = 0
+    rel_y = 0
+    if (lgr = Leafgem::Renderer.renderer)
+      rel_x = (@x/lgr.scale[0] - Leafgem::Renderer.draw_offset_x)/Leafgem::Renderer.scale || 0
+      rel_y = (@y/lgr.scale[0] - Leafgem::Renderer.draw_offset_y)/Leafgem::Renderer.scale || 0
+    end
+    Vec2f.new(rel_x, rel_y)
+  end
+
   def to_i
     Vec2.new @x.to_i, @y.to_i
   end
