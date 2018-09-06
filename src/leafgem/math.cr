@@ -1,4 +1,27 @@
-class Vec2
+# Base Vec Class
+# Should be used for other 2D vectors
+abstract class Vec
+  def initialize(@x, @y); end
+
+  {% for name in %w(* + / - %) %}
+
+    # Apply {{name.id}} to the Vector
+    def {{name.id}}(other)
+      self.new(@x * amount, @y * amount)
+    end
+
+    # Apply {{name.id}} with the other Vector
+    def {{name.id}}(other : Vec)
+      x1 = @x {{name.id}} vec.x
+      y1 = @y {{name.id}} vec.y
+
+      self.new(x1, y1)
+    end
+
+  {% end %}
+end
+
+class Vec2 < Vec
   property x : Int32
   property y : Int32
 
@@ -13,21 +36,9 @@ class Vec2
     end
     Vec2.new(rel_x.to_i, rel_y.to_i)
   end
-
-  def *(scale)
-    Vec2.new((self.x*scale).to_i, (self.y*scale).to_i)
-  end
-
-  def +(other : Vec2)
-    Vec2.new((self.x + other.x).to_i, (self.y + other.y).to_i)
-  end
-
-  def to_f
-    Vec2f.new @x.to_f, @y.to_f
-  end
 end
 
-class Vec2f
+class Vec2f < Vec
   property x : Float64
   property y : Float64
 
