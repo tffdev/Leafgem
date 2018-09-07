@@ -38,11 +38,10 @@ module Leafgem::Library
     Leafgem::AssetManager.image(filepath)
   end
 
-  def set_draw_color(r, g, b, a)
+  def set_draw_color(r : Int32, g : Int32, b : Int32, a : Int32 = 255)
     # assuming color is a hex string
-    out_color = SDL::Color.new(r, g, b, a)
     if (lgr = Leafgem::Renderer.renderer)
-      lgr.draw_color = out_color
+      lgr.draw_color = SDL::Color.new(r, g, b, a)
     end
   end
 
@@ -53,8 +52,12 @@ module Leafgem::Library
     end
   end
 
-  def fill_rect(x, y, w, h)
-    Leafgem::Draw.fill_rect(x, y, w, h)
+  def fill_rect(x, y, w, h, ignore_camera = false)
+    Leafgem::Draw.fill_rect(x, y, w, h, ignore_camera = false)
+  end
+
+  def draw_rect(x, y, w, h, ignore_camera = false)
+    Leafgem::Draw.draw_rect(x, y, w, h, ignore_camera = false)
   end
 
   def fill_circ(x, y, r)
@@ -88,7 +91,7 @@ module Leafgem::Library
   end
 
   # wowee this is super messy
-  def draw_sprite(texture : SDL::Texture, x = 0, y = 0, alpha = 255, gui = false)
+  def draw_sprite(texture : SDL::Surface, x = 0, y = 0, alpha = 255, gui = false)
     alpha = Math.min(alpha.to_f, 255)
     texture.alpha_mod = alpha
     Leafgem::Draw.sprite(
@@ -120,11 +123,11 @@ module Leafgem::Library
   end
 
   def screen_width
-    Leafgem::Renderer.width
+    Leafgem::Renderer.size.x
   end
 
   def screen_height
-    Leafgem::Renderer.height
+    Leafgem::Renderer.size.y
   end
 
   def set_fullscreen(bool)

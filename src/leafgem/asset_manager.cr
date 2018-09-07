@@ -1,5 +1,5 @@
 class Leafgem::AssetManager
-  @@sprites = {} of String => SDL::Texture
+  @@sprites = {} of String => SDL::Surface
 
   def self.image(filename : String)
     # This empty string can be replaced with a special Leafgem
@@ -9,13 +9,13 @@ class Leafgem::AssetManager
     if texture = @@sprites[filename]?
       texture
     else
-      @@sprites[filename] = SDL::IMG.load(filename || "", Leafgem::Renderer.renderer.as(SDL::Renderer))
+      @@sprites[filename] = SDL::IMG.load(filename || "")
     end
   end
 end
 
 class Leafgem::Spritesheet
-  @sprite : SDL::Texture
+  @sprite : SDL::Surface
   @quads = [] of SDL::Rect
 
   getter sprite
