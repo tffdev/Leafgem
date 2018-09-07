@@ -33,7 +33,7 @@ class Player < Leafgem::GameObject
 
   def draw
     draw_self
-    set_draw_color(255, 0, 0, 255)
+    set_draw_color(255, 0, 0, 100)
     fill_circ(Mouse.world_position.x, Mouse.world_position.y, 2)
     fill_rect(camera.x + 30, camera.y + 30, 10, 10)
   end

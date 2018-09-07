@@ -12,7 +12,7 @@ class Leafgem::Shapes::Rectangle < Leafgem::GameObject
 
       rect = SDL::Rect.new(position.x, position.y, size.x, size.y)
       Leafgem::Draw.fill_rect(rect) if fill
-      renderer.draw_rect(rect) if outline
+      Leafgem::Draw.draw_rect(rect) if outline
     end
   end
 end

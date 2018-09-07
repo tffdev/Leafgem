@@ -52,8 +52,12 @@ module Leafgem::Library
     end
   end
 
-  def fill_rect(x, y, w, h)
-    Leafgem::Draw.fill_rect(x, y, w, h)
+  def fill_rect(x, y, w, h, ignore_camera = false)
+    Leafgem::Draw.fill_rect(x, y, w, h, ignore_camera = false)
+  end
+
+  def draw_rect(x, y, w, h, ignore_camera = false)
+    Leafgem::Draw.draw_rect(x, y, w, h, ignore_camera = false)
   end
 
   def fill_circ(x, y, r)

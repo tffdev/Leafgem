@@ -39,7 +39,6 @@ module Leafgem::Draw
     if (lgr = Leafgem::Renderer.renderer)
       if (screensurface = Leafgem::Renderer.surface)
         c = lgr.draw_color
-
         rect_surface = SDL::Surface.new(LibSDL.create_rgb_surface(0, 1, 1, 32, 0, 0, 0, 0))
         rect_surface.fill(c.r, c.g, c.b)
         rect_surface.blend_mode = LibSDL::BlendMode::BLEND
@@ -51,6 +50,17 @@ module Leafgem::Draw
         )
       end
     end
+  end
+
+  def draw_rect(rect)
+    self.draw_rect(rect.x, rect.y, rect.w, rect.h)
+  end
+
+  def draw_rect(x, y, w, h, ignore_cam = false)
+    fill_rect(x, y, w, 1, ignore_cam)
+    fill_rect(x, y + h, w + 1, 1, ignore_cam)
+    fill_rect(x, y + 1, 1, h - 1, ignore_cam)
+    fill_rect(x + w, y, 1, h, ignore_cam)
   end
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
