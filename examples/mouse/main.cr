@@ -17,6 +17,12 @@ class Draggable < Leafgem::Shapes::Rectangle
   end
 
   def update
+    if Mouse.scroll.up?
+      @size += 2
+    elsif Mouse.scroll.down?
+      @size -= 2
+    end
+
     # If Mouse.primary exists (and thus is active)
     if primary = Mouse.primary
       x = Mouse.position.not_nil!.x.to_f
@@ -44,7 +50,7 @@ class Draggable < Leafgem::Shapes::Rectangle
         @offset_y = @position.y - y
       end
       # Update primary click
-      primary.update
+      # primary.update
     else
       @fill_colour = {33, 33, 33, 255}
       @dragging = false

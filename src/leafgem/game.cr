@@ -116,6 +116,9 @@ class Leafgem::Game
 
         # remove any items that are to be deleted
         Leafgem::Game.destroy_all_in_buffer
+
+        # Update the mouse
+        Leafgem::Library::Mouse.update
       end
     end
   end
