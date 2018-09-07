@@ -39,7 +39,7 @@ class Player < Leafgem::GameObject
 end
 
 set_window("Leafgem Demo!", 560, 400, 2)
-debug_show_hitboxes(false)
+debug_show_hitboxes(true)
 
 load_map("examples/demo/map")
 create_object(Scene_manager, 0, 0)

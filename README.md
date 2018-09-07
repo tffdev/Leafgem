@@ -31,7 +31,7 @@ Each of the given features *could* be contained in a class which correlates to t
 
 **Control**
 - [x] Keypressing - *on_press*, *on_release* and *is_pressed*
-- [ ] Mouse Input - *on_click*, *on_release*, and *is_pressed* for all of the buttons
+- [x] Mouse Input - *on_click*, *on_release*, and *is_pressed* for all of the buttons
 - [ ] Controller input
 - [ ] Touch input
 
@@ -40,12 +40,19 @@ Each of the given features *could* be contained in a class which correlates to t
 - [x] Destroying objects (self, and foreign)
 - [x] Object selection (e.g. setting attributes of foreign objects )
 - [x] Box collision detection
-    - [ ] Hit box definition, independent of sprite
+    - [x] Hit box definition, independent of sprite
 - [ ] Per-pixel collision detection
 
 **Sprites**
 - [x] Sprite animations + Breaking sprites up into sub-images
 - [ ] Text rendering (TTF?)
+
+**Drawing**
+- [x] Draw rectangles
+- [x] Draw sprites
+- [x] Draw circles
+- [ ] Draw lines
+- [ ] Draw polygons
 
 **Audio**
 - [x] Oneshots
@@ -53,15 +60,15 @@ Each of the given features *could* be contained in a class which correlates to t
 - [x] Audio fade in/out over time
 - [x] Multiple sound samples playing at once (the same sample cannot be played on top of itself)
 
-**Maps/Rooms**
+**Rooms**
 - [x] Background renderer
 	- [x] Parallax scrolling!
 - [ ] Foreground renderer
 - [x] Tileset renderer
-    - [ ] Tile layers
-- [x] "Rooms"
-	- [ ] Spawn objects in predetermined places
-- [ ] Easier workflow regarding room creation... should I make an IDE?
+- [ ] Tile layers
+- [ ] Spawn objects in predetermined places
+
+- [ ] Easier workflow regarding room creation... (Currently use Tiled; should I make an editor?)
 
 ## Known bugs
 - Going above the tilemap results in an invisible duplication of the map, according to the logic in `get_tile_at` within `maps.cr`. This results in unexpected `true` returns with some object functions; `meeting_tile` and `meeting_tile_layer`
