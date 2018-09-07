@@ -1,4 +1,5 @@
 module Leafgem::Mouse::Mouse
+  @@scroll = Scroll.new
   @@buttons = {} of UInt8 => Click
   @@position = Vec2.new(0, 0)
   @@scrolling = false
@@ -19,9 +20,17 @@ module Leafgem::Mouse::Mouse
   end
 
   # TODO: Finish scroll events
-  # def scrolling?
-  #   @@scrolling
-  # end
+  def scrolling?
+    @@scroll.active?
+  end
+
+  def update
+    @@buttons.each do |i, button|
+      button.update
+    end
+
+    @@scroll.update
+  end
 
   # Update the mouse
   def update(event : SDL::Event::MouseButton)
@@ -93,7 +102,9 @@ module Leafgem::Mouse::Mouse
   end
 
   # TODO: Finish this
-  def update(event : SDL::Event::MouseWheel); end
+  def update(event : SDL::Event::MouseWheel)
+    @@scroll.update event
+  end
 
   # Gets the primary button event if it exists
   def primary
@@ -113,5 +124,9 @@ module Leafgem::Mouse::Mouse
   # Gets the button click event by the id if it exists
   def button(id : UInt8)
     @@buttons[id]?
+  end
+
+  def scroll
+    @@scroll
   end
 end
