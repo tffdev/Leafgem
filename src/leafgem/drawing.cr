@@ -24,6 +24,10 @@ module Leafgem::Draw
     end
   end
 
+  def fill_rect(rect)
+    self.fill_rect(rect.x, rect.y, rect.w, rect.h)
+  end
+
   def fill_rect(x, y, w, h, ignore_cam = false)
     cpos = Leafgem::Renderer.camera.pos
     rect = SDL::Rect.new(

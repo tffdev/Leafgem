@@ -42,6 +42,9 @@ module Leafgem::Renderer
       lg_r.clear
       lg_r.draw_color = old_color
     end
+    if (surf = Leafgem::Renderer.surface)
+      surf.fill(255, 255, 255)
+    end
   end
 
   def surface
