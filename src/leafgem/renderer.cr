@@ -34,11 +34,21 @@ module Leafgem::Renderer
     end
   end
 
+  def clear_screen(r, g, b)
+    if (lg_r = Leafgem::Renderer.renderer)
+      # set background to black
+      old_color = lg_r.draw_color
+      lg_r.draw_color = SDL::Color[r, g, b, 255]
+      lg_r.clear
+      lg_r.draw_color = old_color
+    end
+  end
+
   def surface
     @@screen_surface
   end
 
-  def present
+  def draw_buffer
     if (lg_r = @@renderer)
       if (s_surface = @@screen_surface)
         # copy prerendered screen surface to renderer surface
@@ -48,31 +58,17 @@ module Leafgem::Renderer
           SDL::Rect.new(0, 0, texture.width, texture.height),
           SDL::Rect.new(0, 0, (texture.width*@@scale).to_i, (texture.height*@@scale).to_i)
         )
-        lg_r.present
       end
     end
   end
 
+  def present
+    if (lg_r = @@renderer)
+      lg_r.present
+    end
+  end
+
   def calculate_offset
-    # if (window = @@window)
-    #   w_csize = window.current_size
-    #   ratio = @@size.x.to_f / @@size.y.to_f
-    #   current_ratio = w_csize.x.to_f / w_csize.y.to_f
-    #   debug "ratio #{ratio}"
-    #   debug "current_ratio #{current_ratio}"
-    #   if (w_csize.x >= w_csize.y*ratio)
-    #     # if wide
-    #     @@offset.y = 0
-    #     scl = w_csize.y/@@size.x/@@scale
-    #     debug "scl #{scl}"
-    #     @@offset.x = (((w_csize.x - w_csize.y/ratio)/2) / scl).to_i
-    #   else
-    #     # if tall
-    #     @@offset.x = 0
-    #     scl = w_csize.x/@@size.y/@@scale
-    #     @@offset.y = (((w_csize.y - w_csize.x/ratio)/2) / scl).to_i
-    #   end
-    # end
   end
 
   def draw_resize_boxes
