@@ -29,10 +29,11 @@ module Leafgem::Draw
 
   def fill_rect(x, y, w, h)
     rect = SDL::Rect.new(
-      (x - Leafgem::Renderer.camera.pos.x).to_i,
-      (y - Leafgem::Renderer.camera.pos.y).to_i,
-      w.to_i,
-      h.to_i)
+      (x - Leafgem::Renderer.camera.pos.x).to_i + ((w < 0) ? w : 0),
+      (y - Leafgem::Renderer.camera.pos.y).to_i + ((h < 0) ? h : 0),
+      (w < 0) ? w.abs.to_i : w.to_i,
+      (h < 0) ? h.abs.to_i : h.to_i
+    )
     if (lgr = Leafgem::Renderer.renderer)
       if (screensurface = Leafgem::Renderer.surface)
         c = lgr.draw_color
@@ -52,44 +53,23 @@ module Leafgem::Draw
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
-    if (lgr = Leafgem::Renderer.renderer)
-      rad = 0
-      prevy = nil
-      prevx = nil
-      while rad < Math::PI
-        x1 = (x + Math.sin(rad)*r - 0.5).to_i
-        y1 = ((y + Math.cos(rad)*r - 0.5)).to_i
-        if (y1 != prevy || x1 != prevx)
-          x2 = (x + Math.sin(-rad)*r - 0.5).to_i
-          prevy = y1
-          prevx = x1
-          Leafgem::Draw.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
-        end
-        rad += (1.0 / r)
+    rad = 0
+    prevy = nil
+    prevx = nil
+    while rad < Math::PI
+      x1 = (x + Math.sin(rad)*r - 0.5).to_i
+      y1 = ((y + Math.cos(rad)*r - 0.5)).to_i
+      if (y1 != prevy || x1 != prevx)
+        x2 = (x + Math.sin(-rad)*r - 0.5).to_i
+        prevy = y1
+        prevx = x1
+        Leafgem::Draw.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
       end
+      rad += (1.0 / r)
     end
   end
 
   def draw_circ(x, y, r)
-    renderer.scale = {Leafgem::Renderer.scale, Leafgem::Renderer.scale}
-    rad = 0
-    prevx = nil
-    prevy = nil
-    while rad < Math::PI
-      x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
-      y1 = (y + Math.cos(rad)*r - 0.5 - camera_y).to_i + Leafgem::Renderer.draw_offset_y
-      if (prevx != x1 || prevy != y1)
-        x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
-        prevy = y1
-        prevx = x1
-        if (lgr = Leafgem::Renderer.renderer)
-          lgr.draw_point(x1, y1)
-          lgr.draw_point(x2, y1)
-        end
-      end
-      rad += (1.0 / r)
-    end
-    renderer.scale = {1, 1}
   end
 
   extend self

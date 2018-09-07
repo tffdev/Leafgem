@@ -38,11 +38,10 @@ module Leafgem::Library
     Leafgem::AssetManager.image(filepath)
   end
 
-  def set_draw_color(r, g, b, a)
+  def set_draw_color(r : Int32, g : Int32, b : Int32, a : Int32 = 255)
     # assuming color is a hex string
-    out_color = SDL::Color.new(r, g, b, a)
     if (lgr = Leafgem::Renderer.renderer)
-      lgr.draw_color = out_color
+      lgr.draw_color = SDL::Color.new(r, g, b, a)
     end
   end
 
