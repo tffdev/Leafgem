@@ -45,82 +45,78 @@ class Leafgem::Game
       if (starttime + 1000/Leafgem::Renderer.fps <= LibSDL.ticks)
         @@currentfps = 1000/(LibSDL.ticks - starttime)
         starttime = LibSDL.ticks
-
-        while (event = SDL::Event.poll)
-          case event
-          when SDL::Event::Quit
-            puts "Exiting..."
-            SDL.quit
-            exit
-          when SDL::Event::Keyboard
-            Leafgem::KeyManager.update(event)
-          when SDL::Event::MouseButton
-            Leafgem::Library::Mouse.update(event)
-          when SDL::Event::MouseMotion
-            Leafgem::Library::Mouse.update(event)
-          when SDL::Event::MouseWheel
-            Leafgem::Library::Mouse.update(event)
-          end
-        end
-
-        Leafgem::Renderer.camera.update
-
-        if func = @@loopfunc
-          func.call
-        end
-
-        # update all objects
-        Leafgem::Game.loop.each do |set_of_objects|
-          set_of_objects[1].each do |object|
-            object.update
-          end
-        end
-
-        Leafgem::Renderer.camera.update
-
-        if (lg_r = Leafgem::Renderer.renderer)
-          Leafgem::Renderer.calculate_offset
-          # set background to black
-          lg_r.draw_color = SDL::Color[255, 255, 255, 255]
-          lg_r.clear
-
-          # Draw map
-          Leafgem::Map.draw
-
-          # draw all objects
-          Leafgem::Game.loop.each do |set_of_objects|
-            set_of_objects[1].each do |object|
-              object.draw
-
-              if @@show_hitboxes
-                if hb = object.hitbox
-                  set_draw_color(255, 0, 0, 100)
-                  fill_rect(object.position.x + hb.position.x, object.position.y + hb.position.y, hb.size.x.to_i, hb.size.y.to_i)
-                end
-              end
-            end
-          end
-
-          # Hide parts of window that shouldn't be shown due to resizing
-          Leafgem::Renderer.draw_resize_boxes
-
-          if (@@should_show_debugger)
-            Leafgem::Game.draw_debug
-          end
-
-          # finalise
-          Leafgem::Renderer.present
-        end
-        # reset pressed keys
-        Leafgem::KeyManager.clear_pressed
-
-        # remove any items that are to be deleted
-        Leafgem::Game.destroy_all_in_buffer
-
-        # Update the mouse
-        Leafgem::Library::Mouse.update
+        self.game_update
       end
     end
+  end
+
+  def self.game_update
+    while (event = SDL::Event.poll)
+      case event
+      when SDL::Event::Quit
+        puts "Exiting..."
+        SDL.quit
+        exit
+      when SDL::Event::Keyboard
+        Leafgem::KeyManager.update(event)
+      when SDL::Event::MouseButton
+        Leafgem::Library::Mouse.update(event)
+      when SDL::Event::MouseMotion
+        Leafgem::Library::Mouse.update(event)
+      when SDL::Event::MouseWheel
+        Leafgem::Library::Mouse.update(event)
+      end
+    end
+
+    Leafgem::Renderer.camera.update
+
+    if func = @@loopfunc
+      func.call
+    end
+
+    # update all objects
+    Leafgem::Game.loop.each do |set_of_objects|
+      set_of_objects[1].each do |object|
+        object.update
+      end
+    end
+
+    Leafgem::Renderer.camera.update
+    Leafgem::Renderer.calculate_offset
+    Leafgem::Renderer.clear_screen(0, 0, 0)
+    Leafgem::Map.draw
+
+    # draw all objects
+    Leafgem::Game.loop.each do |set_of_objects|
+      set_of_objects[1].each do |object|
+        object.draw
+
+        if @@show_hitboxes
+          if hb = object.hitbox
+            set_draw_color(255, 0, 0, 100)
+            fill_rect(object.position.x + hb.position.x, object.position.y + hb.position.y, hb.size.x.to_i, hb.size.y.to_i)
+          end
+        end
+      end
+    end
+
+    # Hide parts of window that shouldn't be shown due to resizing
+    Leafgem::Renderer.draw_resize_boxes
+    Leafgem::Renderer.draw_buffer
+    if (@@should_show_debugger)
+      Leafgem::Game.draw_debug
+    end
+
+    # finalise
+    Leafgem::Renderer.present
+    # reset pressed keys
+    Leafgem::KeyManager.clear_pressed
+
+    # remove any items that are to be deleted
+    Leafgem::Game.destroy_all_in_buffer
+
+    # Update the mouse
+    Leafgem::Library::Mouse.update
   end
 
   def self.set_loopfunc(function)
