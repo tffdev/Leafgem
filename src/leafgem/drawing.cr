@@ -69,13 +69,13 @@ module Leafgem::Draw
     prevy = nil
     prevx = nil
     while rad < Math::PI
-      x1 = (x + Math.sin(rad)*r - 0.5).to_i
-      y1 = ((y + Math.cos(rad)*r - 0.5)).to_i
+      x1 = (Math.sin(rad)*r - 0.5).to_i
+      y1 = (Math.cos(rad)*r - 0.5).to_i
       if (y1 != prevy || x1 != prevx)
-        x2 = (x + Math.sin(-rad)*r - 0.5).to_i
+        x2 = (Math.sin(-rad)*r - 0.5).to_i
         prevy = y1
         prevx = x1
-        Leafgem::Draw.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
+        Leafgem::Draw.fill_rect(x + x1.to_i, y + y1.to_i, (x2 - x1 - 1).to_i, 1)
       end
       rad += (1.0 / r)
     end

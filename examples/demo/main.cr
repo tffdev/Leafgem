@@ -35,12 +35,11 @@ class Player < Leafgem::GameObject
     draw_self
     set_draw_color(255, 0, 0, 100)
     fill_circ(Mouse.world_position.x, Mouse.world_position.y, 2)
-    fill_rect(camera.x + 30, camera.y + 30, 10, 10)
   end
 end
 
 set_window("Leafgem Demo!", 560, 400, 2)
-debug_show_hitboxes(true)
+debug_show_hitboxes(false)
 
 load_map("examples/demo/map")
 create_object(Scene_manager, 0, 0)
