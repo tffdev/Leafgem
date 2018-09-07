@@ -6,31 +6,29 @@ module Leafgem::Draw
           image.blit(
             screen_surface,
             SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-            SDL::Rect.new(
-              (Leafgem::Renderer.draw_offset_x + x).to_i,
-              (Leafgem::Renderer.draw_offset_y + y).to_i,
-              (w*Leafgem::Renderer.scale).to_i,
-              (h*Leafgem::Renderer.scale).to_i)
+            SDL::Rect.new(x.to_i, y.to_i, w.to_i, h.to_i)
           )
         else
           image.blit(
             screen_surface,
             SDL::Rect.new(sx.to_i, sy.to_i, w, h),
             SDL::Rect.new(
-              (Leafgem::Renderer.draw_offset_x + x).to_i - (camera_x).to_i,
-              (Leafgem::Renderer.draw_offset_y + y).to_i - (camera_y).to_i,
-              (w).to_i,
-              (h).to_i)
+              x.to_i - (camera_x).to_i,
+              y.to_i - (camera_y).to_i,
+              w.to_i,
+              h.to_i
+            )
           )
         end
       end
     end
   end
 
-  def fill_rect(x, y, w, h)
+  def fill_rect(x, y, w, h, ignore_cam = false)
+    cpos = Leafgem::Renderer.camera.pos
     rect = SDL::Rect.new(
-      (x - Leafgem::Renderer.camera.pos.x).to_i + ((w < 0) ? w : 0),
-      (y - Leafgem::Renderer.camera.pos.y).to_i + ((h < 0) ? h : 0),
+      (x - ((ignore_cam) ? 0 : cpos.x.to_i)).to_i + ((w < 0) ? w : 0),
+      (y - ((ignore_cam) ? 0 : cpos.y.to_i)).to_i + ((h < 0) ? h : 0),
       (w < 0) ? w.abs.to_i : w.to_i,
       (h < 0) ? h.abs.to_i : h.to_i
     )
