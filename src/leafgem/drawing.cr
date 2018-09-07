@@ -29,34 +29,44 @@ module Leafgem::Draw
 
   def fill_rect(x, y, w, h)
     rect = SDL::Rect.new(
-      ((x - Leafgem::Renderer.camera.pos.x)*Leafgem::Renderer.scale + Leafgem::Renderer.draw_offset_x).to_i,
-      ((y - Leafgem::Renderer.camera.pos.y)*Leafgem::Renderer.scale + Leafgem::Renderer.draw_offset_y).to_i,
-      (w*Leafgem::Renderer.scale).to_i,
-      (h*Leafgem::Renderer.scale).to_i)
+      (x - Leafgem::Renderer.camera.pos.x).to_i,
+      (y - Leafgem::Renderer.camera.pos.y).to_i,
+      w.to_i,
+      h.to_i)
     if (lgr = Leafgem::Renderer.renderer)
-      lgr.fill_rect(rect.x, rect.y, rect.w, rect.h)
+      if (screensurface = Leafgem::Renderer.surface)
+        c = lgr.draw_color
+
+        rect_surface = SDL::Surface.new(LibSDL.create_rgb_surface(0, 1, 1, 32, 0, 0, 0, 0))
+        rect_surface.fill(c.r, c.g, c.b)
+        rect_surface.blend_mode = LibSDL::BlendMode::BLEND
+        rect_surface.alpha_mod = c.a
+        rect_surface.blit_scaled(
+          screensurface,
+          SDL::Rect.new(0, 0, 1, 1),
+          rect
+        )
+      end
     end
   end
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
     if (lgr = Leafgem::Renderer.renderer)
-      lgr.scale = {Leafgem::Renderer.scale, Leafgem::Renderer.scale}
       rad = 0
       prevy = nil
       prevx = nil
       while rad < Math::PI
-        x1 = (x + Math.sin(rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
-        y1 = ((y + Math.cos(rad)*r - 0.5 - camera_y)).to_i + Leafgem::Renderer.draw_offset_y
+        x1 = (x + Math.sin(rad)*r - 0.5).to_i
+        y1 = ((y + Math.cos(rad)*r - 0.5)).to_i
         if (y1 != prevy || x1 != prevx)
-          x2 = (x + Math.sin(-rad)*r - 0.5 - camera_x).to_i + Leafgem::Renderer.draw_offset_x
+          x2 = (x + Math.sin(-rad)*r - 0.5).to_i
           prevy = y1
           prevx = x1
-          lgr.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
+          Leafgem::Draw.fill_rect(x1.to_i, y1.to_i, (x2 - x1 - 1).to_i, 1)
         end
         rad += (1.0 / r)
       end
-      lgr.scale = {1, 1}
     end
   end
 
