@@ -10,4 +10,8 @@ class Leafgem::Object
   def update; end
 
   def draw; end
+
+  def destroy
+    Leafgem::Game.to_destroy.push(self)
+  end
 end
