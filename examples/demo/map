@@ -1,3 +1,4 @@
+# These map files are generated with TILED, exporting as a "flare map file"
 [header]
 width=100
 height=13
@@ -13,7 +14,7 @@ tileset=examples/demo/images/tileset.png,16,16,0,0
 0=examples/demo/images/bg4.png,1
 1=examples/demo/images/bg3.png,0.3
 2=examples/demo/images/bg2.png,0.2
-3=examples/demo/images/bg1.png,0
+3=examples/demo/images/bg1.png,0.1
 
 [layer0]
 type=Tile Layer 1

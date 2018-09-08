@@ -12,6 +12,13 @@ class Leafgem::Window
     @size = Vec2.new(width, height)
   end
 
+  def current_size
+    cr_w = 0
+    cr_h = 0
+    LibSDL.get_window_size(@window, pointerof(cr_w), pointerof(cr_h))
+    Vec2.new(cr_w, cr_h)
+  end
+
   def window
     @window
   end
@@ -26,12 +33,5 @@ class Leafgem::Window
 
   def height
     @size.y
-  end
-
-  def current_size
-    cr_w = 0
-    cr_h = 0
-    LibSDL.get_window_size(@window, pointerof(cr_w), pointerof(cr_h))
-    Vec2.new(cr_w, cr_h)
   end
 end

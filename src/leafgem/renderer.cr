@@ -56,12 +56,24 @@ module Leafgem::Renderer
       if (s_surface = @@screen_surface)
         # copy prerendered screen surface to renderer surface
         texture = SDL::Texture.from(s_surface, lg_r)
+        output_rect = self.calculate_onscreen_rect
         lg_r.copy(
           texture,
           SDL::Rect.new(0, 0, texture.width, texture.height),
-          SDL::Rect.new(0, 0, (texture.width*@@scale).to_i, (texture.height*@@scale).to_i)
+          output_rect
         )
       end
+    end
+  end
+
+  def calculate_onscreen_rect
+    if (window = @@window)
+      c_size = window.current_size
+      @@scale = Math.min(c_size.x.to_f / size.x, c_size.y.to_f / size.y).to_f32
+      ratio = size.x.to_f/size.y
+      @@offset.x = Math.max(((c_size.x - c_size.y*ratio)/2), 0).to_i
+      @@offset.y = Math.max(((c_size.y - c_size.x/ratio)/2), 0).to_i
+      SDL::Rect.new(@@offset.x, @@offset.y, (size.x*@@scale).to_i, (size.y*@@scale).to_i)
     end
   end
 
@@ -69,16 +81,6 @@ module Leafgem::Renderer
     if (lg_r = @@renderer)
       lg_r.present
     end
-  end
-
-  def calculate_offset
-  end
-
-  def draw_resize_boxes
-  end
-
-  def renderer
-    @@renderer
   end
 
   def renderer
@@ -117,12 +119,8 @@ module Leafgem::Renderer
     @@fps = fps_to_set
   end
 
-  def draw_offset_x
-    @@offset.x
-  end
-
-  def draw_offset_y
-    @@offset.y
+  def offset
+    @@offset
   end
 
   extend self

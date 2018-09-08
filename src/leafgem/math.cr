@@ -23,8 +23,8 @@ abstract class Vec
     rel_x = 0
     rel_y = 0
     if (lgr = Leafgem::Renderer.renderer)
-      rel_x = (@x/lgr.scale[0] - Leafgem::Renderer.draw_offset_x)/Leafgem::Renderer.scale || 0
-      rel_y = (@y/lgr.scale[0] - Leafgem::Renderer.draw_offset_y)/Leafgem::Renderer.scale || 0
+      rel_x = (@x/lgr.scale[0] - Leafgem::Renderer.offset.x)/Leafgem::Renderer.scale || 0
+      rel_y = (@y/lgr.scale[0] - Leafgem::Renderer.offset.y)/Leafgem::Renderer.scale || 0
     end
     self.class.new(rel_x, rel_y)
   end

@@ -82,7 +82,6 @@ class Leafgem::Game
     end
 
     Leafgem::Renderer.camera.update
-    Leafgem::Renderer.calculate_offset
     Leafgem::Renderer.clear_screen(0, 0, 0)
     Leafgem::Map.draw
 
@@ -101,8 +100,8 @@ class Leafgem::Game
     end
 
     # Hide parts of window that shouldn't be shown due to resizing
-    Leafgem::Renderer.draw_resize_boxes
     Leafgem::Renderer.draw_buffer
+
     if (@@should_show_debugger)
       Leafgem::Game.draw_debug
     end
