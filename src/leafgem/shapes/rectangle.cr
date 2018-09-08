@@ -6,7 +6,7 @@ class Leafgem::Shapes::Rectangle < Leafgem::GameObject
     draw_self(position, size)
   end
 
-  def draw_self(position : Vec = @position, size : Vec = @size, fill = @fill, outline = @outline)
+  def draw_self(position : Vec = @pos, size : Vec = @size, fill = @fill, outline = @outline)
     if (renderer = Leafgem::Renderer.renderer)
       position = position.to_i
 

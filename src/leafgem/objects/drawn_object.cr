@@ -38,16 +38,16 @@ class Leafgem::DrawnObject < Leafgem::Object
 
       if (window = Leafgem::Renderer.window)
         # If the object is on screen
-        if !(@position.x > Leafgem::Renderer.size.x + camera_x ||
-           @position.y > Leafgem::Renderer.size.y + camera_y ||
-           @position.y + @size.y < camera_y ||
-           @position.x + @size.x < camera_x)
+        if !(@pos.x > Leafgem::Renderer.size.x + camera_x ||
+           @pos.y > Leafgem::Renderer.size.y + camera_y ||
+           @pos.y + @size.y < camera_y ||
+           @pos.x + @size.x < camera_x)
           Leafgem::Draw.sprite(
             spr.sprite,
             spr.quads[@anim_start_frame + @sprite_index.to_i].x,
             spr.quads[@anim_start_frame + @sprite_index.to_i].y,
-            @position.x,
-            @position.y,
+            @pos.x,
+            @pos.y,
             spr.quads[0].w,
             spr.quads[0].h
           )
@@ -57,23 +57,28 @@ class Leafgem::DrawnObject < Leafgem::Object
   end
 
   def set_animation(anim)
-    self.set_animation(anim[0].as(Array(Int32)), anim[1].as(Int32), anim[2].as(Float64))
+    if (animspeed = anim[2].as(Int32 | Float64))
+      self.set_animation(anim[0].as(Array(Int32)), anim[1].as(Int32), animspeed.to_f)
+    end
   end
 
-  def set_animation(cols : Array(Int32), param_row : Int32, sprite_speed : Float64 = Nil)
+  def set_animation(cols : Array(Int32), param_row : Int32, sprite_speed : Float64 = 0)
+    puts "setting animation: #{cols}, #{param_row}, #{sprite_speed}"
     @is_animated = true
-    if imgspd = sprite_speed
-      @sprite_speed = imgspd
+    @sprite_speed = sprite_speed
+    offset_y = 0
+    if spritesheet = @spritesheet
+      pp "settings.."
+      offset_y = (spritesheet.sprite.width / spritesheet.quads[0].w).to_i * param_row
+      pp spritesheet.quads.size
     end
-    if param_row != 0
-      if spritesheet = @spritesheet
-        offset_y = (spritesheet.sprite.width / spritesheet.quads[0].w).to_i * param_row
-        @anim_start_frame = offset_y + cols[0]
-        @anim_end_frame = offset_y + cols[cols.size - 1]
-      end
-    else
-      @anim_start_frame = cols[0]
-      @anim_end_frame = cols[cols.size - 1]
-    end
+
+    pp offset_y
+    @anim_start_frame = cols[0] + offset_y
+    @anim_end_frame = cols[cols.size - 1] + offset_y
+  end
+
+  def set_animation(cols : Int32, param_row : Int32, sprite_speed : Float64 = 0)
+    self.set_animation([cols], param_row, sprite_speed)
   end
 end

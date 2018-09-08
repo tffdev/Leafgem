@@ -1,17 +1,17 @@
 class Leafgem::Hitbox
-  property position : Vec2
+  property pos : Vec2
   property size : Vec2
 
-  def initialize(@position : Vec2, @size : Vec2)
+  def initialize(@pos : Vec2, @size : Vec2)
   end
 
   def set(x, y, w, h)
-    @position = Vec2.new x, y
+    @pos = Vec2.new x, y
     @size = Vec2.new w, h
   end
 
   def get
-    {@position, @size}
+    {@pos, @size}
   end
 
   def meeting?(x, y, foreign_object)
@@ -33,7 +33,7 @@ class Leafgem::Hitbox
   end
 
   def point_in?(x, y)
-    x >= @position.x && x <= @position.y + @w && y >= @position.y && y <= @position.y + @h
+    x >= @pos.x && x <= @pos.y + @w && y >= @pos.y && y <= @pos.y + @h
   end
 
   def box_collision_check(this, other, x, y)

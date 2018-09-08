@@ -11,8 +11,8 @@ module Leafgem::Library
   def create_object(thing, x = 0, y = 0)
     # Give objects a unique identifier on create?
     new_obj = thing.new
-    new_obj.position.x = x.to_f
-    new_obj.position.y = y.to_f
+    new_obj.pos.x = x.to_f
+    new_obj.pos.y = y.to_f
     # new_obj.update_spritesheet
     new_obj.init
 

@@ -93,7 +93,7 @@ class Leafgem::Game
         if @@show_hitboxes
           if hb = object.hitbox
             set_draw_color(255, 0, 0, 100)
-            fill_rect(object.position.x + hb.position.x, object.position.y + hb.position.y, hb.size.x.to_i, hb.size.y.to_i)
+            fill_rect(object.pos.x + hb.pos.x, object.pos.y + hb.pos.y, hb.size.x.to_i, hb.size.y.to_i)
           end
         end
       end
