@@ -168,6 +168,20 @@ module Leafgem::Library
     return a + (b - a) * t
   end
 
+  def clamp(val, min, max)
+    return Math.max(Math.min(val, max), min)
+  end
+
+  def sign(val)
+    if (val > 0)
+      1
+    elsif (val < 0)
+      -1
+    else
+      0
+    end
+  end
+
   def debug(text)
     Leafgem::Game.debug(text.to_s)
   end
