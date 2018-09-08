@@ -1,25 +1,17 @@
 module Leafgem::Draw
-  def sprite(image, sx, sy, x, y, w, h, ignore_camera = false)
+  def sprite(image, sx, sy, x, y, w, h, xscale = 1, yscale = 1, ignore_camera = false)
     if (screen_surface = Leafgem::Renderer.surface)
       if (image)
-        if (ignore_camera)
-          image.blit(
-            screen_surface,
-            SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-            SDL::Rect.new(x.to_i, y.to_i, w.to_i, h.to_i)
+        image.blit_scaled(
+          screen_surface,
+          SDL::Rect.new(sx.to_i, sy.to_i, w, h),
+          SDL::Rect.new(
+            x.to_i - ((ignore_camera) ? 0 : (camera_x).to_i),
+            y.to_i - ((ignore_camera) ? 0 : (camera_y).to_i),
+            w.to_i * xscale,
+            h.to_i * yscale
           )
-        else
-          image.blit(
-            screen_surface,
-            SDL::Rect.new(sx.to_i, sy.to_i, w, h),
-            SDL::Rect.new(
-              x.to_i - (camera_x).to_i,
-              y.to_i - (camera_y).to_i,
-              w.to_i,
-              h.to_i
-            )
-          )
-        end
+        )
       end
     end
   end

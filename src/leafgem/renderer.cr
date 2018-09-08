@@ -24,8 +24,6 @@ module Leafgem::Renderer
     if (ssp = @@screen_surface_pointer)
       @@screen_surface = SDL::Surface.new(ssp)
     end
-    puts "CREATED SCREEN SURFACE:"
-    pp @@screen_surface
     if (window = @@window)
       @@renderer = SDL::Renderer.new(window.window, SDL::Renderer::Flags::ACCELERATED)
       if renderer = @@renderer

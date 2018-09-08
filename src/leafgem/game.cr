@@ -174,7 +174,7 @@ class Leafgem::Game
     @@to_destroy.each do |thing|
       Leafgem::Game.loop[thing.class.to_s].delete(thing)
       if (Leafgem::Game.loop[thing.class.to_s].size == 0)
-        puts "empty"
+        # clear hash key?
       end
     end
     @@to_destroy = [] of Leafgem::Object

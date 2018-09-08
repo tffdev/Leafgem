@@ -82,22 +82,20 @@ module Leafgem::Library
     Leafgem::KeyManager.key_is_held(keycode.downcase)
   end
 
-  def keyboard_check(keycode : String)
-    Leafgem::KeyManager.key_is_held(keycode.downcase)
-  end
-
   def set_loop_function(function : Proc(Void))
     Leafgem::Game.set_loopfunc(function)
   end
 
   # wowee this is super messy
-  def draw_sprite(texture : SDL::Surface, x = 0, y = 0, alpha = 255, gui = false)
+  def draw_sprite(texture : SDL::Surface, x = 0, y = 0, alpha = 255, xscale = 1, yscale = 1, gui = false)
     alpha = Math.min(alpha.to_f, 255)
     texture.alpha_mod = alpha
     Leafgem::Draw.sprite(
       texture,
       0, 0,
-      x, y, texture.width, texture.height, gui)
+      x, y, texture.width, texture.height,
+      xscale, yscale,
+      gui)
   end
 
   def draw_sprite(file : String, x = 0, y = 0, alpha = 255, gui = false)

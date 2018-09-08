@@ -49,7 +49,9 @@ class Leafgem::DrawnObject < Leafgem::Object
             @pos.x,
             @pos.y,
             spr.quads[0].w,
-            spr.quads[0].h
+            spr.quads[0].h,
+            @sprite_xscale,
+            @sprite_yscale
           )
         end
       end
@@ -58,22 +60,18 @@ class Leafgem::DrawnObject < Leafgem::Object
 
   def set_animation(anim)
     if (animspeed = anim[2].as(Int32 | Float64))
-      self.set_animation(anim[0].as(Array(Int32)), anim[1].as(Int32), animspeed.to_f)
+      self.set_animation(anim[0].as(Array(Int32) | Int32), anim[1].as(Int32), animspeed.to_f)
     end
   end
 
   def set_animation(cols : Array(Int32), param_row : Int32, sprite_speed : Float64 = 0)
-    puts "setting animation: #{cols}, #{param_row}, #{sprite_speed}"
     @is_animated = true
     @sprite_speed = sprite_speed
     offset_y = 0
     if spritesheet = @spritesheet
-      pp "settings.."
       offset_y = (spritesheet.sprite.width / spritesheet.quads[0].w).to_i * param_row
-      pp spritesheet.quads.size
     end
 
-    pp offset_y
     @anim_start_frame = cols[0] + offset_y
     @anim_end_frame = cols[cols.size - 1] + offset_y
   end
