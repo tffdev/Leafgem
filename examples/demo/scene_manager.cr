@@ -21,7 +21,7 @@ class Scene_manager < Leafgem::GameObject
 
   def draw
     if (sprite = @title_sprite)
-      draw_sprite(sprite, (screen_width - sprite.width)/2, 50, @titlefade, true)
+      draw_sprite(sprite, (screen_width - sprite.width)/2, 50, @titlefade, 1, 1, true)
     end
   end
 end
