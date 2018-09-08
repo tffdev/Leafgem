@@ -65,6 +65,9 @@ module Leafgem::Draw
 
   # aaa, yummy slow circle drawing algorithms. pleasehelp
   def fill_circ(x, y, r)
+    if r <= 0
+      return
+    end
     rad = 0
     prevy = nil
     prevx = nil
