@@ -1,5 +1,5 @@
 # This is just the code to show the fading title!
-class Scene_manager < Leafgem::GameObject
+class Scene_manager < Leafgem::Objects::Game
   @titlefade = 0.0
   @titleswitch = false
   @title_sprite : SDL::Surface?

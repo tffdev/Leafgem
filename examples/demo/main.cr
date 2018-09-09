@@ -3,7 +3,7 @@ include Leafgem::Library
 
 require "./scene_manager"
 
-class Player < Leafgem::GameObject
+class Player < Leafgem::Objects::Game
   # animations: [[start_col, end_col], row, speed]
   Anim::Idle = [[0, 1], 0, 0.05]
   Anim::Walking = [[2, 3], 0, 0.1]
@@ -22,7 +22,7 @@ class Player < Leafgem::GameObject
   @y_cnt = 0.0
   @onground = false
 
-  def init
+  def create
     set_spritesheet("examples/demo/images/cat.png", 27, 27)
     set_animation(Anim::Idle)
     set_hitbox(8, 12, 10, 14)
@@ -30,6 +30,9 @@ class Player < Leafgem::GameObject
   end
 
   def update
+    debug @xvel
+    debug @yvel
+
     self.move
     self.collide
     self.setanim
@@ -39,13 +42,16 @@ class Player < Leafgem::GameObject
   def draw
     draw_self
     set_draw_color(255, 0, 0, 100)
-    fill_circ(Mouse.world_position.x, Mouse.world_position.y, 2)
+    # fill_circ(Mouse.world_position.x, Mouse.world_position.y, 2)
   end
 
   def move
+    debug key? "left"
+
     @xvel -= 1 if key? "left"
     @xvel += 1 if key? "right"
     @yvel = -4 if (key?("space") && @onground)
+
     if (key_pressed?("space") && !@onground && @doublejump)
       @yvel = -4
       @doublejump = false
@@ -84,11 +90,11 @@ class Player < Leafgem::GameObject
     hh = @x_cnt.abs
     while (hh > 0)
       hh -= 1
-      if (meeting_tile_layer?(sign(@x_cnt), 0, 0))
+      if (@hitbox.meeting_tile_layer?(sign(@x_cnt), 0, 0))
         @xvel = 0
         break
       else
-        if (@onground && !meeting_tile_layer?(sign(@x_cnt), 1, 0) && meeting_tile_layer?(sign(@x_cnt), 2, 0))
+        if (@onground && !@hitbox.meeting_tile_layer?(sign(@x_cnt), 1, 0) && @hitbox.meeting_tile_layer?(sign(@x_cnt), 2, 0))
           @pos.y += 1
         end
         @pos.x += sign(@x_cnt)
@@ -99,13 +105,13 @@ class Player < Leafgem::GameObject
     while (vv > 0)
       vv -= 1
       if (@yvel <= 0)
-        if (meeting_tile_layer?(0, sign(@y_cnt), 0))
+        if (@hitbox.meeting_tile_layer?(0, sign(@y_cnt), 0))
           @yvel = 0
           break
         else
           @pos.y += sign(@y_cnt)
         end
-      elsif (meeting_tile_layer?(0, 1, 0))
+      elsif (@hitbox.meeting_tile_layer?(0, 1, 0))
         @yvel = 0
         break
       else
@@ -113,7 +119,7 @@ class Player < Leafgem::GameObject
       end
     end
 
-    if (meeting_tile_layer?(0, 1, 0))
+    if (@hitbox.meeting_tile_layer?(0, 1, 0))
       @onground = true
       @doublejump = true
     else
@@ -122,9 +128,9 @@ class Player < Leafgem::GameObject
   end
 end
 
-class Sparkle < Leafgem::GameObject
+class Sparkle < Leafgem::Objects::Game
   @circle_size : Float64 = Random.rand*4
-  @vel = Vec2f.new((Random.rand - 0.5)*2, (Random.rand - 0.2)*2)
+  @vel = Vec2(Float64).new((Random.rand - 0.5)*2, (Random.rand - 0.2)*2)
 
   def update
     @pos.x += @vel.x /= 1.1

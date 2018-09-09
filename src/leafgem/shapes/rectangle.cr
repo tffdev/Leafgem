@@ -1,14 +1,15 @@
-class Leafgem::Shapes::Rectangle < Leafgem::GameObject
+class Leafgem::Shapes::Rectangle < Leafgem::Objects::Game
   property fill = true
   property outline = false
 
-  def self.draw(position : Vec, size : Vec, fill = true, outline = false)
+  def self.draw(position : Vec2, size : Vec2, fill = true, outline = false)
     draw_self(position, size)
   end
 
-  def draw_self(position : Vec = @pos, size : Vec = @size, fill = @fill, outline = @outline)
+  def draw_self(position : Vec2 = @pos, size : Vec2 = @size, fill = @fill, outline = @outline)
     if (renderer = Leafgem::Renderer.renderer)
       position = position.to_i
+      size = size.to_i
 
       rect = SDL::Rect.new(position.x, position.y, size.x, size.y)
       Leafgem::Draw.fill_rect(rect) if fill
