@@ -17,7 +17,7 @@ lib LibSDL
 end
 
 class Leafgem::Game
-  @@loop = {} of String => Array(Leafgem::Object)
+  @@loop = {} of String => Array(Leafgem::Objects::Simple)
   @@loopfunc : Proc(Nil)?
 
   @@font : SDL::Surface?
@@ -28,7 +28,7 @@ class Leafgem::Game
   @@debug_string_buffer = [] of String
 
   @@currentfps = 0
-  @@to_destroy = [] of Leafgem::Object
+  @@to_destroy = [] of Leafgem::Objects::Simple
 
   # ======================== #
   #        MAIN LOOP         #
@@ -177,7 +177,7 @@ class Leafgem::Game
         # clear hash key?
       end
     end
-    @@to_destroy = [] of Leafgem::Object
+    @@to_destroy = [] of Leafgem::Objects::Simple
   end
 
   def self.getfps

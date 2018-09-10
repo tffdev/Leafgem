@@ -1,6 +1,6 @@
-require "./object"
+require "./simple"
 
-class Leafgem::DrawnObject < Leafgem::Object
+class Leafgem::Objects::Drawn < Leafgem::Objects::Simple
   @anim_start_frame = 0
   @anim_end_frame = 0
 
@@ -15,11 +15,11 @@ class Leafgem::DrawnObject < Leafgem::Object
     draw_self
   end
 
-  def set_spritesheet(filename, @w : Int32 = w, @h : Int32 = h)
-    if (@hitbox.get == {0, 0, 0, 0})
-      @hitbox.set(0, 0, w, h)
+  def set_spritesheet(filename, @w : Float64 = w, @h : Float64 = h)
+    if (@hitbox.get == {0.0, 0.0, 0.0, 0.0})
+      @hitbox.set(0.0, 0.0, w, h)
     end
-    @spritesheet = Leafgem::Library.new_spritesheet(filename, w, h)
+    @spritesheet = Leafgem::Library.new_spritesheet(filename, w.to_i, h.to_i)
   end
 
   def update_spritesheet
