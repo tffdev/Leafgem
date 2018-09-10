@@ -4,12 +4,12 @@ module Leafgem::Renderer
 
   @@scale = 1
 
-  @@size = Vec2(Float64).new(0.0, 0.0)
+  @@size = Vec2.new(0, 0)
   @@window : Leafgem::Window?
 
   @@camera = Leafgem::Camera.new
 
-  @@offset = Vec2(Float64).new(0.0, 0.0)
+  @@offset = Vec2.new(0, 0)
 
   @@screen_surface : SDL::Surface?
   @@screen_surface_pointer : Pointer(LibSDL::Surface)?
@@ -18,7 +18,7 @@ module Leafgem::Renderer
     # Create window
     @@window = Leafgem::Window.new(window_title, window_width, window_height, true)
     @@scale = pixel_scale
-    @@size = Vec2[window_width/pixel_scale, window_height/pixel_scale].to_f64
+    @@size = Vec2.new(window_width/pixel_scale, window_height/pixel_scale)
     # Create renderer
     @@screen_surface_pointer = LibSDL.create_rgb_surface(0, @@size.x, @@size.y, 32, 0, 0, 0, 0)
     if (ssp = @@screen_surface_pointer)
@@ -69,9 +69,9 @@ module Leafgem::Renderer
       c_size = window.current_size
       @@scale = Math.min(c_size.x.to_f / size.x, c_size.y.to_f / size.y).to_f32
       ratio = size.x.to_f/size.y
-      @@offset.x = Math.max(((c_size.x - c_size.y*ratio)/2), 0).to_f64
-      @@offset.y = Math.max(((c_size.y - c_size.x/ratio)/2), 0).to_f64
-      SDL::Rect.new(@@offset.x.to_i, @@offset.y.to_i, (size.x*@@scale).to_i, (size.y*@@scale).to_i)
+      @@offset.x = Math.max(((c_size.x - c_size.y*ratio)/2), 0).to_i
+      @@offset.y = Math.max(((c_size.y - c_size.x/ratio)/2), 0).to_i
+      SDL::Rect.new(@@offset.x, @@offset.y, (size.x*@@scale).to_i, (size.y*@@scale).to_i)
     end
   end
 

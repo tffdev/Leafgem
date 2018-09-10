@@ -14,10 +14,10 @@ module Leafgem::Library
     new_obj.pos.x = x.to_f
     new_obj.pos.y = y.to_f
     # new_obj.update_spritesheet
-    new_obj.create
+    new_obj.init
 
     if !Leafgem::Game.loop.has_key?(thing.to_s)
-      Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Objects::Simple
+      Leafgem::Game.loop[thing.to_s] = [] of Leafgem::Object
     end
     Leafgem::Game.loop[thing.to_s].push(new_obj)
   end

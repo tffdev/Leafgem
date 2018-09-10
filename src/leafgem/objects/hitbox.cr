@@ -1,13 +1,13 @@
-class Leafgem::Objects::Hitbox
-  property pos : Vec2(Float64)
-  property size : Vec2(Float64)
+class Leafgem::Hitbox
+  property pos : Vec2
+  property size : Vec2
 
   def initialize(@pos : Vec2, @size : Vec2)
   end
 
   def set(x, y, w, h)
-    @pos = Vec2[x, y].to_f
-    @size = Vec2[w, h].to_f
+    @pos = Vec2.new x, y
+    @size = Vec2.new w, h
   end
 
   def get
@@ -50,17 +50,17 @@ class Leafgem::Objects::Hitbox
   def meeting_tile?(xoffset, yoffset, tile, accuracy = 2)
     # insert corners
     points_to_check = [
-      [self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset],
-      [self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset],
-      [self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset + @size.y],
-      [self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset + @size.y],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
     ]
     # insert intermediate points between corners, for better checking
     (accuracy).times do |i|
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x * 1/accuracy * i, self.pos.x + @pos.y + yoffset])
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x * 1/accuracy * i, self.pos.x + @pos.y + yoffset + @size.y])
-      points_to_check.push([self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset + @size.y * 1/accuracy * i])
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset + @size.y * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
+      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
 
     points_to_check.each do |point|
@@ -73,17 +73,17 @@ class Leafgem::Objects::Hitbox
 
   def meeting_tile_layer?(xoffset, yoffset, tilelayer, accuracy = 2)
     points_to_check = [
-      [self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset],
-      [self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset],
-      [self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset + @size.y],
-      [self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset + @size.y],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset],
+      [self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h],
+      [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h],
     ]
     # insert intermediate points between corners, for better checking
     (accuracy).times do |i|
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x * 1/accuracy * i, self.pos.x + @pos.y + yoffset])
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x * 1/accuracy * i, self.pos.x + @pos.y + yoffset + @size.y])
-      points_to_check.push([self.pos.x + @pos.x + xoffset, self.pos.x + @pos.y + yoffset + @size.y * 1/accuracy * i])
-      points_to_check.push([self.pos.x + @pos.x + xoffset + @size.x, self.pos.x + @pos.y + yoffset + @size.y * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w * 1/accuracy * i, self.y + self.hitbox.y + yoffset + self.hitbox.h])
+      points_to_check.push([self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
+      points_to_check.push([self.x + self.hitbox.x + xoffset + self.hitbox.w, self.y + self.hitbox.y + yoffset + self.hitbox.h * 1/accuracy * i])
     end
     points_to_check.each do |point|
       if (Leafgem::Map.get_tile_at(point[0], point[1], tilelayer) != 0)
