@@ -125,8 +125,8 @@ class Player < Leafgem::GameObject
 end
 
 class Sparkle < Leafgem::GameObject
-  @circle_size : Float64 = Random.rand*4
-  @vel = Vec2f.new((Random.rand - 0.5)*2, (Random.rand - 0.2)*2)
+  @circle_size : Float64 = Random.rand * 4
+  @vel = NewVec2(Float64).new((Random.rand - 0.5) * 2, (Random.rand - 0.2) * 2)
 
   def update
     @pos.x += @vel.x /= 1.1
