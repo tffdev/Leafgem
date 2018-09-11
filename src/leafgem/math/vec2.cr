@@ -1,4 +1,7 @@
 struct NewVec2(T)
+  include Enumerable(T)
+  include Comparable(T)
+
   property x : T
   property y : T
 
@@ -8,6 +11,15 @@ struct NewVec2(T)
   end
 
   def initialize(@x, @y); end
+
+  def each
+    yield x
+    yield y
+  end
+
+  def <=>(other : NewVec2)
+    @x + @y <=> other.x + other.y
+  end
 
   {% for name in %w(* + / - %) %}
 
@@ -50,18 +62,9 @@ struct NewVec2(T)
   {% end %}
 
   # Relative to a scale and an offset
-  def relative_to(scale, offset)
-    (self / scale) - offset
-  end
-
-  # Relative to a scale
-  def relative_to_scale(scale)
-    self / scale
-  end
-
-  # Relative to an offset
-  def relative_to_offset(offset : NewVec2)
-    self - offset
+  def relative_to_world(scale, offset : NewVec2, pos : NewVec2)
+    return NewVec2.from 0.0, 0.0 if scale == 0.0 || offset == 0.0
+    (self - offset) / scale + pos
   end
 end
 
