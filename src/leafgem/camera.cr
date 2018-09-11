@@ -1,6 +1,6 @@
 class Leafgem::Camera
-  property pos = Vec2f.new(0.0, 0.0)
-  property posbuffer = Vec2f.new(0.0, 0.0)
+  property pos = NewVec2(Float64).new 0.0, 0.0
+  property posbuffer = NewVec2(Float64).new 0.0, 0.0
   property smooth = false
 
   def update
