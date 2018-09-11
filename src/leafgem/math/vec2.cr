@@ -104,19 +104,3 @@ abstract class Vec
     self.class.new(rel_x, rel_y)
   end
 end
-
-class Vec2 < Vec
-  property x : Int32
-  property y : Int32
-
-  def initialize(@x, @y); end
-
-  def initialize(x, y)
-    @x = x.to_i
-    @y = y.to_i
-  end
-
-  def to_f
-    Vec2f.new @x.to_f, @y.to_f
-  end
-end
