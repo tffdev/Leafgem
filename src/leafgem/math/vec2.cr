@@ -1,10 +1,10 @@
-struct Vec2New(T)
+struct NewVec2(T)
   property x : T
   property y : T
 
-  # Initialize a Vector in a more simple manner
-  macro [](x, y)
-    Vec2(typeof({{x}})).new({{x}}, {{y}})
+  # Automatically determine from the two types
+  def self.from(x, y)
+    NewVec2(typeof(x) | typeof(y)).new(x, y)
   end
 
   def initialize(@x, @y); end
@@ -13,15 +13,15 @@ struct Vec2New(T)
 
     # Apply {{name.id}} to the Vector
     def {{name.id}}(other)
-      self.class(T).new(@x {{name.id}} other, @y {{name.id}} other)
+      NewVec2.from(@x {{name.id}} other, @y {{name.id}} other)
     end
 
     # Apply {{name.id}} with the other Vector
-    def {{name.id}}(other : Vec2)
+    def {{name.id}}(other : NewVec2)
       x1 = @x {{name.id}} other.x
       y1 = @y {{name.id}} other.y
 
-      self.class(T).new(x1, y1)
+      NewVec2.from(x1, y1)
     end
 
   {% end %}
@@ -44,8 +44,8 @@ struct Vec2New(T)
                        } %}
 
     # Returns `self` converted to `Vec2({{type}})`.
-    def {{name.id}} : Vec2({{type}})
-      Vec2({{type}}).new(@x.{{name.id}}, @y.{{name.id}})
+    def {{name.id}} : NewVec2({{type}})
+      NewVec2({{type}}).new(@x.{{name.id}}, @y.{{name.id}})
     end
   {% end %}
 
@@ -60,7 +60,7 @@ struct Vec2New(T)
   end
 
   # Relative to an offset
-  def relative_to_offset(offset : Vec2)
+  def relative_to_offset(offset : NewVec2)
     self - offset
   end
 end
