@@ -41,7 +41,7 @@ struct NewVec2(T)
   # Returns self formatted as a string
   #
   # ```
-  # vec = Vec2[33, 24]
+  # vec = Vec2.from 33, 24
   # vec.to_s => "x: 33, y: 24"
   # ```
   def to_s
