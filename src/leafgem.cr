@@ -13,3 +13,4 @@ SDL::Mix.open
 #      LEAFGEM MODULE      #
 # ======================== #
 require "./leafgem/**"
+include Leafgem::Util

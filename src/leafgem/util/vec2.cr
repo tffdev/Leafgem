@@ -1,4 +1,4 @@
-struct Vec2(T)
+struct Leafgem::Util::Vec2(T)
   include Enumerable(T)
   include Comparable(T)
 
