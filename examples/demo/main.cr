@@ -39,7 +39,9 @@ class Player < Leafgem::GameObject
   def draw
     draw_self
     set_draw_color(255, 0, 0, 100)
-    fill_circ(Mouse.world_position.x, Mouse.world_position.y, 2)
+    # TODO: Find a good way to extend `Mouse` in `Library` and make an automatic macro for this
+    mouse_pos = Mouse.position.relative_to_world(Leafgem::Renderer.scale, Leafgem::Renderer.offset, Leafgem::Renderer.camera.pos)
+    fill_circ(mouse_pos.x, mouse_pos.y, 2)
   end
 
   def move
@@ -123,8 +125,8 @@ class Player < Leafgem::GameObject
 end
 
 class Sparkle < Leafgem::GameObject
-  @circle_size : Float64 = Random.rand*4
-  @vel = Vec2f.new((Random.rand - 0.5)*2, (Random.rand - 0.2)*2)
+  @circle_size : Float64 = Random.rand * 4
+  @vel = Vec2(Float64).new((Random.rand - 0.5) * 2, (Random.rand - 0.2) * 2)
 
   def update
     @pos.x += @vel.x /= 1.1

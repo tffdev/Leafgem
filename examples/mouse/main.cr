@@ -10,8 +10,8 @@ class Draggable < Leafgem::Shapes::Rectangle
   end
 
   def init
-    @position.x = 32
-    @position.y = 32
+    @pos.x = 32
+    @pos.y = 32
     @size.x = 32
     @size.y = 32
   end
@@ -37,8 +37,8 @@ class Draggable < Leafgem::Shapes::Rectangle
 
         # Get the positions
         # Set self to mouse poition
-        @position.x = x + @offset_x
-        @position.y = y + @offset_y
+        @pos.x = x + @offset_x
+        @pos.y = y + @offset_y
         # If it's the first tap
       elsif primary.pressed?
         # If click starts out in self
@@ -46,8 +46,8 @@ class Draggable < Leafgem::Shapes::Rectangle
         @dragging = true if point_in? x, y
 
         # Offsets so it stays relatively positioned to where you clicked
-        @offset_x = @position.x - x
-        @offset_y = @position.y - y
+        @offset_x = @pos.x - x
+        @offset_y = @pos.y - y
       end
       # Update primary click
       # primary.update

@@ -8,9 +8,9 @@ class Leafgem::Map
   # tiles
   @@tilesheet : SDL::Surface?
   @@tiles = [] of Array(Int32)
-  @@tileset_size : Vec2 = Vec2.new(0, 0)
-  @@tilesize : Vec2 = Vec2.new(0, 0)
-  @@mapsize : Vec2 = Vec2.new(1, 1)
+  @@tileset_size : Vec2(Int32) = Vec2.from 0, 0
+  @@tilesize : Vec2(Int32) = Vec2.from 0, 0
+  @@mapsize : Vec2(Int32) = Vec2.from 1, 1
 
   # backgrounds
   @@backgrounds = [] of SDL::Surface
@@ -55,7 +55,7 @@ class Leafgem::Map
 
   def self.get_tile_at(x, y, tile_layer)
     tileplace = (x/@@tilesize.x).to_i + @@mapsize.x * (y/@@tilesize.y).to_i
-    if (@@tiles[tile_layer.to_i][tileplace.to_i]?)
+    if (@@tiles[tile_layer.to_i][tileplace.to_i]? && tileplace >= 0)
       return @@tiles[tile_layer][tileplace.to_i]
     else
       return 0
