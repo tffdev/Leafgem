@@ -1,7 +1,7 @@
 module Leafgem::Mouse::Mouse
   @@scroll = Scroll.new
   @@buttons = {} of UInt8 => Click
-  @@position = Vec2(Int32).new(0, 0)
+  @@pos = Vec2(Int32).new(0, 0)
   @@scrolling = false
 
   # Buttons clicked
@@ -10,8 +10,8 @@ module Leafgem::Mouse::Mouse
   end
 
   # The position of the mouse on screen
-  def position
-    @@position
+  def pos
+    @@pos
   end
 
   # TODO: Finish scroll events
@@ -93,7 +93,7 @@ module Leafgem::Mouse::Mouse
 
   # Update the mouse
   def update(event : SDL::Event::MouseMotion)
-    @@position = Vec2.from event.x, event.y
+    @@pos = Vec2.from event.x, event.y
   end
 
   # TODO: Finish this
