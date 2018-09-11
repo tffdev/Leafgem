@@ -1,17 +1,17 @@
 class Leafgem::Hitbox
-  property pos : Vec2
-  property size : Vec2
+  property pos : NewVec2(Int32)
+  property size : NewVec2(Int32)
 
-  def initialize(@pos : Vec2, @size : Vec2)
+  def initialize(@pos : NewVec2, @size : NewVec2)
   end
 
   def set(x, y, w, h)
-    @pos = Vec2.new x, y
-    @size = Vec2.new w, h
+    @pos = NewVec2.from x, y
+    @size = NewVec2.from w, h
   end
 
   def get
-    {@pos, @size}
+    {@pos.x, @pos.y, @size.x, @size.y}
   end
 
   def meeting?(x, y, foreign_object)
