@@ -120,19 +120,3 @@ class Vec2 < Vec
     Vec2f.new @x.to_f, @y.to_f
   end
 end
-
-class Vec2f < Vec
-  property x : Float64
-  property y : Float64
-
-  def initialize(@x, @y); end
-
-  def initialize(x, y)
-    @x = x.to_f64
-    @y = y.to_f64
-  end
-
-  def to_i
-    Vec2.new @x.to_i, @y.to_i
-  end
-end
