@@ -1,9 +1,9 @@
 require "./hitbox"
 
 class Leafgem::Object
-  property pos : Vec2f = Vec2f.new(0, 0)
-  property size : Vec2 = Vec2.new(0, 0)
-  property hitbox = Hitbox.new(Vec2.new(0, 0), Vec2.new(0, 0))
+  property pos = NewVec2(Float64).new 0.0, 0.0
+  property size = NewVec2(Int32).new 0, 0
+  property hitbox = Hitbox.new(NewVec2.from(0, 0), NewVec2.from(0, 0))
 
   def init; end
 
