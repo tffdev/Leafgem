@@ -8,9 +8,9 @@ class Leafgem::Map
   # tiles
   @@tilesheet : SDL::Surface?
   @@tiles = [] of Array(Int32)
-  @@tileset_size : NewVec2(Int32) = NewVec2.from 0, 0
-  @@tilesize : NewVec2(Int32) = NewVec2.from 0, 0
-  @@mapsize : NewVec2(Int32) = NewVec2.from 1, 1
+  @@tileset_size : Vec2(Int32) = Vec2.from 0, 0
+  @@tilesize : Vec2(Int32) = Vec2.from 0, 0
+  @@mapsize : Vec2(Int32) = Vec2.from 1, 1
 
   # backgrounds
   @@backgrounds = [] of SDL::Surface

@@ -1,13 +1,13 @@
 class Leafgem::Hitbox
-  property pos : NewVec2(Int32)
-  property size : NewVec2(Int32)
+  property pos : Vec2(Int32)
+  property size : Vec2(Int32)
 
-  def initialize(@pos : NewVec2, @size : NewVec2)
+  def initialize(@pos : Vec2, @size : Vec2)
   end
 
   def set(x, y, w, h)
-    @pos = NewVec2.from x, y
-    @size = NewVec2.from w, h
+    @pos = Vec2.from x, y
+    @size = Vec2.from w, h
   end
 
   def get

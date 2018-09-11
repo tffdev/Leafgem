@@ -1,22 +1,22 @@
 class Leafgem::Mouse::Scroll
   property active : Bool
-  property direction : NewVec2(Int32)
+  property direction : Vec2(Int32)
   property event : SDL::Event::MouseWheel?
 
   def initialize
     @active = false
-    @direction = NewVec2.from 0, 0
+    @direction = Vec2.from 0, 0
     @event = nil
   end
 
   def update(event : SDL::Event::MouseWheel)
     @active = true
-    @direction = NewVec2.from event.x, event.y
+    @direction = Vec2.from event.x, event.y
   end
 
   def update
     @active = false
-    @direction = NewVec2.from 0, 0
+    @direction = Vec2.from 0, 0
   end
 
   def up?

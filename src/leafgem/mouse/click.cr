@@ -1,11 +1,11 @@
 class Leafgem::Mouse::Click
-  property position : NewVec2(Int32)
+  property position : Vec2(Int32)
   property event : SDL::Event::MouseButton
   property held : Bool
 
   # TODO: Update `#held?` and `#pressed?` automatically
   def initialize(@event, @pressed = true)
-    @position = NewVec2.from @event.x, @event.y
+    @position = Vec2.from @event.x, @event.y
     @held = !@pressed
     # @when_pressed = event.timestamp
   end
@@ -28,7 +28,7 @@ class Leafgem::Mouse::Click
 
   # Update with a new mouse event
   def update(@event, @pressed = false)
-    @position = NewVec2.from @event.x, @event.y
+    @position = Vec2.from @event.x, @event.y
     @held = !@pressed
   end
 end

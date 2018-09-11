@@ -1,4 +1,4 @@
-struct NewVec2(T)
+struct Vec2(T)
   include Enumerable(T)
   include Comparable(T)
 
@@ -7,7 +7,7 @@ struct NewVec2(T)
 
   # Automatically determine from the two types
   def self.from(x, y)
-    NewVec2(typeof(x) | typeof(y)).new(x, y)
+    Vec2(typeof(x) | typeof(y)).new(x, y)
   end
 
   def initialize(@x, @y); end
@@ -17,7 +17,7 @@ struct NewVec2(T)
     yield y
   end
 
-  def <=>(other : NewVec2)
+  def <=>(other : Vec2)
     @x + @y <=> other.x + other.y
   end
 
@@ -25,15 +25,15 @@ struct NewVec2(T)
 
     # Apply {{name.id}} to the Vector
     def {{name.id}}(other)
-      NewVec2.from(@x {{name.id}} other, @y {{name.id}} other)
+      Vec2.from(@x {{name.id}} other, @y {{name.id}} other)
     end
 
     # Apply {{name.id}} with the other Vector
-    def {{name.id}}(other : NewVec2)
+    def {{name.id}}(other : Vec2)
       x1 = @x {{name.id}} other.x
       y1 = @y {{name.id}} other.y
 
-      NewVec2.from(x1, y1)
+      Vec2.from(x1, y1)
     end
 
   {% end %}
@@ -56,14 +56,14 @@ struct NewVec2(T)
                        } %}
 
     # Returns `self` converted to `Vec2({{type}})`.
-    def {{name.id}} : NewVec2({{type}})
-      NewVec2({{type}}).new(@x.{{name.id}}, @y.{{name.id}})
+    def {{name.id}} : Vec2({{type}})
+      Vec2({{type}}).new(@x.{{name.id}}, @y.{{name.id}})
     end
   {% end %}
 
   # Relative to a scale and an offset
-  def relative_to_world(scale, offset : NewVec2, pos : NewVec2)
-    return NewVec2.from 0.0, 0.0 if scale == 0.0 || offset == 0.0
+  def relative_to_world(scale, offset : Vec2, pos : Vec2)
+    return Vec2.from 0.0, 0.0 if scale == 0.0 || offset == 0.0
     (self - offset) / scale + pos
   end
 end
@@ -87,7 +87,7 @@ abstract class Vec
     end
 
     # Compatability layer when updating
-    def {{name.id}}(other : NewVec2)
+    def {{name.id}}(other : Vec2)
       self.class.new(@x {{name.id}} other.x, @y {{name.id}} other.y)
     end
 
