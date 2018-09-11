@@ -1,6 +1,6 @@
 class Leafgem::Window
   property window : SDL::Window
-  @size = Vec2.new(0, 0)
+  property size = NewVec2(Int32).new 0, 0
 
   def initialize(title, width, height, resize)
     @window = SDL::Window.new(
@@ -9,29 +9,13 @@ class Leafgem::Window
       LibSDL::WindowPosition::UNDEFINED,
       (resize) ? LibSDL::WindowFlags::RESIZABLE : LibSDL::WindowFlags::SHOWN)
 
-    @size = Vec2.new(width, height)
+    @size = NewVec2.from width, height
   end
 
   def current_size
     cr_w = 0
     cr_h = 0
     LibSDL.get_window_size(@window, pointerof(cr_w), pointerof(cr_h))
-    Vec2.new(cr_w, cr_h)
-  end
-
-  def window
-    @window
-  end
-
-  def size
-    @size
-  end
-
-  def width
-    @size.x
-  end
-
-  def height
-    @size.y
+    NewVec2.from cr_w, cr_h
   end
 end
