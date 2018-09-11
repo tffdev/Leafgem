@@ -83,6 +83,11 @@ abstract class Vec
       self.class.new(x1, y1)
     end
 
+    # Compatability layer when updating
+    def {{name.id}}(other : NewVec2)
+      self.class.new(@x {{name.id}} other.x, @y {{name.id}} other.y)
+    end
+
   {% end %}
 
   # NOTE: Returns a Vec2f because it can be .to_i, this is for consistency
