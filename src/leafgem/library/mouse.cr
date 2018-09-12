@@ -5,7 +5,7 @@ require "../mouse/mouse"
 # Example of the mouse library:
 #
 # ```
-# Mouse.primary.position.x
+# Mouse.primary.pos.x
 # ```
 #
 # The above can produce:

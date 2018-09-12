@@ -2,11 +2,11 @@ class Leafgem::Shapes::Rectangle < Leafgem::GameObject
   property fill = true
   property outline = false
 
-  def self.draw(position : Vec, size : Vec, fill = true, outline = false)
+  def self.draw(position, size, fill = true, outline = false)
     draw_self(position, size)
   end
 
-  def draw_self(position : Vec = @pos, size : Vec = @size, fill = @fill, outline = @outline)
+  def draw_self(position = @pos, size = @size, fill = @fill, outline = @outline)
     if (renderer = Leafgem::Renderer.renderer)
       position = position.to_i
 
