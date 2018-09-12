@@ -66,10 +66,10 @@ class Leafgem::Map
     # draw backgrounds
     bg_count = 0
     @@backgrounds.each_with_index do |background, bg_index|
-      i = (((camera_x*(1 - @@backgrounds_parallax[bg_index])) / background.width)).to_i
-      bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
+      i = (((Leafgem::Renderer.camera.pos.x*(1 - @@backgrounds_parallax[bg_index])) / background.width)).to_i
+      bg_x = i * background.width + @@backgrounds_parallax[bg_index] * Leafgem::Renderer.camera.pos.x
 
-      while (bg_x - Leafgem::Renderer.size.x < camera_x)
+      while (bg_x - Leafgem::Renderer.size.x < Leafgem::Renderer.camera.pos.x)
         Leafgem::Draw.sprite(
           background,
           0, 0,
@@ -79,7 +79,7 @@ class Leafgem::Map
         )
         i += 1
         bg_count += 1
-        bg_x = i * background.width + @@backgrounds_parallax[bg_index] * camera_x
+        bg_x = i * background.width + @@backgrounds_parallax[bg_index] * Leafgem::Renderer.camera.pos.x
       end
     end
 
