@@ -66,4 +66,8 @@ struct Leafgem::Util::Vec2(T)
     return Vec2.from 0.0, 0.0 if scale == 0.0 || offset == 0.0
     (self - offset) / scale + pos
   end
+
+  def relative_to_world
+    self.relative_to_world(Leafgem::Renderer.scale, Leafgem::Renderer.offset, Leafgem::Renderer.camera.pos)
+  end
 end
