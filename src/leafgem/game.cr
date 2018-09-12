@@ -137,6 +137,10 @@ class Leafgem::Game
     @@show_hitboxes = bool
   end
 
+  def self.quit
+    @@quit = true
+  end
+
   def self.loop
     @@loop
   end

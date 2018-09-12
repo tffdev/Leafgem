@@ -10,6 +10,15 @@ module Leafgem::Library
   # all the goofy global functions that are
   # essentially simple wrappers around less intuitive
   # actions.
+
+  def game_run
+    Leafgem::Game.run
+  end
+
+  def game_exit
+    Leafgem::Game.quit
+  end
+
   def create_object(thing, x = 0, y = 0)
     # Give objects a unique identifier on create?
     new_obj = thing.new
