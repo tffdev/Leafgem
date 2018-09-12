@@ -6,10 +6,10 @@ module Leafgem::Draw
           screen_surface,
           SDL::Rect.new(sx.to_i, sy.to_i, w, h),
           SDL::Rect.new(
-            x.to_i - ((ignore_camera) ? 0 : (camera_x).to_i),
-            y.to_i - ((ignore_camera) ? 0 : (camera_y).to_i),
-            w.to_i * xscale,
-            h.to_i * yscale
+            x.to_i - ((ignore_camera) ? 0 : (Leafgem::Renderer.camera.pos.x).to_i),
+            y.to_i - ((ignore_camera) ? 0 : (Leafgem::Renderer.camera.pos.y).to_i),
+            w.to_i,
+            h.to_i
           )
         )
       end
