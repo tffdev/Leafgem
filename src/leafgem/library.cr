@@ -41,10 +41,13 @@ module Leafgem::Library
   end
 
   def set_draw_color(r : Int32, g : Int32, b : Int32, a : Int32 = 255)
-    # assuming color is a hex string
     if (lgr = Leafgem::Renderer.renderer)
       lgr.draw_color = SDL::Color.new(r, g, b, a)
     end
+  end
+
+  def set_background_color(r : Int32, g : Int32, b : Int32)
+    Leafgem::Renderer.set_background_color(r, g, b)
   end
 
   def set_draw_color(color_tuple)

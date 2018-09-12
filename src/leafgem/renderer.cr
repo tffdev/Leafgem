@@ -14,6 +14,8 @@ module Leafgem::Renderer
   @@screen_surface : SDL::Surface?
   @@screen_surface_pointer : Pointer(LibSDL::Surface)?
 
+  @@background_color = SDL::Color.new(255, 255, 255)
+
   def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
     # Create window
     @@window = Leafgem::Window.new(window_title, window_width, window_height, true)
@@ -41,8 +43,12 @@ module Leafgem::Renderer
       lg_r.draw_color = old_color
     end
     if (surf = Leafgem::Renderer.surface)
-      surf.fill(255, 255, 255)
+      surf.fill(@@background_color.r, @@background_color.g, @@background_color.b)
     end
+  end
+
+  def set_background_color(r, g, b)
+    @@background_color = SDL::Color.new(r, g, b)
   end
 
   def surface
