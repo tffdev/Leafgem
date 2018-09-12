@@ -29,6 +29,7 @@ class Leafgem::Game
 
   @@currentfps = 0
   @@to_destroy = [] of Leafgem::Object
+  @@quit = false
 
   # ======================== #
   #        MAIN LOOP         #
@@ -46,17 +47,27 @@ class Leafgem::Game
         @@currentfps = 1000/(LibSDL.ticks - starttime)
         starttime = LibSDL.ticks
         self.game_update
+        break if @@quit
       end
     end
+
+    # exit code
+    if window = Leafgem::Renderer.window
+      window.destroy
+    end
+    if renderer = Leafgem::Renderer.renderer
+      renderer.finalize
+    end
+    puts "Exiting..."
+    SDL.quit
+    exit
   end
 
   def self.game_update
     while (event = SDL::Event.poll)
       case event
       when SDL::Event::Quit
-        puts "Exiting..."
-        SDL.quit
-        exit
+        @@quit = true
       when SDL::Event::Keyboard
         Leafgem::KeyManager.update(event)
       when SDL::Event::MouseButton
