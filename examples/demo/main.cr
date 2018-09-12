@@ -40,7 +40,7 @@ class Player < Leafgem::GameObject
     draw_self
     set_draw_color(255, 0, 0, 100)
     # TODO: Find a good way to extend `Mouse` in `Library` and make an automatic macro for this
-    mouse_pos = Mouse.pos.relative_to_world(Leafgem::Renderer.scale, Leafgem::Renderer.offset, Leafgem::Renderer.camera.pos)
+    mouse_pos = Mouse.pos.relative_to_world
     fill_circ(mouse_pos.x, mouse_pos.y, 2)
   end
 

@@ -25,8 +25,8 @@ class Draggable < Leafgem::Shapes::Rectangle
 
     # If Mouse.primary exists (and thus is active)
     if primary = Mouse.primary
-      x = Mouse.pos.not_nil!.x.to_f
-      y = Mouse.pos.not_nil!.y.to_f
+      x = Mouse.pos.x.to_f
+      y = Mouse.pos.y.to_f
       if point_in?(x, y) && @dragging
         Mouse.cursor = "pointer"
       end
