@@ -17,6 +17,12 @@ module Leafgem::Renderer
   @@background_color = SDL::Color.new(255, 255, 255)
 
   def create(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
+    if (@@window == nil)
+      make_window(window_title, window_width, window_height, pixel_scale)
+    end
+  end
+
+  def make_window(window_title : String, window_width : Int32, window_height : Int32, pixel_scale : Float32)
     # Create window
     @@window = Leafgem::Window.new(window_title, window_width, window_height, true)
     @@scale = pixel_scale

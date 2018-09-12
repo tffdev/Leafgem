@@ -12,6 +12,10 @@ class Leafgem::Window
     @size = Vec2.from width, height
   end
 
+  def destroy
+    window.finalize
+  end
+
   def current_size
     cr_w = 0
     cr_h = 0
