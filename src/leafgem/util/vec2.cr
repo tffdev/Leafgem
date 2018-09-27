@@ -1,15 +1,47 @@
+# `Vec2` is a struct used for almost all positioning code
+# in leafgem
+#
+# A `Vec2` takes a Generic
+#
+# For example:
+#
+# ```
+# Vec2(Int32).new(0, 0)
+# ```
+#
+# This is done to support Floats, Ints, BigInts and so forth.
+#
+# `Vec2` has `#from` to make this a little simpler
+#
+# ```
+# Vec2.from 0, 1 # => Vec2(Int32).new(0,1)
+# ```
 struct Leafgem::Util::Vec2(T)
   include Enumerable(T)
   include Comparable(T)
 
+  # The x position
   property x : T
+
+  # The y position
   property y : T
 
   # Automatically determine from the two types
+  #
+  # ```
+  # Vec2.from 0, 1 # => Vec2(Int32).new(0,1)
+  # ```
+  #
+  # Supported multiple types
+  #
+  # ```
+  # Vec2.from 0.3, 10 => Vec2(Float64 | Int32).new(0.3, 10)
+  # ```
   def self.from(x, y)
     Vec2(typeof(x) | typeof(y)).new(x, y)
   end
 
+  # Creates a vec2 at position *x*, *y*
   def initialize(@x, @y); end
 
   def each
@@ -17,6 +49,9 @@ struct Leafgem::Util::Vec2(T)
     yield y
   end
 
+  # Combined comparison operator. Returns 0 if self equals other, 1 if self is greater than other and -1 if self is smaller than other.
+  #
+  # Adds `#x` and `#y` together and compares the results
   def <=>(other : Vec2)
     @x + @y <=> other.x + other.y
   end
@@ -67,6 +102,7 @@ struct Leafgem::Util::Vec2(T)
     (self - offset) / scale + pos
   end
 
+  # position self relative to the world
   def relative_to_world
     self.relative_to_world(Leafgem::Renderer.scale, Leafgem::Renderer.offset, Leafgem::Renderer.camera.pos)
   end
