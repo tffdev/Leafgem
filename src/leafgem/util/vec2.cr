@@ -1,7 +1,7 @@
-# Vec2 is a struct used for almost all positioning code
+# `Vec2` is a struct used for almost all positioning code
 # in leafgem
 #
-# Vec2 takes a Generic
+# A `Vec2` takes a Generic
 #
 # For example:
 #
@@ -11,7 +11,7 @@
 #
 # This is done to support Floats, Ints, BigInts and so forth.
 #
-# Vec2 has `#from` to make this a little simpler
+# `Vec2` has `#from` to make this a little simpler
 #
 # ```
 # Vec2.from 0, 1 # => Vec2(Int32).new(0,1)
