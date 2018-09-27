@@ -33,7 +33,7 @@ module Leafgem::Library
     Leafgem::Game.loop[thing.to_s].push(new_obj)
   end
 
-  def destroy(thing)
+  def destroy(thing : Leafgem::Object)
     Leafgem::Game.to_destroy.push(thing)
   end
 
