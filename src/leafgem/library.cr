@@ -147,6 +147,7 @@ module Leafgem::Library
   end
 
   # NOTE: wowee this is super messy
+  #
   # Draws a sprite
   def draw_sprite(texture : SDL::Surface, x = 0, y = 0, alpha = 255, xscale = 1, yscale = 1, gui = false)
     alpha = Math.min(alpha.to_f, 255)
