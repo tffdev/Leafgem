@@ -1,3 +1,9 @@
+# A hitbox
+#
+# Hitboxes are used for collision
+#
+# By default any `Leafgem::Object`
+# will have a hitbox attatched to it
 class Leafgem::Hitbox
   property pos : Vec2(Int32)
   property size : Vec2(Int32)
@@ -5,15 +11,18 @@ class Leafgem::Hitbox
   def initialize(@pos : Vec2, @size : Vec2)
   end
 
+  # Sets the hitboxx position and size
   def set(x, y, w, h)
     @pos = Vec2.from x, y
     @size = Vec2.from w, h
   end
 
+  # Get the hitbox position and size as a tuple
   def get
     {@pos.x, @pos.y, @size.x, @size.y}
   end
 
+  # is the hitbox meeting another object?
   def meeting?(x, y, foreign_object)
     # basic box collision
     # check each corner of self with every corner of every instance of the foreign object
@@ -32,10 +41,14 @@ class Leafgem::Hitbox
     return false
   end
 
+  # Is the position in the hitbox?
   def point_in?(x, y)
     x >= @pos.x && x <= @pos.y + @size.x && y >= @pos.y && y <= @pos.y + @size.y
   end
 
+  # NOTE: This is weird
+  #
+  # Is their another hitbox in this one?
   def box_collision_check(this, other, x, y)
     if this.x + x >= other.x && this.x + x < other.x + other.w && this.y + y >= other.y && this.y + y < other.y + other.h ||
        (this.x + x + this.w) >= other.x && (this.x + x + this.w) < other.x + other.w && this.y + y >= other.y && this.y + y < other.y + other.h ||
@@ -47,6 +60,7 @@ class Leafgem::Hitbox
     end
   end
 
+  # Is the hitbox meeting a tile?
   def meeting_tile?(xoffset, yoffset, tile, accuracy = 2)
     # insert corners
     points_to_check = [
@@ -71,6 +85,7 @@ class Leafgem::Hitbox
     return false
   end
 
+  # Is the hitbox meeting a tile based on the layer
   def meeting_tile_layer?(xoffset, yoffset, tilelayer, accuracy = 2)
     points_to_check = [
       [self.x + self.hitbox.x + xoffset, self.y + self.hitbox.y + yoffset],
@@ -98,7 +113,7 @@ class Leafgem::Hitbox
     point_in? Library::Mouse.pos.x, Library::Mouse.pos.y
   end
 
-  # Did the hitbox get pressed?
+  # Is the hitbox pressed?
   def pressed?
     if b = Library::Mouse.primary
       mouse_in? && b.pressed?
